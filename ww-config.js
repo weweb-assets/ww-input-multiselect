@@ -4,7 +4,7 @@ export default {
             en: "Input multiselect",
             fr: "Champs sélection multiple",
         },
-        icon: 'fontawesome/solid/circle-chevron-down'
+        icon: 'fontawesome/solid/chevron-circle-down'
     },
     triggerEvents: [
         { name: 'change', label: { en: 'On change' }, event: { value: [] } },
