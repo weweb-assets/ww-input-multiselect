@@ -4,6 +4,7 @@ export default {
             en: "Input multiselect",
             fr: "Champs sélection multiple",
         },
+        icon: 'fontawesome/solid/circle-chevron-down'
     },
     triggerEvents: [
         { name: 'change', label: { en: 'On change' }, event: { value: [] } },
@@ -43,7 +44,7 @@ export default {
             type: 'TextSelect',
             defaultValue: 'tags',
             options: {
-                options: [{label: 'Tags', value: 'tags'}, {label: 'Counter', value: 'multiple'}],
+                options: [{ label: 'Tags', value: 'tags' }, { label: 'Counter', value: 'multiple' }],
             },
             section: 'settings',
             bindable: true
