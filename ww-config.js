@@ -9,6 +9,23 @@ export default {
         { name: 'change', label: { en: 'On change' }, event: { value: [] } },
     ],
     properties: {
+        fontSize: {
+            label: {
+                en: 'Size',
+                fr: 'Taille',
+            },
+            type: 'Length',
+            options: {
+                unitChoices: [
+                    { value: 'px', label: 'px', min: 1, max: 100 },
+                    { value: 'em', label: 'em', min: 1, max: 10, digits: 2 },
+                    { value: 'rem', label: 'rem', min: 1, max: 10, digits: 2 },
+                ],
+            },
+            responsive: true,
+            states: true,
+            defaultValue: '16px',
+        },
         tagsDefaultBgColor: {
             label: {
                 en: 'Default bg color (tags)',
@@ -43,7 +60,7 @@ export default {
             type: 'TextSelect',
             defaultValue: 'tags',
             options: {
-                options: [{label: 'Tags', value: 'tags'}, {label: 'Counter', value: 'multiple'}],
+                options: [{ label: 'Tags', value: 'tags' }, { label: 'Counter', value: 'multiple' }],
             },
             section: 'settings',
             bindable: true
