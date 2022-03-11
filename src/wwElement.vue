@@ -151,6 +151,9 @@ export default {
     padding: 4px;
     border-radius: 4px;
 }
+.multiselect.is-active {
+    box-shadow: unset;
+}
 
 .multiselect-caret,
 .multiselect-clear-icon,
