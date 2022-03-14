@@ -84,11 +84,11 @@ export default {
             return this.content.options.map(option => {
                 return typeof option === 'object'
                     ? {
-                          label: wwLib.wwManagerLang.getText(option[labelField]),
-                          value: option[valueField],
+                          label: wwLib.wwManagerLang.getText(wwLib.resolveObjectPropertyPath(option, labelField)),
+                          value: wwLib.resolveObjectPropertyPath(option, valueField),
                           style: {
-                              backgroundColor: option[bgColorField] || this.content.tagsDefaultBgColor,
-                              color: option[textColorField] || this.content.tagsDefaultTextColor,
+                              backgroundColor: wwLib.resolveObjectPropertyPath(option, bgColorField) || this.content.tagsDefaultBgColor,
+                              color: wwLib.resolveObjectPropertyPath(option, textColorField) || this.content.tagsDefaultTextColor,
                           },
                       }
                     : {
