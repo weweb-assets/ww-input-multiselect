@@ -26,6 +26,21 @@ export default {
             states: true,
             defaultValue: '16px',
         },
+        maxDropdownHeight: {
+            label: {
+                en: 'Max dropdown height',
+                fr: 'Hauteur maximum du menu',
+            },
+            type: 'Length',
+            options: {
+                unitChoices: [
+                    { value: 'px', label: 'px', min: 1, max: 500 },
+                ],
+            },
+            responsive: true,
+            states: true,
+            defaultValue: '150px',
+        },
         tagsDefaultBgColor: {
             label: {
                 en: 'Default bg color (tags)',

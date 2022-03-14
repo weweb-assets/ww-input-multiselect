@@ -4,6 +4,7 @@
         class="input-multiselect"
         :style="{
             '--font-size': content.fontSize || '16px',
+            '--ms-max-height': content.maxDropdownHeight || '10rem'
         }"
         :class="{ editing: isEditing }"
         :options="selectOptions"
@@ -84,7 +85,7 @@ export default {
             return this.content.options.map(option => {
                 return typeof option === 'object'
                     ? {
-                          label: wwLib.wwManagerLang.getText(wwLib.resolveObjectPropertyPath(option, labelField)),
+                          label: wwLib.resolveObjectPropertyPath(option, labelField),
                           value: wwLib.resolveObjectPropertyPath(option, valueField),
                           style: {
                               backgroundColor: wwLib.resolveObjectPropertyPath(option, bgColorField) || this.content.tagsDefaultBgColor,
@@ -161,5 +162,8 @@ export default {
 .multiselect-caret {
     margin-top: 10px;
     margin-bottom: 10px;
+}
+.multiselect-dropdown {
+    max-height: unset;
 }
 </style>
