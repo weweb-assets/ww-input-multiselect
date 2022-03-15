@@ -13,6 +13,7 @@
         :mode="content.mode"
         :disabled="content.disabled"
         :hideSelected="content.hideSelected"
+        :placeholder="placeholder"
     >
         <template v-slot:tag="{ option, handleTagRemove }">
             <div class="multiselect-tag" :style="option.style">
@@ -59,6 +60,9 @@ export default {
         return { currentSelection, setCurrentSelection };
     },
     computed: {
+        placeholder() {
+            return wwLib.wwManagerLang.getText(this.content.placeholder)
+        },
         isEditing() {
             /* wwEditor:start */
             return this.wwEditorState.editMode === wwLib.wwEditorHelper.EDIT_MODES.EDITION;
@@ -85,7 +89,7 @@ export default {
             return this.content.options.map(option => {
                 return typeof option === 'object'
                     ? {
-                          label: wwLib.resolveObjectPropertyPath(option, labelField),
+                          label: wwLib.wwManagerLang.getText(wwLib.resolveObjectPropertyPath(option, labelField) || ''),
                           value: wwLib.resolveObjectPropertyPath(option, valueField),
                           style: {
                               backgroundColor: wwLib.resolveObjectPropertyPath(option, bgColorField) || this.content.tagsDefaultBgColor,

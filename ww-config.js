@@ -57,6 +57,17 @@ export default {
             type: 'Color',
             defaultValue: '#FFFFFF'
         },
+        placeholder: {
+            label: {
+                en: 'Placeholder',
+                fr: 'Texte par défaut'
+            },
+            type: 'Text',
+            defaultValue: '',
+            section: 'settings',
+            bindable: true,
+            multiLang: true
+        },
         disabled: {
             label: {
                 en: 'Disabled',
