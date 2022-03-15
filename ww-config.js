@@ -91,6 +91,16 @@ export default {
             section: 'settings',
             bindable: true
         },
+        allowCreation: {
+            label: {
+                en: 'Allow to create option',
+                fr: 'Permettre la création d\'option'
+            },
+            type: 'OnOff',
+            defaultValue: false,
+            section: 'settings',
+            bindable: true,
+        },
         hideSelected: {
             label: {
                 en: 'Hide selected elements',
