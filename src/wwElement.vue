@@ -14,9 +14,10 @@
         :disabled="content.disabled"
         :hideSelected="content.hideSelected"
         :placeholder="placeholder"
+        :create-option="content.allowCreation"
     >
         <template v-slot:tag="{ option, handleTagRemove }">
-            <div class="multiselect-tag" :style="option.style">
+            <div class="multiselect-tag" :style="option.style || defaultTagStyle">
                 {{ option.label }}
                 <span
                     v-if="!content.disabled"
@@ -28,7 +29,7 @@
             </div>
         </template>
         <template v-if="content.mode === 'tags'" v-slot:option="{ option }">
-            <span class="multiselect-tag" :style="option.style">{{ option.label }}</span>
+            <span class="multiselect-tag" :style="option.style || defaultTagStyle">{{ option.label }}</span>
         </template>
     </Multiselect>
 </template>
@@ -62,6 +63,12 @@ export default {
     computed: {
         placeholder() {
             return wwLib.wwManagerLang.getText(this.content.placeholder)
+        },
+        defaultTagStyle() {
+            return {
+                backgroundColor: this.content.tagsDefaultBgColor,
+                color: this.content.tagsDefaultTextColor,
+            }
         },
         isEditing() {
             /* wwEditor:start */
@@ -101,8 +108,7 @@ export default {
                           label: option,
                           value: option,
                           style: {
-                              backgroundColor: this.content.tagsDefaultBgColor,
-                              color: this.content.tagsDefaultTextColor,
+                              ...this.defaultTagStyle
                           },
                       };
             });
