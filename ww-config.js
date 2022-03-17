@@ -27,6 +27,21 @@ export default {
             states: true,
             defaultValue: '16px',
         },
+        maxDropdownHeight: {
+            label: {
+                en: 'Max dropdown height',
+                fr: 'Hauteur maximum du menu',
+            },
+            type: 'Length',
+            options: {
+                unitChoices: [
+                    { value: 'px', label: 'px', min: 1, max: 500 },
+                ],
+            },
+            responsive: true,
+            states: true,
+            defaultValue: '150px',
+        },
         tagsDefaultBgColor: {
             label: {
                 en: 'Default bg color (tags)',
@@ -42,6 +57,17 @@ export default {
             },
             type: 'Color',
             defaultValue: '#FFFFFF'
+        },
+        placeholder: {
+            label: {
+                en: 'Placeholder',
+                fr: 'Texte par défaut'
+            },
+            type: 'Text',
+            defaultValue: '',
+            section: 'settings',
+            bindable: true,
+            multiLang: true
         },
         disabled: {
             label: {
@@ -65,6 +91,16 @@ export default {
             },
             section: 'settings',
             bindable: true
+        },
+        allowCreation: {
+            label: {
+                en: 'Allow to create option',
+                fr: 'Permettre la création d\'option'
+            },
+            type: 'OnOff',
+            defaultValue: false,
+            section: 'settings',
+            bindable: true,
         },
         hideSelected: {
             label: {
@@ -160,17 +196,13 @@ export default {
                 en: 'Label field',
                 fr: 'Label field',
             },
-            type: 'TextSelect',
+            type: 'ObjectPropertyPath',
             options: content => {
-                const properties = [{ value: null, label: { en: 'Select a property' } }];
-
-                if (content.options && typeof content.options[0] === 'object') {
-                    properties.push(
-                        ...Object.keys(content.options[0]).map(key => ({ value: key, label: { en: key } }))
-                    );
+                if (!content.options.length || typeof content.options[0] !== 'object') {
+                    return null
                 }
-
-                return { options: properties };
+                
+                return { object: content.options[0] }
             },
             defaultValue: null,
             section: 'settings',
@@ -181,17 +213,13 @@ export default {
                 en: 'Value field',
                 fr: 'Value field',
             },
-            type: 'TextSelect',
+            type: 'ObjectPropertyPath',
             options: content => {
-                const properties = [{ value: null, label: { en: 'Select a property' } }];
-
-                if (content.options && typeof content.options[0] === 'object') {
-                    properties.push(
-                        ...Object.keys(content.options[0]).map(key => ({ value: key, label: { en: key } }))
-                    );
+                if (!content.options.length || typeof content.options[0] !== 'object') {
+                    return null
                 }
-
-                return { options: properties };
+                
+                return { object: content.options[0] }
             },
             defaultValue: null,
             section: 'settings',
@@ -202,17 +230,13 @@ export default {
                 en: 'Bg color field',
                 fr: 'Bg color field',
             },
-            type: 'TextSelect',
+            type: 'ObjectPropertyPath',
             options: content => {
-                const properties = [{ value: null, label: { en: 'Select a property' } }];
-
-                if (content.options && typeof content.options[0] === 'object') {
-                    properties.push(
-                        ...Object.keys(content.options[0]).map(key => ({ value: key, label: { en: key } }))
-                    );
+                if (!content.options.length || typeof content.options[0] !== 'object') {
+                    return null
                 }
-
-                return { options: properties };
+                
+                return { object: content.options[0] }
             },
             defaultValue: null,
             section: 'settings',
@@ -223,17 +247,13 @@ export default {
                 en: 'Text color field',
                 fr: 'Text color field',
             },
-            type: 'TextSelect',
+            type: 'ObjectPropertyPath',
             options: content => {
-                const properties = [{ value: null, label: { en: 'Select a property' } }];
-
-                if (content.options && typeof content.options[0] === 'object') {
-                    properties.push(
-                        ...Object.keys(content.options[0]).map(key => ({ value: key, label: { en: key } }))
-                    );
+                if (!content.options.length || typeof content.options[0] !== 'object') {
+                    return null
                 }
-
-                return { options: properties };
+                
+                return { object: content.options[0] }
             },
             defaultValue: null,
             section: 'settings',
