@@ -125,7 +125,7 @@ export default {
         'wwEditorState.boundProps.options'(isBind) {
             if (!isBind)
                 this.$emit('update:content:effect', {
-                    displayField: null,
+                    labelField: null,
                     valueField: null,
                     bgColorField: null,
                     textColorField: null,
