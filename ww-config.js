@@ -26,6 +26,21 @@ export default {
             states: true,
             defaultValue: '16px',
         },
+        maxDropdownHeight: {
+            label: {
+                en: 'Max dropdown height',
+                fr: 'Hauteur maximum du menu',
+            },
+            type: 'Length',
+            options: {
+                unitChoices: [
+                    { value: 'px', label: 'px', min: 1, max: 500 },
+                ],
+            },
+            responsive: true,
+            states: true,
+            defaultValue: '150px',
+        },
         tagsDefaultBgColor: {
             label: {
                 en: 'Default bg color (tags)',
@@ -41,6 +56,17 @@ export default {
             },
             type: 'Color',
             defaultValue: '#FFFFFF'
+        },
+        placeholder: {
+            label: {
+                en: 'Placeholder',
+                fr: 'Texte par défaut'
+            },
+            type: 'Text',
+            defaultValue: '',
+            section: 'settings',
+            bindable: true,
+            multiLang: true
         },
         disabled: {
             label: {
@@ -64,6 +90,16 @@ export default {
             },
             section: 'settings',
             bindable: true
+        },
+        allowCreation: {
+            label: {
+                en: 'Allow to create option',
+                fr: 'Permettre la création d\'option'
+            },
+            type: 'OnOff',
+            defaultValue: false,
+            section: 'settings',
+            bindable: true,
         },
         hideSelected: {
             label: {

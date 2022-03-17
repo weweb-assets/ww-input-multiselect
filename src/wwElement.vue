@@ -4,6 +4,7 @@
         class="input-multiselect"
         :style="{
             '--font-size': content.fontSize || '16px',
+            '--ms-max-height': content.maxDropdownHeight || '10rem'
         }"
         :class="{ editing: isEditing }"
         :options="selectOptions"
@@ -12,9 +13,11 @@
         :mode="content.mode"
         :disabled="content.disabled"
         :hideSelected="content.hideSelected"
+        :placeholder="placeholder"
+        :create-option="content.allowCreation"
     >
         <template v-slot:tag="{ option, handleTagRemove }">
-            <div class="multiselect-tag" :style="option.style">
+            <div class="multiselect-tag" :style="option.style || defaultTagStyle">
                 {{ option.label }}
                 <span
                     v-if="!content.disabled"
@@ -26,7 +29,7 @@
             </div>
         </template>
         <template v-if="content.mode === 'tags'" v-slot:option="{ option }">
-            <span class="multiselect-tag" :style="option.style">{{ option.label }}</span>
+            <span class="multiselect-tag" :style="option.style || defaultTagStyle">{{ option.label }}</span>
         </template>
     </Multiselect>
 </template>
@@ -58,6 +61,15 @@ export default {
         return { currentSelection, setCurrentSelection };
     },
     computed: {
+        placeholder() {
+            return wwLib.wwManagerLang.getText(this.content.placeholder)
+        },
+        defaultTagStyle() {
+            return {
+                backgroundColor: this.content.tagsDefaultBgColor,
+                color: this.content.tagsDefaultTextColor,
+            }
+        },
         isEditing() {
             /* wwEditor:start */
             return this.wwEditorState.editMode === wwLib.wwEditorHelper.EDIT_MODES.EDITION;
@@ -84,7 +96,7 @@ export default {
             return this.content.options.map(option => {
                 return typeof option === 'object'
                     ? {
-                          label: wwLib.wwManagerLang.getText(wwLib.resolveObjectPropertyPath(option, labelField)),
+                          label: wwLib.wwManagerLang.getText(wwLib.resolveObjectPropertyPath(option, labelField) || ''),
                           value: wwLib.resolveObjectPropertyPath(option, valueField),
                           style: {
                               backgroundColor: wwLib.resolveObjectPropertyPath(option, bgColorField) || this.content.tagsDefaultBgColor,
@@ -96,8 +108,7 @@ export default {
                           label: option,
                           value: option,
                           style: {
-                              backgroundColor: this.content.tagsDefaultBgColor,
-                              color: this.content.tagsDefaultTextColor,
+                              ...this.defaultTagStyle
                           },
                       };
             });
@@ -161,5 +172,8 @@ export default {
 .multiselect-caret {
     margin-top: 10px;
     margin-bottom: 10px;
+}
+.multiselect-dropdown {
+    max-height: unset;
 }
 </style>
