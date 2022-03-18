@@ -53,11 +53,12 @@ export default {
         /* wwEditor:end */
     },
     setup(props) {
-        const { value: currentSelection, setValue: setCurrentSelection } = wwLib.wwVariable.useComponentVariable(
-            props.uid,
-            'currentSelection',
-            Array.isArray(props.content.initialValue) ? props.content.initialValue : []
-        );
+        const { value: currentSelection, setValue: setCurrentSelection } = wwLib.wwVariable.useComponentVariable({
+            uid: props.uid,
+            name: 'currentSelection',
+            defaultValue: props.content.initialValue,
+            sanitizer: value => Array.isArray(value) ? value : []
+        });
         return { currentSelection, setCurrentSelection };
     },
     data: () => ({
