@@ -62,7 +62,7 @@ export default {
     },
     computed: {
         placeholder() {
-            return wwLib.wwManagerLang.getText(this.content.placeholder)
+            return wwLib.wwLang.getText(this.content.placeholder)
         },
         defaultTagStyle() {
             return {
@@ -96,7 +96,7 @@ export default {
             return this.content.options.map(option => {
                 return typeof option === 'object'
                     ? {
-                          label: wwLib.wwManagerLang.getText(wwLib.resolveObjectPropertyPath(option, labelField) || ''),
+                          label: wwLib.wwLang.getText(wwLib.resolveObjectPropertyPath(option, labelField) || ''),
                           value: wwLib.resolveObjectPropertyPath(option, valueField),
                           style: {
                               backgroundColor: wwLib.resolveObjectPropertyPath(option, bgColorField) || this.content.tagsDefaultBgColor,
