@@ -93,7 +93,7 @@ export default {
 
             if (!Array.isArray(this.content.options)) return [];
 
-            return this.content.options.map(option => {
+            const baseOptions = this.content.options.map(option => {
                 return typeof option === 'object'
                     ? {
                           label: wwLib.wwLang.getText(wwLib.resolveObjectPropertyPath(option, labelField) || ''),
@@ -112,17 +112,24 @@ export default {
                           },
                       };
             });
+            const flatOptions = baseOptions.map(option => option.value)
+            return [
+                ...baseOptions, 
+                // add custom options not already included
+                ...this.internalValue.filter(selection => !flatOptions.includes(selection))
+            ]
         },
     },
     watch: {
         'content.initialValue'(value) {
             this.setCurrentSelection(value);
         },
-        currentSelection(value, oldValue) {
+        currentSelection(value) {
             this.$emit('trigger-event', { name: 'change', event: { value } });
         },
         /* wwEditor:start */
         'wwEditorState.boundProps.options'(isBind) {
+            this.setCurrentSelection([])
             if (!isBind)
                 this.$emit('update:content:effect', {
                     labelField: null,
@@ -130,10 +137,6 @@ export default {
                     bgColorField: null,
                     textColorField: null,
                 });
-        },
-        selectOptions() {
-            // multi select breaks when selection and available options mismatch
-            this.setCurrentSelection([]);
         },
         /* wwEditor:end */
     },
