@@ -53,13 +53,13 @@ export default {
         /* wwEditor:end */
     },
     setup(props) {
-        const { value: currentSelection, setValue: setCurrentSelection } = wwLib.wwVariable.useComponentVariable({
+        const { value: variableValue, setValue: setVariableValue } = wwLib.wwVariable.useComponentVariable({
             uid: props.uid,
             name: 'currentSelection',
             defaultValue: props.content.initialValue,
             sanitizer: value => Array.isArray(value) ? value : []
         });
-        return { currentSelection, setCurrentSelection };
+        return { variableValue, setVariableValue };
     },
     data: () => ({
         options: [],
@@ -71,10 +71,13 @@ export default {
     computed: {
         internalValue: {
             get() {
-                return this.currentSelection
+                return this.variableValue
             },
             set(value) {
-                this.setCurrentSelection(value)
+                const { newValue, hasChanged } = this.setVariableValue(value)
+                if (hasChanged) {
+                    this.$emit('trigger-event', { name: 'change', event: { value: newValue } });
+                }
             }
         },
         placeholder() {
@@ -100,10 +103,6 @@ export default {
         },
         'content.options'() {
             this.init()
-        },
-        currentSelection(value) {
-
-            this.$emit('trigger-event', { name: 'change', event: { value } });
         },
         /* wwEditor:start */
         'wwEditorState.boundProps.options'(isBind) {
