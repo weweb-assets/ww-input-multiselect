@@ -127,7 +127,7 @@ export default {
 
             this.options.push(...initialOptions.map(option => this.formatOption(option)))
             // add initial values as custom options if not already included
-            this.options.push(...initialValue.filter(selection => !initialOptions.map(option => option.value).includes(selection)))
+            this.options.push(...initialValue.filter(selection => !this.options.map(option => option.value).includes(selection)))
 
             // await to avoid mismatch (multiselect not rendering custom tags)
             await this.$nextTick()
