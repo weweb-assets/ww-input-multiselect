@@ -7,7 +7,7 @@
             '--ms-max-height': content.maxDropdownHeight || '10rem'
         }"
         :class="{ editing: isEditing }"
-        :options="selectOptions"
+        :options="options"
         :close-on-select="content.closeOnSelect"
         :searchable="content.searchable"
         :mode="content.mode"
@@ -56,11 +56,26 @@ export default {
         const { value: currentSelection, setValue: setCurrentSelection } = wwLib.wwVariable.useComponentVariable(
             props.uid,
             'currentSelection',
-            props.content.initialValue
+            Array.isArray(props.content.initialValue) ? props.content.initialValue : []
         );
         return { currentSelection, setCurrentSelection };
     },
+    data: () => ({
+        options: [],
+        selection: []
+    }),
+    created() {
+        this.init()
+    },
     computed: {
+        internalValue: {
+            get() {
+                return this.currentSelection
+            },
+            set(value) {
+                this.setCurrentSelection(value)
+            }
+        },
         placeholder() {
             return wwLib.wwLang.getText(this.content.placeholder)
         },
@@ -77,59 +92,20 @@ export default {
             // eslint-disable-next-line no-unreachable
             return false;
         },
-        internalValue: {
-            get() {
-                return Array.isArray(this.currentSelection) ? this.currentSelection : [];
-            },
-            set(value) {
-                this.setCurrentSelection(value);
-            },
-        },
-        selectOptions() {
-            const labelField = this.content.labelField || DEFAULT_LABEL_FIELD;
-            const valueField = this.content.valueField || DEFAULT_VALUE_FIELD;
-            const bgColorField = this.content.bgColorField || DEFAULT_BG_COLOR_FIELD;
-            const textColorField = this.content.textColorField || DEFAULT_TEXT_COLOR_FIELD;
-
-            if (!Array.isArray(this.content.options)) return [];
-
-            const baseOptions = this.content.options.map(option => {
-                return typeof option === 'object'
-                    ? {
-                          label: wwLib.wwLang.getText(wwLib.resolveObjectPropertyPath(option, labelField) || ''),
-                          value: wwLib.resolveObjectPropertyPath(option, valueField),
-                          style: {
-                              backgroundColor: wwLib.resolveObjectPropertyPath(option, bgColorField) || this.content.tagsDefaultBgColor,
-                              color: wwLib.resolveObjectPropertyPath(option, textColorField) || this.content.tagsDefaultTextColor,
-                          },
-                      }
-                    : {
-                          // to allow flat array
-                          label: option,
-                          value: option,
-                          style: {
-                              ...this.defaultTagStyle
-                          },
-                      };
-            });
-            const flatOptions = baseOptions.map(option => option.value)
-            return [
-                ...baseOptions, 
-                // add custom options not already included
-                ...this.internalValue.filter(selection => !flatOptions.includes(selection))
-            ]
-        },
     },
     watch: {
-        'content.initialValue'(value) {
-            this.setCurrentSelection(value);
+        'content.initialValue'() {
+            this.init()
+        },
+        'content.options'() {
+            this.init()
         },
         currentSelection(value) {
+
             this.$emit('trigger-event', { name: 'change', event: { value } });
         },
         /* wwEditor:start */
         'wwEditorState.boundProps.options'(isBind) {
-            this.setCurrentSelection([])
             if (!isBind)
                 this.$emit('update:content:effect', {
                     labelField: null,
@@ -140,6 +116,44 @@ export default {
         },
         /* wwEditor:end */
     },
+    methods: {
+        async init() {
+            // reset selection and option to avoid mismatch
+            this.internalValue = []
+            this.options = []
+
+            const initialOptions = Array.isArray(this.content.options) ? this.content.options : []
+            const initialValue = Array.isArray(this.content.initialValue) ? this.content.initialValue : []
+
+            this.options.push(...initialOptions.map(option => this.formatOption(option)))
+            // add initial values as custom options if not already included
+            this.options.push(...initialValue.filter(selection => !initialOptions.map(option => option.value).includes(selection)))
+
+            // await to avoid mismatch (multiselect not rendering custom tags)
+            await this.$nextTick()
+
+            this.internalValue = [...initialValue]
+        },
+        formatOption(option) {
+            const labelField = this.content.labelField || DEFAULT_LABEL_FIELD;
+            const valueField = this.content.valueField || DEFAULT_VALUE_FIELD;
+            const bgColorField = this.content.bgColorField || DEFAULT_BG_COLOR_FIELD;
+            const textColorField = this.content.textColorField || DEFAULT_TEXT_COLOR_FIELD;
+
+            return typeof option === 'object' ?
+                {
+                    label: wwLib.wwLang.getText(wwLib.resolveObjectPropertyPath(option, labelField) || ''),
+                    value: wwLib.resolveObjectPropertyPath(option, valueField),
+                    style: {
+                        backgroundColor: wwLib.resolveObjectPropertyPath(option, bgColorField) || this.content.tagsDefaultBgColor,
+                        color: wwLib.resolveObjectPropertyPath(option, textColorField) || this.content.tagsDefaultTextColor,
+                    },
+                } : { // to allow flat array / option
+                    label: option,
+                    value: option
+                } 
+        },
+    }
 };
 </script>
 
