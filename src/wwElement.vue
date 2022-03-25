@@ -53,11 +53,12 @@ export default {
         /* wwEditor:end */
     },
     setup(props) {
-        const { value: currentSelection, setValue: setCurrentSelection } = wwLib.wwVariable.useComponentVariable(
-            props.uid,
-            'currentSelection',
-            Array.isArray(props.content.initialValue) ? props.content.initialValue : []
-        );
+        const { value: currentSelection, setValue: setCurrentSelection } = wwLib.wwVariable.useComponentVariable({
+            uid: props.uid,
+            name: 'currentSelection',
+            type: 'array',
+            defaultValue: Array.isArray(props.content.initialValue) ? props.content.initialValue : []
+        });
         return { currentSelection, setCurrentSelection };
     },
     data: () => ({
@@ -101,7 +102,6 @@ export default {
             this.init()
         },
         currentSelection(value) {
-
             this.$emit('trigger-event', { name: 'change', event: { value } });
         },
         /* wwEditor:start */
