@@ -6,6 +6,9 @@ export default {
         },
         icon: 'fontawesome/solid/chevron-circle-down'
     },
+    options: {
+        noBorderRadiusClipping: true,
+    },
     triggerEvents: [
         { name: 'change', label: { en: 'On change' }, event: { value: [] } },
     ],
