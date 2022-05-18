@@ -4,7 +4,7 @@
         class="input-multiselect"
         :style="{
             '--font-size': content.fontSize || '16px',
-            '--ms-max-height': content.maxDropdownHeight || '10rem'
+            '--ms-max-height': content.maxDropdownHeight || '10rem',
         }"
         :class="{ editing: isEditing }"
         :options="options"
@@ -57,16 +57,16 @@ export default {
             uid: props.uid,
             name: 'currentSelection',
             type: 'array',
-            defaultValue: Array.isArray(props.content.initialValue) ? props.content.initialValue : []
+            defaultValue: Array.isArray(props.content.initialValue) ? props.content.initialValue : [],
         });
         return { currentSelection, setCurrentSelection };
     },
     data: () => ({
         options: [],
-        selection: []
+        selection: [],
     }),
     created() {
-        this.init()
+        this.init();
     },
     computed: {
         internalValue: {
@@ -75,25 +75,25 @@ export default {
                     // we need to make available custom options before using them
                     for (const selection of this.currentSelection) {
                         if (!this.options.some(option => option.value === selection)) {
-                            this.options.push(this.formatOption(selection))  
+                            this.options.push(this.formatOption(selection));
                         }
                     }
                 }
 
-                return this.currentSelection
+                return this.currentSelection;
             },
             set(value) {
-                this.setCurrentSelection(value)
-            }
+                this.setCurrentSelection(value);
+            },
         },
         placeholder() {
-            return wwLib.wwLang.getText(this.content.placeholder)
+            return wwLib.wwLang.getText(this.content.placeholder);
         },
         defaultTagStyle() {
             return {
                 backgroundColor: this.content.tagsDefaultBgColor,
                 color: this.content.tagsDefaultTextColor,
-            }
+            };
         },
         isEditing() {
             /* wwEditor:start */
@@ -105,13 +105,13 @@ export default {
     },
     watch: {
         'content.initialValue'() {
-            this.init()
+            this.init();
         },
         'content.options'() {
-            this.init()
+            this.init();
         },
         currentSelection(value) {
-            this.$emit('trigger-event', { name: 'change', event: { value } });
+            this.$emit('trigger-event', { name: 'change', event: { domEvent: {}, value } });
         },
         /* wwEditor:start */
         'wwEditorState.boundProps.options'(isBind) {
@@ -128,20 +128,22 @@ export default {
     methods: {
         async init() {
             // reset selection and option to avoid mismatch
-            this.internalValue = []
-            this.options = []
+            this.internalValue = [];
+            this.options = [];
 
-            const initialOptions = Array.isArray(this.content.options) ? this.content.options : []
-            const initialValue = Array.isArray(this.content.initialValue) ? this.content.initialValue : []
+            const initialOptions = Array.isArray(this.content.options) ? this.content.options : [];
+            const initialValue = Array.isArray(this.content.initialValue) ? this.content.initialValue : [];
 
-            this.options.push(...initialOptions.map(option => this.formatOption(option)))
+            this.options.push(...initialOptions.map(option => this.formatOption(option)));
             // add initial values as custom options if not already included
-            this.options.push(...initialValue.filter(selection => !this.options.map(option => option.value).includes(selection)))
+            this.options.push(
+                ...initialValue.filter(selection => !this.options.map(option => option.value).includes(selection))
+            );
 
             // await to avoid mismatch (multiselect not rendering custom tags)
-            await this.$nextTick()
+            await this.$nextTick();
 
-            this.internalValue = [...initialValue]
+            this.internalValue = [...initialValue];
         },
         formatOption(option) {
             const labelField = this.content.labelField || DEFAULT_LABEL_FIELD;
@@ -149,20 +151,25 @@ export default {
             const bgColorField = this.content.bgColorField || DEFAULT_BG_COLOR_FIELD;
             const textColorField = this.content.textColorField || DEFAULT_TEXT_COLOR_FIELD;
 
-            return typeof option === 'object' ?
-                {
-                    label: wwLib.wwLang.getText(wwLib.resolveObjectPropertyPath(option, labelField) || ''),
-                    value: wwLib.resolveObjectPropertyPath(option, valueField),
-                    style: {
-                        backgroundColor: wwLib.resolveObjectPropertyPath(option, bgColorField) || this.content.tagsDefaultBgColor,
-                        color: wwLib.resolveObjectPropertyPath(option, textColorField) || this.content.tagsDefaultTextColor,
-                    },
-                } : { // to allow flat array / option
-                    label: option,
-                    value: option
-                } 
+            return typeof option === 'object'
+                ? {
+                      label: wwLib.wwLang.getText(wwLib.resolveObjectPropertyPath(option, labelField) || ''),
+                      value: wwLib.resolveObjectPropertyPath(option, valueField),
+                      style: {
+                          backgroundColor:
+                              wwLib.resolveObjectPropertyPath(option, bgColorField) || this.content.tagsDefaultBgColor,
+                          color:
+                              wwLib.resolveObjectPropertyPath(option, textColorField) ||
+                              this.content.tagsDefaultTextColor,
+                      },
+                  }
+                : {
+                      // to allow flat array / option
+                      label: option,
+                      value: option,
+                  };
         },
-    }
+    },
 };
 </script>
 
