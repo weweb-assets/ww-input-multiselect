@@ -6,7 +6,6 @@ export default {
         },
         icon: 'fontawesome/solid/chevron-circle-down',
         customStylePropertiesOrder: [
-            ['tagsDefaultBgColor'],
             ['tagsDefaultBgColor', 'tagsDefaultTextColor'],
             [
                 'dropdownBackgroundColor',

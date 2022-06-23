@@ -209,6 +209,13 @@ export default {
                       // to allow flat array / option
                       label: option,
                       value: option,
+                      style: {
+                          backgroundColor:
+                              wwLib.resolveObjectPropertyPath(option, bgColorField) || this.content.tagsDefaultBgColor,
+                          color:
+                              wwLib.resolveObjectPropertyPath(option, textColorField) ||
+                              this.content.tagsDefaultTextColor,
+                      },
                   };
         },
         handleOpening(value) {
