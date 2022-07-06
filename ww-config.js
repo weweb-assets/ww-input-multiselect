@@ -1,104 +1,86 @@
 export default {
     editor: {
         label: {
-            en: "Input multiselect",
-            fr: "Champs sélection multiple",
+            en: 'Input multiselect',
+            fr: 'Champs sélection multiple',
         },
-        icon: 'fontawesome/solid/chevron-circle-down'
+        icon: 'fontawesome/solid/chevron-circle-down',
+        customStylePropertiesOrder: [
+            ['tagsDefaultBgColor', 'tagsDefaultTextColor'],
+            [
+                'dropdownBackgroundColor',
+                'optionBackgroundPointed',
+                'dropdownBorderWidth',
+                'dropdownBorderColor',
+                'dropdownBorderRadius',
+                'dropdownMaxHeight',
+            ],
+        ],
+        customSettingsPropertiesOrder: [
+            'isOpen',
+            ['initialValue', 'options'],
+            ['placeholder'],
+            ['disabled', 'mode', 'allowCreation', 'hideSelected', 'searchable', 'closeOnSelect'],
+            ['clearIcon', 'caretIcon'],
+            ['hintFields', 'labelField', 'valueField', 'textColorField', 'bgColorField'],
+        ],
     },
     options: {
         noBorderRadiusClipping: true,
     },
-    triggerEvents: [
-        { name: 'change', label: { en: 'On change' }, event: { value: [] } },
-    ],
+    triggerEvents: [{ name: 'change', label: { en: 'On change' }, event: { value: [] } }],
     properties: {
-        fontSize: {
+        isOpen: {
+            type: 'OnOff',
             label: {
-                en: 'Size',
-                fr: 'Taille',
+                en: 'Is open?',
+                fr: 'Is open?',
             },
-            type: 'Length',
-            options: {
-                unitChoices: [
-                    { value: 'px', label: 'px', min: 1, max: 100 },
-                    { value: 'em', label: 'em', min: 1, max: 10, digits: 2 },
-                    { value: 'rem', label: 'rem', min: 1, max: 10, digits: 2 },
-                ],
-            },
-            responsive: true,
-            states: true,
-            defaultValue: '16px',
-        },
-        maxDropdownHeight: {
-            label: {
-                en: 'Max dropdown height',
-                fr: 'Hauteur maximum du menu',
-            },
-            type: 'Length',
-            options: {
-                unitChoices: [
-                    { value: 'px', label: 'px', min: 1, max: 500 },
-                ],
-            },
-            responsive: true,
-            states: true,
-            defaultValue: '150px',
-        },
-        tagsDefaultBgColor: {
-            label: {
-                en: 'Default bg color (tags)',
-                fr: 'Couleur de fond des tags'
-            },
-            type: 'Color',
-            defaultValue: '#099AF2'
-        },
-        tagsDefaultTextColor: {
-            label: {
-                en: 'Default text color (tags)',
-                fr: 'Couleur du texte des tags'
-            },
-            type: 'Color',
-            defaultValue: '#FFFFFF'
+            defaultValue: false,
+            bindable: true,
+            section: 'settings',
         },
         placeholder: {
             label: {
                 en: 'Placeholder',
-                fr: 'Texte par défaut'
+                fr: 'Texte par défaut',
             },
             type: 'Text',
-            defaultValue: '',
+            defaultValue: { en: 'placeholder' },
             section: 'settings',
             bindable: true,
-            multiLang: true
+            multiLang: true,
         },
         disabled: {
             label: {
                 en: 'Disabled',
-                fr: 'Désactivé'
+                fr: 'Désactivé',
             },
             type: 'OnOff',
             defaultValue: false,
             section: 'settings',
-            bindable: true
+            bindable: true,
         },
         mode: {
             label: {
                 en: 'Mode',
-                fr: 'Mode'
+                fr: 'Mode',
             },
             type: 'TextSelect',
             defaultValue: 'tags',
             options: {
-                options: [{ label: 'Tags', value: 'tags' }, { label: 'Counter', value: 'multiple' }],
+                options: [
+                    { label: 'Tags', value: 'tags' },
+                    { label: 'Counter', value: 'multiple' },
+                ],
             },
             section: 'settings',
-            bindable: true
+            bindable: true,
         },
         allowCreation: {
             label: {
                 en: 'Allow to create option',
-                fr: 'Permettre la création d\'option'
+                fr: "Permettre la création d'option",
             },
             type: 'OnOff',
             defaultValue: false,
@@ -108,7 +90,7 @@ export default {
         hideSelected: {
             label: {
                 en: 'Hide selected elements',
-                fr: 'Cacher les éléments sélectionnés'
+                fr: 'Cacher les éléments sélectionnés',
             },
             type: 'OnOff',
             defaultValue: true,
@@ -117,7 +99,7 @@ export default {
         searchable: {
             label: {
                 en: 'Searchable',
-                fr: 'Recherche'
+                fr: 'Recherche',
             },
             type: 'OnOff',
             defaultValue: true,
@@ -126,16 +108,32 @@ export default {
         closeOnSelect: {
             label: {
                 en: 'Close on select',
-                fr: 'Ferme à la sélection'
+                fr: 'Ferme à la sélection',
             },
             type: 'OnOff',
             defaultValue: false,
             section: 'settings',
         },
+        clearIcon: {
+            label: {
+                en: 'Clear icon',
+            },
+            type: 'OnOff',
+            defaultValue: false,
+            section: 'settings',
+        },
+        caretIcon: {
+            label: {
+                en: 'Caret icon',
+            },
+            type: 'OnOff',
+            defaultValue: true,
+            section: 'settings',
+        },
         initialValue: {
             label: {
                 en: 'Initial value',
-                fr: 'Valeur initiale'
+                fr: 'Valeur initiale',
             },
             type: 'Array',
             bindable: true,
@@ -148,7 +146,7 @@ export default {
             options: {
                 item: {
                     type: 'Object',
-                    defaultValue: { label: '', value: '', bgColor: null, textColor: null },
+                    defaultValue: { label: 'New option', value: '' },
                     options: {
                         item: {
                             label: {
@@ -162,21 +160,21 @@ export default {
                                 type: 'Text',
                                 options: { placeholder: 'Value' },
                             },
+                            textColor: {
+                                label: { en: 'Color' },
+                                type: 'Color',
+                            },
                             bgColor: {
                                 label: { en: 'Background color' },
                                 type: 'Color',
                             },
-                            textColor: {
-                                label: { en: 'Text color' },
-                                type: 'Color',
-                            },
-                        }
+                        },
                     },
                 },
             },
             defaultValue: [
-                { value: 'option', label: { en: 'option - 1' }, bgColor: null, textColor: null },
-                { value: 'option2', label: { en: 'option - 2' }, bgColor: null, textColor: null },
+                { value: 'option', label: { en: 'option - 1' }, bgColor: '#2196F3', textColor: '#FFFFFF' },
+                { value: 'option2', label: { en: 'option - 2' }, bgColor: '#2196F3', textColor: '#FFFFFF' },
             ],
             bindable: true,
         },
@@ -202,10 +200,10 @@ export default {
             type: 'ObjectPropertyPath',
             options: content => {
                 if (!content.options.length || typeof content.options[0] !== 'object') {
-                    return null
+                    return null;
                 }
-                
-                return { object: content.options[0] }
+
+                return { object: content.options[0] };
             },
             defaultValue: null,
             section: 'settings',
@@ -219,10 +217,10 @@ export default {
             type: 'ObjectPropertyPath',
             options: content => {
                 if (!content.options.length || typeof content.options[0] !== 'object') {
-                    return null
+                    return null;
                 }
-                
-                return { object: content.options[0] }
+
+                return { object: content.options[0] };
             },
             defaultValue: null,
             section: 'settings',
@@ -230,16 +228,16 @@ export default {
         bgColorField: {
             hidden: (content, sidepanelContent, boundProps) => !boundProps.options || !content.options,
             label: {
-                en: 'Bg color field',
-                fr: 'Bg color field',
+                en: 'Background color field',
+                fr: 'Background color field',
             },
             type: 'ObjectPropertyPath',
             options: content => {
                 if (!content.options.length || typeof content.options[0] !== 'object') {
-                    return null
+                    return null;
                 }
-                
-                return { object: content.options[0] }
+
+                return { object: content.options[0] };
             },
             defaultValue: null,
             section: 'settings',
@@ -253,13 +251,183 @@ export default {
             type: 'ObjectPropertyPath',
             options: content => {
                 if (!content.options.length || typeof content.options[0] !== 'object') {
-                    return null
+                    return null;
                 }
-                
-                return { object: content.options[0] }
+
+                return { object: content.options[0] };
             },
             defaultValue: null,
             section: 'settings',
         },
-    }
+        placeholderElement: {
+            hidden: true,
+            defaultValue: {
+                isWwObject: true,
+                type: 'ww-text',
+                state: {
+                    name: 'Placeholder text',
+                    style: {
+                        default: {
+                            color: '#D1D5DB',
+                            padding: '0px 0px 0px 12px',
+                        },
+                    },
+                },
+            },
+            navigator: {
+                group: 'Multiselect',
+            },
+        },
+        tagElementSelected: {
+            hidden: true,
+            defaultValue: {
+                isWwObject: true,
+                type: 'ww-text',
+                state: {
+                    name: 'Text - selected',
+                    style: {
+                        default: {
+                            padding: '4px',
+                            borderRadius: '4px',
+                        },
+                    },
+                },
+            },
+            navigator: {
+                group: 'Option',
+            },
+        },
+        tagElement: {
+            hidden: true,
+            defaultValue: { isWwObject: true, type: 'ww-text', state: { name: 'Text' } },
+            navigator: {
+                group: 'Option',
+            },
+        },
+        removeTagIconElement: {
+            hidden: true,
+            defaultValue: {
+                isWwObject: true,
+                type: 'ww-icon',
+                state: {
+                    name: 'Delete icon',
+                    style: {
+                        default: {
+                            padding: '4px',
+                            borderRadius: '4px',
+                        },
+                    },
+                },
+                content: { default: { icon: 'wwi wwi-cross', color: '#FFFFFF', fontSize: '16' } },
+            },
+            navigator: {
+                group: 'Option',
+            },
+        },
+        caretIconElement: {
+            hidden: true,
+            defaultValue: {
+                isWwObject: true,
+                type: 'ww-icon',
+                state: {
+                    name: 'Caret icon',
+                    style: {
+                        default: {
+                            padding: '12px',
+                        },
+                    },
+                },
+                content: { default: { icon: 'fas fa-caret-down', color: '#9CA3AF', fontSize: '16' } },
+            },
+            navigator: {
+                group: 'Multiselect',
+            },
+        },
+        clearIconElement: {
+            hidden: true,
+            defaultValue: {
+                isWwObject: true,
+                type: 'ww-icon',
+                state: {
+                    name: 'Clear icon',
+                    style: {
+                        default: {
+                            padding: '12px',
+                        },
+                    },
+                },
+                content: { default: { icon: 'wwi wwi-cross', color: '#9CA3AF', fontSize: '14' } },
+            },
+            navigator: {
+                group: 'Multiselect',
+            },
+        },
+        tagsDefaultBgColor: {
+            label: {
+                en: 'Default option background',
+            },
+            type: 'Color',
+            defaultValue: '#099AF2',
+        },
+        tagsDefaultTextColor: {
+            label: {
+                en: 'Default option text color',
+            },
+            type: 'Color',
+            defaultValue: '#FFFFFF',
+        },
+        optionBackgroundPointed: {
+            label: {
+                en: 'Dropdown option hover color',
+            },
+            type: 'Color',
+            defaultValue: '#d1d5db',
+        },
+        dropdownBackgroundColor: {
+            label: {
+                en: 'Dropdown background color',
+            },
+            type: 'Color',
+            defaultValue: '#ffffff',
+        },
+        dropdownBorderWidth: {
+            type: 'Length',
+            label: {
+                en: 'Dropdown border width',
+            },
+            options: {
+                unitChoices: [{ value: 'px', label: 'px', min: 1, max: 100 }],
+            },
+            defaultValue: '1px',
+        },
+        dropdownBorderColor: {
+            label: {
+                en: 'Dropdown background color',
+            },
+            type: 'Color',
+            defaultValue: '#d1d5db',
+        },
+        dropdownBorderRadius: {
+            type: 'Length',
+            label: {
+                en: 'Dropdown border radius',
+            },
+            options: {
+                unitChoices: [{ value: 'px', label: 'px', min: 1, max: 100 }],
+            },
+            defaultValue: '4px',
+        },
+        dropdownMaxHeight: {
+            label: {
+                en: 'Dropdown max height',
+            },
+            type: 'Length',
+            options: {
+                unitChoices: [{ value: 'px', label: 'px', min: 1, max: 500 }],
+            },
+            responsive: true,
+            states: true,
+            defaultValue: '150px',
+        },
+    },
 };

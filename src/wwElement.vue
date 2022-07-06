@@ -1,11 +1,9 @@
 <template>
     <Multiselect
+        ref="multiselect"
         v-model="internalValue"
         class="input-multiselect"
-        :style="{
-            '--font-size': content.fontSize || '16px',
-            '--ms-max-height': content.maxDropdownHeight || '10rem',
-        }"
+        :style="cssVariables"
         :class="{ editing: isEditing }"
         :options="options"
         :close-on-select="content.closeOnSelect"
@@ -15,21 +13,51 @@
         :hideSelected="content.hideSelected"
         :placeholder="placeholder"
         :create-option="content.allowCreation"
+        :canClear="content.clearIcon"
+        :caret="content.caretIcon"
     >
+        <!-- Placeholder -->
+        <template v-slot:placeholder v-if="placeholder.length">
+            <wwElement
+                class="multiselect-placeholder-el"
+                v-bind="content.placeholderElement"
+                :wwProps="{ text: placeholder }"
+            />
+        </template>
+
+        <!-- Tag selected with remove icon -->
         <template v-slot:tag="{ option, handleTagRemove }">
             <div class="multiselect-tag" :style="option.style || defaultTagStyle">
-                {{ option.label }}
-                <span
-                    v-if="!content.disabled"
-                    class="multiselect-tag-remove"
-                    @mousedown.prevent="handleTagRemove(option, $event)"
-                >
-                    <span class="multiselect-tag-remove-icon"></span>
-                </span>
+                <wwLayoutItemContext :index="option => getOptionIndex(option)" :item="{}" is-repeat :data="option">
+                    <wwElement
+                        class="multiselect-tag-el"
+                        v-bind="content.tagElementSelected"
+                        :wwProps="{ text: option.label }"
+                    />
+                    <wwElement
+                        v-if="!content.disabled"
+                        @mousedown.prevent="isEditing ? null : handleTagRemove(option, $event)"
+                        v-bind="content.removeTagIconElement"
+                    />
+                </wwLayoutItemContext>
             </div>
         </template>
+
+        <!-- Tag unselected in list -->
         <template v-if="content.mode === 'tags'" v-slot:option="{ option }">
-            <span class="multiselect-tag" :style="option.style || defaultTagStyle">{{ option.label }}</span>
+            <wwLayoutItemContext :index="option => getOptionIndex(option)" :item="{}" is-repeat :data="option">
+                <wwElement class="multiselect-tag-el" v-bind="content.tagElement" :wwProps="{ text: option.label }" />
+            </wwLayoutItemContext>
+        </template>
+
+        <!-- Small triangle displayed on the right of the input -->
+        <template v-slot:caret>
+            <wwElement v-bind="content.caretIconElement" />
+        </template>
+
+        <!-- Clear icon shown when the input has at least one selected options -->
+        <template v-slot:clear="{ clear }">
+            <wwElement v-bind="content.clearIconElement" @mousedown.prevent="isEditing ? null : clear($event)" />
         </template>
     </Multiselect>
 </template>
@@ -39,8 +67,8 @@ import Multiselect from '@vueform/multiselect';
 
 const DEFAULT_LABEL_FIELD = 'label';
 const DEFAULT_VALUE_FIELD = 'value';
-const DEFAULT_BG_COLOR_FIELD = 'bgColor';
 const DEFAULT_TEXT_COLOR_FIELD = 'textColor';
+const DEFAULT_BG_COLOR_FIELD = 'bgColor';
 
 export default {
     components: { Multiselect },
@@ -63,12 +91,18 @@ export default {
     },
     data: () => ({
         options: [],
-        selection: [],
     }),
     created() {
         this.init();
     },
     computed: {
+        isEditing() {
+            /* wwEditor:start */
+            return this.wwEditorState.editMode === wwLib.wwEditorHelper.EDIT_MODES.EDITION;
+            /* wwEditor:end */
+            // eslint-disable-next-line no-unreachable
+            return false;
+        },
         internalValue: {
             get() {
                 if (this.content.allowCreation) {
@@ -89,21 +123,30 @@ export default {
         placeholder() {
             return wwLib.wwLang.getText(this.content.placeholder);
         },
+        getOptionIndex(option) {
+            return this.options.indexOf(option);
+        },
         defaultTagStyle() {
             return {
                 backgroundColor: this.content.tagsDefaultBgColor,
                 color: this.content.tagsDefaultTextColor,
             };
         },
-        isEditing() {
-            /* wwEditor:start */
-            return this.wwEditorState.editMode === wwLib.wwEditorHelper.EDIT_MODES.EDITION;
-            /* wwEditor:end */
-            // eslint-disable-next-line no-unreachable
-            return false;
+        cssVariables() {
+            return {
+                '--ms-dropdown-bg': this.content.dropdownBackgroundColor,
+                '--ms-dropdown-border-width': this.content.dropdownBorderWidth,
+                '--ms-dropdown-border-color': this.content.dropdownBorderColor,
+                '--ms-dropdown-radius': this.content.dropdownBorderRadius,
+                '--ms-max-height': this.content.dropdownMaxHeight || '10rem',
+                '--ms-option-bg-pointed': this.content.optionBackgroundPointed,
+            };
         },
     },
     watch: {
+        isEditing() {
+            this.handleOpening(this.content.isOpen);
+        },
         'content.initialValue'() {
             this.init();
         },
@@ -122,6 +165,9 @@ export default {
                     bgColorField: null,
                     textColorField: null,
                 });
+        },
+        'content.isOpen'(value) {
+            this.handleOpening(value);
         },
         /* wwEditor:end */
     },
@@ -169,6 +215,16 @@ export default {
                       value: option,
                   };
         },
+        handleOpening(value) {
+            if (value) this.$refs.multiselect.open();
+            else this.$refs.multiselect.close();
+        },
+        onTagSelected(isSelected) {
+            if (isSelected) this.$refs.multiselect.open();
+        },
+    },
+    mounted() {
+        this.handleOpening(this.content.isOpen);
     },
 };
 </script>
@@ -177,12 +233,9 @@ export default {
 
 <style type="scss">
 .input-multiselect {
-    --ms-font-size: var(--font-size);
-    --ms-option-font-size: var(--font-size);
-    --ms-tag-font-size: var(--font-size);
-    --ms-line-height: auto;
-    --ms-tag-line-height: auto;
+    --ms-border-width: 0px;
 
+    position: relative;
     min-height: calc(var(--font-size) + 20px);
 
     /* wwEditor:start */
@@ -198,18 +251,17 @@ export default {
 .multiselect.is-active {
     box-shadow: unset;
 }
-
-.multiselect-caret,
-.multiselect-clear-icon,
-.multiselect-tag-remove-icon {
-    width: var(--font-size);
-    height: var(--font-size);
-}
 .multiselect-caret {
     margin-top: 10px;
     margin-bottom: 10px;
 }
 .multiselect-dropdown {
     max-height: unset;
+}
+.multiselect-placeholder-el {
+    position: absolute !important;
+    top: 50% !important;
+    left: 0px !important;
+    transform: translateY(-50%);
 }
 </style>
