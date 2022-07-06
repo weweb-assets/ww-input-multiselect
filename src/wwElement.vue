@@ -13,9 +13,11 @@
         :hideSelected="content.hideSelected"
         :placeholder="placeholder"
         :create-option="content.allowCreation"
+        :canClear="content.clearIcon"
+        :caret="content.caretIcon"
     >
         <!-- Placeholder -->
-        <template v-slot:placeholder>
+        <template v-slot:placeholder v-if="placeholder.length">
             <wwElement
                 class="multiselect-placeholder-el"
                 v-bind="content.placeholderElement"
@@ -26,7 +28,7 @@
         <!-- Tag selected with remove icon -->
         <template v-slot:tag="{ option, handleTagRemove }">
             <div class="multiselect-tag" :style="option.style || defaultTagStyle">
-                <wwLayoutItemContext :index="option" :item="{}" is-repeat :data="option">
+                <wwLayoutItemContext :index="option => getOptionIndex(option)" :item="{}" is-repeat :data="option">
                     <wwElement
                         class="multiselect-tag-el"
                         v-bind="content.tagElementSelected"
@@ -43,7 +45,7 @@
 
         <!-- Tag unselected in list -->
         <template v-if="content.mode === 'tags'" v-slot:option="{ option }">
-            <wwLayoutItemContext :index="option" :item="{}" is-repeat :data="option">
+            <wwLayoutItemContext :index="option => getOptionIndex(option)" :item="{}" is-repeat :data="option">
                 <wwElement class="multiselect-tag-el" v-bind="content.tagElement" :wwProps="{ text: option.label }" />
             </wwLayoutItemContext>
         </template>
@@ -89,7 +91,6 @@ export default {
     },
     data: () => ({
         options: [],
-        selection: [],
     }),
     created() {
         this.init();
@@ -121,6 +122,9 @@ export default {
         },
         placeholder() {
             return wwLib.wwLang.getText(this.content.placeholder);
+        },
+        getOptionIndex(option) {
+            return this.options.indexOf(option);
         },
         defaultTagStyle() {
             return {
@@ -209,13 +213,6 @@ export default {
                       // to allow flat array / option
                       label: option,
                       value: option,
-                      style: {
-                          backgroundColor:
-                              wwLib.resolveObjectPropertyPath(option, bgColorField) || this.content.tagsDefaultBgColor,
-                          color:
-                              wwLib.resolveObjectPropertyPath(option, textColorField) ||
-                              this.content.tagsDefaultTextColor,
-                      },
                   };
         },
         handleOpening(value) {

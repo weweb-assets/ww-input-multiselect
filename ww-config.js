@@ -21,6 +21,7 @@ export default {
             ['initialValue', 'options'],
             ['placeholder'],
             ['disabled', 'mode', 'allowCreation', 'hideSelected', 'searchable', 'closeOnSelect'],
+            ['clearIcon', 'caretIcon'],
             ['hintFields', 'labelField', 'valueField', 'textColorField', 'bgColorField'],
         ],
     },
@@ -45,7 +46,7 @@ export default {
                 fr: 'Texte par défaut',
             },
             type: 'Text',
-            defaultValue: 'placeholder',
+            defaultValue: { en: 'placeholder' },
             section: 'settings',
             bindable: true,
             multiLang: true,
@@ -113,6 +114,22 @@ export default {
             defaultValue: false,
             section: 'settings',
         },
+        clearIcon: {
+            label: {
+                en: 'Clear icon',
+            },
+            type: 'OnOff',
+            defaultValue: false,
+            section: 'settings',
+        },
+        caretIcon: {
+            label: {
+                en: 'Caret icon',
+            },
+            type: 'OnOff',
+            defaultValue: true,
+            section: 'settings',
+        },
         initialValue: {
             label: {
                 en: 'Initial value',
@@ -129,7 +146,7 @@ export default {
             options: {
                 item: {
                     type: 'Object',
-                    defaultValue: { label: '', value: '' },
+                    defaultValue: { label: 'New option', value: '' },
                     options: {
                         item: {
                             label: {
@@ -357,7 +374,7 @@ export default {
                 en: 'Default option text color',
             },
             type: 'Color',
-            defaultValue: '#099AF2',
+            defaultValue: '#FFFFFF',
         },
         optionBackgroundPointed: {
             label: {
