@@ -9,7 +9,7 @@
         :close-on-select="content.closeOnSelect"
         :searchable="content.searchable"
         :mode="content.mode"
-        :disabled="content.disabled"
+        :disabled="isReadonly"
         :hideSelected="content.hideSelected"
         :placeholder="placeholder"
         :create-option="content.allowCreation"
@@ -35,7 +35,7 @@
                         :wwProps="{ text: option.label }"
                     />
                     <wwElement
-                        v-if="!content.disabled"
+                        v-if="!isReadonly"
                         @mousedown.prevent="isEditing ? null : handleTagRemove(option, $event)"
                         v-bind="content.removeTagIconElement"
                     />
@@ -79,6 +79,7 @@ export default {
         /* wwEditor:start */
         wwEditorState: { type: Object, required: true },
         /* wwEditor:end */
+        wwElementState: { type: Object, required: true },
     },
     setup(props) {
         const { value: currentSelection, setValue: setCurrentSelection } = wwLib.wwVariable.useComponentVariable({
@@ -141,6 +142,16 @@ export default {
                 '--ms-max-height': this.content.dropdownMaxHeight || '10rem',
                 '--ms-option-bg-pointed': this.content.optionBackgroundPointed,
             };
+        },
+        isReadonly() {
+            /* wwEditor:start */
+            if (this.wwEditorState.isSelected) {
+                return this.wwElementState.states.includes('readonly');
+            }
+            /* wwEditor:end */
+            return this.wwElementState.props.readonly === undefined
+                ? this.content.disabled
+                : this.wwElementState.props.readonly;
         },
     },
     watch: {
