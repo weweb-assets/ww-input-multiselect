@@ -9,7 +9,7 @@
         :close-on-select="content.closeOnSelect"
         :searchable="content.searchable"
         :mode="content.mode"
-        :disabled="isReadonly"
+        :disabled="isReadOnly || content.disabled"
         :hideSelected="content.hideSelected"
         :placeholder="placeholder"
         :create-option="content.allowCreation"
@@ -17,7 +17,7 @@
         :caret="content.caretIcon"
     >
         <!-- Placeholder -->
-        <template v-slot:placeholder v-if="placeholder.length">
+        <template v-slot:placeholder v-if="placeholder.length && !isReadOnly">
             <wwElement
                 class="multiselect-placeholder-el"
                 v-bind="content.placeholderElement"
@@ -35,7 +35,7 @@
                         :wwProps="{ text: option.label }"
                     />
                     <wwElement
-                        v-if="!isReadonly"
+                        v-if="!isReadOnly"
                         @mousedown.prevent="isEditing ? null : handleTagRemove(option, $event)"
                         v-bind="content.removeTagIconElement"
                     />
@@ -51,7 +51,7 @@
         </template>
 
         <!-- Small triangle displayed on the right of the input -->
-        <template v-slot:caret>
+        <template v-slot:caret v-if="!isReadOnly">
             <wwElement v-bind="content.caretIconElement" />
         </template>
 
@@ -143,14 +143,14 @@ export default {
                 '--ms-option-bg-pointed': this.content.optionBackgroundPointed,
             };
         },
-        isReadonly() {
+        isReadOnly() {
             /* wwEditor:start */
             if (this.wwEditorState.isSelected) {
                 return this.wwElementState.states.includes('readonly');
             }
             /* wwEditor:end */
             return this.wwElementState.props.readonly === undefined
-                ? this.content.disabled
+                ? this.content.readonly
                 : this.wwElementState.props.readonly;
         },
     },
