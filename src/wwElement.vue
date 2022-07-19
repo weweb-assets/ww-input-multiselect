@@ -17,11 +17,12 @@
         :caret="content.caretIcon"
     >
         <!-- Placeholder -->
-        <template v-slot:placeholder v-if="placeholder.length && !isReadOnly">
+        <template v-slot:placeholder v-if="placeholder.length">
             <wwElement
                 class="multiselect-placeholder-el"
                 v-bind="content.placeholderElement"
                 :wwProps="{ text: placeholder }"
+                v-if="!isReadOnly"
             />
         </template>
 
@@ -51,13 +52,17 @@
         </template>
 
         <!-- Small triangle displayed on the right of the input -->
-        <template v-slot:caret v-if="!isReadOnly">
-            <wwElement v-bind="content.caretIconElement" />
+        <template v-slot:caret>
+            <wwElement v-bind="content.caretIconElement" v-if="!isReadOnly" />
         </template>
 
         <!-- Clear icon shown when the input has at least one selected options -->
         <template v-slot:clear="{ clear }">
-            <wwElement v-bind="content.clearIconElement" @mousedown.prevent="isEditing ? null : clear($event)" />
+            <wwElement
+                v-bind="content.clearIconElement"
+                @mousedown.prevent="isEditing ? null : clear($event)"
+                v-if="!isReadOnly"
+            />
         </template>
     </Multiselect>
 </template>
