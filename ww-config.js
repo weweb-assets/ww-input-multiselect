@@ -20,7 +20,7 @@ export default {
             'isOpen',
             ['initialValue', 'options'],
             ['placeholder'],
-            ['disabled', 'mode', 'allowCreation', 'hideSelected', 'searchable', 'closeOnSelect'],
+            ['disabled', 'readonly', 'mode', 'allowCreation', 'hideSelected', 'searchable', 'closeOnSelect'],
             ['clearIcon', 'caretIcon'],
             ['hintFields', 'labelField', 'valueField', 'textColorField', 'bgColorField'],
         ],

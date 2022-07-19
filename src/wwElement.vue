@@ -11,18 +11,17 @@
         :mode="content.mode"
         :disabled="isReadOnly || content.disabled"
         :hideSelected="content.hideSelected"
-        :placeholder="placeholder"
+        :placeholder="isReadOnly ? '' : placeholder"
         :create-option="content.allowCreation"
-        :canClear="content.clearIcon"
-        :caret="content.caretIcon"
+        :canClear="content.clearIcon && !isReadOnly"
+        :caret="content.caretIcon && !isReadOnly"
     >
         <!-- Placeholder -->
-        <template v-slot:placeholder v-if="placeholder.length">
+        <template v-slot:placeholder v-if="placeholder.length && !isReadOnly">
             <wwElement
                 class="multiselect-placeholder-el"
                 v-bind="content.placeholderElement"
                 :wwProps="{ text: placeholder }"
-                v-if="!isReadOnly"
             />
         </template>
 
@@ -52,17 +51,13 @@
         </template>
 
         <!-- Small triangle displayed on the right of the input -->
-        <template v-slot:caret>
-            <wwElement v-bind="content.caretIconElement" v-if="!isReadOnly" />
+        <template v-slot:caret v-if="!isReadOnly">
+            <wwElement v-bind="content.caretIconElement" />
         </template>
 
         <!-- Clear icon shown when the input has at least one selected options -->
         <template v-slot:clear="{ clear }">
-            <wwElement
-                v-bind="content.clearIconElement"
-                @mousedown.prevent="isEditing ? null : clear($event)"
-                v-if="!isReadOnly"
-            />
+            <wwElement v-bind="content.clearIconElement" @mousedown.prevent="isEditing ? null : clear($event)" />
         </template>
     </Multiselect>
 </template>
@@ -146,6 +141,9 @@ export default {
                 '--ms-dropdown-radius': this.content.dropdownBorderRadius,
                 '--ms-max-height': this.content.dropdownMaxHeight || '10rem',
                 '--ms-option-bg-pointed': this.content.optionBackgroundPointed,
+                '--ms-bg-disabled': this.isReadOnly ? 'transparent' : null,
+                '--ms-bg': 'transparent',
+                '--ms-radius': '0',
             };
         },
         isReadOnly() {
@@ -171,6 +169,16 @@ export default {
         },
         currentSelection(value) {
             this.$emit('trigger-event', { name: 'change', event: { domEvent: {}, value } });
+        },
+        isReadOnly: {
+            immediate: true,
+            handler(value) {
+                if (value) {
+                    this.$emit('add-state', 'readonly');
+                } else {
+                    this.$emit('remove-state', 'readonly');
+                }
+            },
         },
         /* wwEditor:start */
         'wwEditorState.boundProps.options'(isBind) {
