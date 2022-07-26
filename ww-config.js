@@ -20,7 +20,7 @@ export default {
             'isOpen',
             ['initialValue', 'options'],
             ['placeholder'],
-            ['disabled', 'mode', 'allowCreation', 'hideSelected', 'searchable', 'closeOnSelect'],
+            ['disabled', 'readonly', 'mode', 'allowCreation', 'hideSelected', 'searchable', 'closeOnSelect'],
             ['clearIcon', 'caretIcon'],
             ['hintFields', 'labelField', 'valueField', 'textColorField', 'bgColorField'],
         ],
@@ -60,6 +60,17 @@ export default {
             defaultValue: false,
             section: 'settings',
             bindable: true,
+        },
+        readonly: {
+            label: {
+                en: 'Read Only',
+                fr: 'Read Only',
+            },
+            type: 'OnOff',
+            defaultValue: false,
+            section: 'settings',
+            bindable: true,
+            hidden: (content, sidePanelContent, boundProps, wwProps) => !!(wwProps && wwProps.readonly !== undefined),
         },
         mode: {
             label: {

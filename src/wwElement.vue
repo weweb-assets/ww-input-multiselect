@@ -9,15 +9,15 @@
         :close-on-select="content.closeOnSelect"
         :searchable="content.searchable"
         :mode="content.mode"
-        :disabled="content.disabled"
+        :disabled="isReadOnly || content.disabled"
         :hideSelected="content.hideSelected"
-        :placeholder="placeholder"
+        :placeholder="isReadOnly ? '' : placeholder"
         :create-option="content.allowCreation"
-        :canClear="content.clearIcon"
-        :caret="content.caretIcon"
+        :canClear="content.clearIcon && !isReadOnly"
+        :caret="content.caretIcon && !isReadOnly"
     >
         <!-- Placeholder -->
-        <template v-slot:placeholder v-if="placeholder.length">
+        <template v-slot:placeholder v-if="placeholder.length && !isReadOnly">
             <wwElement
                 class="multiselect-placeholder-el"
                 v-bind="content.placeholderElement"
@@ -35,7 +35,7 @@
                         :wwProps="{ text: option.label }"
                     />
                     <wwElement
-                        v-if="!content.disabled"
+                        v-if="!isReadOnly"
                         @mousedown.prevent="isEditing ? null : handleTagRemove(option, $event)"
                         v-bind="content.removeTagIconElement"
                     />
@@ -51,7 +51,7 @@
         </template>
 
         <!-- Small triangle displayed on the right of the input -->
-        <template v-slot:caret>
+        <template v-slot:caret v-if="!isReadOnly">
             <wwElement v-bind="content.caretIconElement" />
         </template>
 
@@ -79,6 +79,7 @@ export default {
         /* wwEditor:start */
         wwEditorState: { type: Object, required: true },
         /* wwEditor:end */
+        wwElementState: { type: Object, required: true },
     },
     setup(props) {
         const { value: currentSelection, setValue: setCurrentSelection } = wwLib.wwVariable.useComponentVariable({
@@ -140,7 +141,20 @@ export default {
                 '--ms-dropdown-radius': this.content.dropdownBorderRadius,
                 '--ms-max-height': this.content.dropdownMaxHeight || '10rem',
                 '--ms-option-bg-pointed': this.content.optionBackgroundPointed,
+                '--ms-bg-disabled': this.isReadOnly ? 'transparent' : null,
+                '--ms-bg': 'transparent',
+                '--ms-radius': '0',
             };
+        },
+        isReadOnly() {
+            /* wwEditor:start */
+            if (this.wwEditorState.isSelected) {
+                return this.wwElementState.states.includes('readonly');
+            }
+            /* wwEditor:end */
+            return this.wwElementState.props.readonly === undefined
+                ? this.content.readonly
+                : this.wwElementState.props.readonly;
         },
     },
     watch: {
@@ -155,6 +169,16 @@ export default {
         },
         currentSelection(value) {
             this.$emit('trigger-event', { name: 'change', event: { domEvent: {}, value } });
+        },
+        isReadOnly: {
+            immediate: true,
+            handler(value) {
+                if (value) {
+                    this.$emit('add-state', 'readonly');
+                } else {
+                    this.$emit('remove-state', 'readonly');
+                }
+            },
         },
         /* wwEditor:start */
         'wwEditorState.boundProps.options'(isBind) {
