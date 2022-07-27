@@ -50,7 +50,6 @@ export default {
             section: 'settings',
             bindable: true,
             multiLang: true,
-            states: true,
         },
         disabled: {
             label: {
