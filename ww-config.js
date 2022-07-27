@@ -50,6 +50,7 @@ export default {
             section: 'settings',
             bindable: true,
             multiLang: true,
+            states: true,
         },
         disabled: {
             label: {
@@ -147,6 +148,11 @@ export default {
                 fr: 'Valeur initiale',
             },
             type: 'Array',
+            options: {
+                item: {
+                    type: 'Generic',
+                },
+            },
             bindable: true,
             section: 'settings',
         },
