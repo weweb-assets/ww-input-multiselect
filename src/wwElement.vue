@@ -11,13 +11,13 @@
         :mode="content.mode"
         :disabled="isReadOnly || content.disabled"
         :hideSelected="content.hideSelected"
-        :placeholder="isReadOnly ? '' : placeholder"
+        :placeholder="placeholder"
         :create-option="content.allowCreation"
         :canClear="content.clearIcon && !isReadOnly"
         :caret="content.caretIcon && !isReadOnly"
     >
         <!-- Placeholder -->
-        <template v-slot:placeholder v-if="placeholder.length && !isReadOnly">
+        <template v-slot:placeholder v-if="placeholder.length">
             <wwElement
                 class="multiselect-placeholder-el"
                 v-bind="content.placeholderElement"
