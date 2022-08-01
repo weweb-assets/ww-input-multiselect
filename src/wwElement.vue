@@ -115,7 +115,7 @@ export default {
                     }
                 }
 
-                return this.currentSelection;
+                return Array.isArray(this.currentSelection) ? this.currentSelection : [];
             },
             set(value) {
                 this.setCurrentSelection(value);
