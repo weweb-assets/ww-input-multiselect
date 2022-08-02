@@ -28,7 +28,7 @@
         <!-- Tag selected with remove icon -->
         <template v-slot:tag="{ option, handleTagRemove }">
             <div class="multiselect-tag" :style="option.style || defaultTagStyle">
-                <wwLayoutItemContext :index="option => getOptionIndex(option)" :item="{}" is-repeat :data="option">
+                <wwLayoutItemContext :index="getOptionIndex(option)" :item="{}" is-repeat :data="option">
                     <wwElement
                         class="multiselect-tag-el"
                         v-bind="content.tagElementSelected"
@@ -45,7 +45,7 @@
 
         <!-- Tag unselected in list -->
         <template v-if="content.mode === 'tags'" v-slot:option="{ option }">
-            <wwLayoutItemContext :index="option => getOptionIndex(option)" :item="{}" is-repeat :data="option">
+            <wwLayoutItemContext :index="getOptionIndex(option)" :item="{}" is-repeat :data="option">
                 <wwElement class="multiselect-tag-el" v-bind="content.tagElement" :wwProps="{ text: option.label }" />
             </wwLayoutItemContext>
         </template>
@@ -72,7 +72,7 @@ const DEFAULT_BG_COLOR_FIELD = 'bgColor';
 
 export default {
     components: { Multiselect },
-    emits: ['trigger-event', 'update:content:effect'],
+    emits: ['trigger-event', 'update:content:effect', 'add-state', 'remove-state'],
     props: {
         uid: { type: String, required: true },
         content: { type: Object, required: true },
@@ -123,9 +123,6 @@ export default {
         },
         placeholder() {
             return wwLib.wwLang.getText(this.content.placeholder);
-        },
-        getOptionIndex(option) {
-            return this.options.indexOf(option);
         },
         defaultTagStyle() {
             return {
@@ -245,6 +242,9 @@ export default {
         },
         onTagSelected(isSelected) {
             if (isSelected) this.$refs.multiselect.open();
+        },
+        getOptionIndex(option) {
+            return this.options.indexOf(option);
         },
     },
     mounted() {
