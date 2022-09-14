@@ -52,12 +52,13 @@ export default {
         wwEditorState: { type: Object, required: true },
         /* wwEditor:end */
     },
-    setup(props) {
+    setup(props, { emit }) {
         const { value: currentSelection, setValue: setCurrentSelection } = wwLib.wwVariable.useComponentVariable({
             uid: props.uid,
             name: 'currentSelection',
             type: 'array',
             defaultValue: Array.isArray(props.content.initialValue) ? props.content.initialValue : [],
+            onUpdate: value => emit('trigger-event', { name: 'change', event: { domEvent: {}, value } }),
         });
         return { currentSelection, setCurrentSelection };
     },
@@ -104,14 +105,11 @@ export default {
         },
     },
     watch: {
-        'content.initialValue'() {
-            this.init();
+        'content.initialValue'(value) {
+            this.refreshInitialValue();
         },
         'content.options'() {
-            this.init();
-        },
-        currentSelection(value) {
-            this.$emit('trigger-event', { name: 'change', event: { domEvent: {}, value } });
+            this.refreshOptions();
         },
         /* wwEditor:start */
         'wwEditorState.boundProps.options'(isBind) {
@@ -126,11 +124,7 @@ export default {
         /* wwEditor:end */
     },
     methods: {
-        async init() {
-            // reset selection and option to avoid mismatch
-            this.internalValue = [];
-            this.options = [];
-
+        init() {
             const initialOptions = Array.isArray(this.content.options) ? this.content.options : [];
             const initialValue = Array.isArray(this.content.initialValue) ? this.content.initialValue : [];
 
@@ -140,10 +134,35 @@ export default {
                 ...initialValue.filter(selection => !this.options.map(option => option.value).includes(selection))
             );
 
-            // await to avoid mismatch (multiselect not rendering custom tags)
-            await this.$nextTick();
+            // We set internalValue after the options to avoid mismatch
+            this.internalValue = initialValue;
+        },
+        /**
+         * We need to avoid to have a value not present in options
+         * So here we take care of not removing an used option
+         */
+        refreshOptions() {
+            // we removed unused options
+            this.options = this.options.filter(option => this.internalValue.includes(option.value));
 
-            this.internalValue = [...initialValue];
+            // Then we add the new initial options and avoid duplicate
+            const initialOptions = Array.isArray(this.content.options) ? this.content.options : [];
+            const newOptions = initialOptions.filter(
+                option => !this.options.some(currentOpt => currentOpt.value === option.value)
+            );
+            this.options.push(...newOptions.map(option => this.formatOption(option)));
+
+            // Then we add current selection as custom options if not already included
+            this.options.push(
+                ...this.internalValue.filter(selection => !this.options.map(option => option.value).includes(selection))
+            );
+        },
+        refreshInitialValue() {
+            const initialValue = Array.isArray(this.content.initialValue) ? this.content.initialValue : [];
+            this.options.push(
+                ...initialValue.filter(selection => !this.options.map(option => option.value).includes(selection))
+            );
+            this.internalValue = initialValue;
         },
         formatOption(option) {
             const labelField = this.content.labelField || DEFAULT_LABEL_FIELD;
