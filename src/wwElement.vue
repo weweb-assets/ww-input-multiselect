@@ -194,7 +194,7 @@ export default {
 
 <style src="@vueform/multiselect/themes/default.css"></style>
 
-<style type="scss">
+<style type="scss" scoped>
 .input-multiselect {
     --ms-font-size: var(--font-size);
     --ms-option-font-size: var(--font-size);
@@ -210,25 +210,28 @@ export default {
     }
     /* wwEditor:end */
 }
-.multiselect-tag {
-    padding: 4px;
-    border-radius: 4px;
-}
-.multiselect.is-active {
-    box-shadow: unset;
-}
 
-.multiselect-caret,
-.multiselect-clear-icon,
-.multiselect-tag-remove-icon {
-    width: var(--font-size);
-    height: var(--font-size);
-}
-.multiselect-caret {
-    margin-top: 10px;
-    margin-bottom: 10px;
-}
-.multiselect-dropdown {
-    max-height: unset;
+.input-multiselect::v-deep {
+    .multiselect-tag {
+        padding: 4px;
+        border-radius: 4px;
+    }
+    .multiselect.is-active {
+        box-shadow: unset;
+    }
+
+    .multiselect-caret,
+    .multiselect-clear-icon,
+    .multiselect-tag-remove-icon {
+        width: var(--font-size);
+        height: var(--font-size);
+    }
+    .multiselect-caret {
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+    .multiselect-dropdown {
+        max-height: unset;
+    }
 }
 </style>
