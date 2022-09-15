@@ -105,7 +105,7 @@ export default {
         },
     },
     watch: {
-        'content.initialValue'(value) {
+        'content.initialValue'() {
             this.refreshInitialValue();
         },
         'content.options'() {
@@ -125,8 +125,8 @@ export default {
     },
     methods: {
         init() {
-            const initialOptions = Array.isArray(this.content.options) ? this.content.options : [];
-            const initialValue = Array.isArray(this.content.initialValue) ? this.content.initialValue : [];
+            const initialOptions = Array.isArray(this.content.options) ? [...this.content.options] : [];
+            const initialValue = Array.isArray(this.content.initialValue) ? [...this.content.initialValue] : [];
 
             this.options.push(...initialOptions.map(option => this.formatOption(option)));
             // add initial values as custom options if not already included
@@ -146,7 +146,7 @@ export default {
             this.options = this.options.filter(option => this.internalValue.includes(option.value));
 
             // Then we add the new initial options and avoid duplicate
-            const initialOptions = Array.isArray(this.content.options) ? this.content.options : [];
+            const initialOptions = Array.isArray(this.content.options) ? [...this.content.options] : [];
             const newOptions = initialOptions.filter(
                 option => !this.options.some(currentOpt => currentOpt.value === option.value)
             );
@@ -158,7 +158,7 @@ export default {
             );
         },
         refreshInitialValue() {
-            const initialValue = Array.isArray(this.content.initialValue) ? this.content.initialValue : [];
+            const initialValue = Array.isArray(this.content.initialValue) ? [...this.content.initialValue] : [];
             this.options.push(
                 ...initialValue.filter(selection => !this.options.map(option => option.value).includes(selection))
             );
