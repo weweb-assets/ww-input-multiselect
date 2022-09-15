@@ -18,11 +18,10 @@ export default {
         ],
         customSettingsPropertiesOrder: [
             'isOpen',
-            ['initialValue', 'options'],
+            ['initialValue', 'options', 'hintFields', 'labelField', 'valueField', 'textColorField', 'bgColorField'],
             ['placeholder'],
             ['disabled', 'readonly', 'mode', 'allowCreation', 'hideSelected', 'searchable', 'closeOnSelect'],
             ['clearIcon', 'caretIcon'],
-            ['hintFields', 'labelField', 'valueField', 'textColorField', 'bgColorField'],
         ],
     },
     options: {
