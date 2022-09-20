@@ -114,7 +114,6 @@ export default {
                         }
                     }
                 }
-
                 return Array.isArray(this.currentSelection) ? this.currentSelection : [];
             },
             set(value) {
@@ -255,7 +254,7 @@ export default {
 
 <style src="@vueform/multiselect/themes/default.css"></style>
 
-<style type="scss">
+<style type="scss" scoped>
 .input-multiselect {
     --ms-border-width: 0px;
 
@@ -268,24 +267,26 @@ export default {
     }
     /* wwEditor:end */
 }
-.multiselect-tag {
-    padding: 4px;
-    border-radius: 4px;
-}
-.multiselect.is-active {
-    box-shadow: unset;
-}
-.multiselect-caret {
-    margin-top: 10px;
-    margin-bottom: 10px;
-}
-.multiselect-dropdown {
-    max-height: unset;
-}
-.multiselect-placeholder-el {
-    position: absolute !important;
-    top: 50% !important;
-    left: 0px !important;
-    transform: translateY(-50%);
+.input-multiselect::v-deep {
+    .multiselect-tag {
+        padding: 4px;
+        border-radius: 4px;
+    }
+    .multiselect.is-active {
+        box-shadow: unset;
+    }
+    .multiselect-caret {
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+    .multiselect-dropdown {
+        max-height: unset;
+    }
+    .multiselect-placeholder-el {
+        position: absolute !important;
+        top: 50% !important;
+        left: 0px !important;
+        transform: translateY(-50%);
+    }
 }
 </style>
