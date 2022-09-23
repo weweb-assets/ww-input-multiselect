@@ -1,8 +1,8 @@
 export default {
     editor: {
         label: {
-            en: 'Input multiselect',
-            fr: 'Champs sélection multiple',
+            en: 'Input multiselect (legacy)',
+            fr: 'Champs sélection multiple (legacy)',
         },
         icon: 'fontawesome/solid/chevron-circle-down',
         bubble: {
