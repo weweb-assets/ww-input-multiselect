@@ -1,14 +1,15 @@
 export default {
     editor: {
         label: {
-            en: 'Input multiselect (legacy)',
-            fr: 'Champs sélection multiple (legacy)',
+            en: 'Input multiselect',
+            fr: 'Champs sélection multiple',
         },
         icon: 'fontawesome/solid/chevron-circle-down',
         bubble: {
             color: 'ww-color-yellow-500',
             icon: 'warning',
         },
+        deprecated: true,
     },
     options: {
         noBorderRadiusClipping: true,
