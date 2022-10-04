@@ -65,11 +65,6 @@
 <script>
 import Multiselect from '@vueform/multiselect';
 
-const DEFAULT_LABEL_FIELD = 'label';
-const DEFAULT_VALUE_FIELD = 'value';
-const DEFAULT_TEXT_COLOR_FIELD = 'textColor';
-const DEFAULT_BG_COLOR_FIELD = 'bgColor';
-
 export default {
     components: { Multiselect },
     emits: ['trigger-event', 'update:content:effect', 'add-state', 'remove-state'],
@@ -89,7 +84,10 @@ export default {
             defaultValue: Array.isArray(props.content.initialValue) ? props.content.initialValue : [],
             onUpdate: value => emit('trigger-event', { name: 'change', event: { domEvent: {}, value } }),
         });
-        return { currentSelection, setCurrentSelection };
+
+        const { resolveMappingFormula } = wwLib.wwFormula.useFormula();
+
+        return { currentSelection, setCurrentSelection, resolveMappingFormula };
     },
     data: () => ({
         options: [],
@@ -227,21 +225,23 @@ export default {
             this.internalValue = initialValue;
         },
         formatOption(option) {
-            const labelField = this.content.labelField || DEFAULT_LABEL_FIELD;
-            const valueField = this.content.valueField || DEFAULT_VALUE_FIELD;
-            const bgColorField = this.content.bgColorField || DEFAULT_BG_COLOR_FIELD;
-            const textColorField = this.content.textColorField || DEFAULT_TEXT_COLOR_FIELD;
-
             return typeof option === 'object'
                 ? {
-                      label: wwLib.wwLang.getText(wwLib.resolveObjectPropertyPath(option, labelField) || ''),
-                      value: wwLib.resolveObjectPropertyPath(option, valueField),
+                      label: wwLib.wwLang.getText(
+                          this.resolveMappingFormula(this.content.labelField, option, option.label || '')
+                      ),
+                      value: this.resolveMappingFormula(this.content.valueField, option, option.value || ''),
                       style: {
-                          backgroundColor:
-                              wwLib.resolveObjectPropertyPath(option, bgColorField) || this.content.tagsDefaultBgColor,
-                          color:
-                              wwLib.resolveObjectPropertyPath(option, textColorField) ||
-                              this.content.tagsDefaultTextColor,
+                          backgroundColor: this.resolveMappingFormula(
+                              this.content.bgColorField,
+                              option,
+                              option.bgColor || this.content.tagsDefaultBgColor
+                          ),
+                          color: this.resolveMappingFormula(
+                              this.content.textColorField,
+                              option,
+                              option.textColor || this.content.tagsDefaultTextColor
+                          ),
                       },
                   }
                 : {

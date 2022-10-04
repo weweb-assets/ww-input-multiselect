@@ -213,13 +213,7 @@ export default {
                 fr: 'Label field',
             },
             type: 'ObjectPropertyPath',
-            options: content => {
-                if (!content.options.length || typeof content.options[0] !== 'object') {
-                    return null;
-                }
-
-                return { object: content.options[0] };
-            },
+            options: content => ({ template: content.options.length ? content.options[0] : null }),
             defaultValue: null,
             section: 'settings',
         },
@@ -230,13 +224,7 @@ export default {
                 fr: 'Value field',
             },
             type: 'ObjectPropertyPath',
-            options: content => {
-                if (!content.options.length || typeof content.options[0] !== 'object') {
-                    return null;
-                }
-
-                return { object: content.options[0] };
-            },
+            options: content => ({ template: content.options.length ? content.options[0] : null }),
             defaultValue: null,
             section: 'settings',
         },
@@ -247,13 +235,7 @@ export default {
                 fr: 'Background color field',
             },
             type: 'ObjectPropertyPath',
-            options: content => {
-                if (!content.options.length || typeof content.options[0] !== 'object') {
-                    return null;
-                }
-
-                return { object: content.options[0] };
-            },
+            options: content => ({ template: content.options.length ? content.options[0] : null }),
             defaultValue: null,
             section: 'settings',
         },
@@ -264,13 +246,7 @@ export default {
                 fr: 'Text color field',
             },
             type: 'ObjectPropertyPath',
-            options: content => {
-                if (!content.options.length || typeof content.options[0] !== 'object') {
-                    return null;
-                }
-
-                return { object: content.options[0] };
-            },
+            options: content => ({ template: content.options.length ? content.options[0] : null }),
             defaultValue: null,
             section: 'settings',
         },
