@@ -204,6 +204,10 @@ export default {
 
     min-height: calc(var(--font-size) + 20px);
 
+    &.is-active {
+        box-shadow: unset;
+    }
+
     /* wwEditor:start */
     &.editing {
         pointer-events: none;
@@ -211,27 +215,22 @@ export default {
     /* wwEditor:end */
 }
 
-.input-multiselect::v-deep {
-    .multiselect-tag {
-        padding: 4px;
-        border-radius: 4px;
-    }
-    .multiselect.is-active {
-        box-shadow: unset;
-    }
+.input-multiselect::v-deep .multiselect-tag {
+    padding: 4px;
+    border-radius: 4px;
+}
 
-    .multiselect-caret,
-    .multiselect-clear-icon,
-    .multiselect-tag-remove-icon {
-        width: var(--font-size);
-        height: var(--font-size);
-    }
-    .multiselect-caret {
-        margin-top: 10px;
-        margin-bottom: 10px;
-    }
-    .multiselect-dropdown {
-        max-height: unset;
-    }
+.input-multiselect::v-deep .multiselect-caret,
+.input-multiselect::v-deep .multiselect-clear-icon,
+.input-multiselect::v-deep .multiselect-tag-remove-icon {
+    width: var(--font-size);
+    height: var(--font-size);
+}
+.input-multiselect::v-deep .multiselect-caret {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.input-multiselect::v-deep .multiselect-dropdown {
+    max-height: unset;
 }
 </style>
