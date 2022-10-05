@@ -276,32 +276,32 @@ export default {
     position: relative;
     min-height: calc(var(--font-size) + 20px);
 
+    &.is-active {
+        box-shadow: unset;
+    }
+
     /* wwEditor:start */
     &.editing {
         pointer-events: none;
     }
     /* wwEditor:end */
 }
-.input-multiselect::v-deep {
-    .multiselect-tag {
-        padding: 4px;
-        border-radius: 4px;
-    }
-    .multiselect.is-active {
-        box-shadow: unset;
-    }
-    .multiselect-caret {
-        margin-top: 10px;
-        margin-bottom: 10px;
-    }
-    .multiselect-dropdown {
-        max-height: unset;
-    }
-    .multiselect-placeholder-el {
-        position: absolute !important;
-        top: 50% !important;
-        left: 0px !important;
-        transform: translateY(-50%);
-    }
+
+.input-multiselect::v-deep .multiselect-tag {
+    padding: 4px;
+    border-radius: 4px;
+}
+.input-multiselect::v-deep .multiselect-caret {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.input-multiselect::v-deep .multiselect-dropdown {
+    max-height: unset;
+}
+.input-multiselect::v-deep .multiselect-placeholder-el {
+    position: absolute !important;
+    top: 50% !important;
+    left: 0px !important;
+    transform: translateY(-50%);
 }
 </style>
