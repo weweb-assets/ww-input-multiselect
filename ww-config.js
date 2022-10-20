@@ -4,7 +4,7 @@ export default {
             en: 'Input multiselect',
             fr: 'Champs sélection multiple',
         },
-        icon: 'fontawesome/solid/chevron-circle-down',
+        icon: 'chevron-down',
         customStylePropertiesOrder: [
             ['tagsDefaultBgColor', 'tagsDefaultTextColor'],
             [
