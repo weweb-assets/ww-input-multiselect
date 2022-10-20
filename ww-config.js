@@ -4,10 +4,10 @@ export default {
             en: 'Input multiselect (legacy)',
             fr: 'Champs sélection multiple (legacy)',
         },
-        icon: 'fontawesome/solid/chevron-circle-down',
+        icon: 'chevron-down',
         bubble: {
             color: 'ww-color-yellow-500',
-            icon: 'warning',
+            icon: 'exclamation',
         },
     },
     options: {
