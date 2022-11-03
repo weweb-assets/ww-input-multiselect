@@ -87,7 +87,6 @@ export default {
             name: 'currentSelection',
             type: 'array',
             defaultValue: Array.isArray(props.content.initialValue) ? props.content.initialValue : [],
-            onUpdate: value => emit('trigger-event', { name: 'change', event: { domEvent: {}, value } }),
         });
         return { currentSelection, setCurrentSelection };
     },
@@ -119,6 +118,7 @@ export default {
             },
             set(value) {
                 this.setCurrentSelection(value);
+                this.$emit('trigger-event', { name: 'change', event: { domEvent: {}, value } });
             },
         },
         placeholder() {
