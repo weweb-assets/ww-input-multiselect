@@ -4,7 +4,7 @@ export default {
             en: 'Input multiselect (legacy)',
             fr: 'Champs sélection multiple (legacy)',
         },
-        icon: 'chevron-down',
+        icon: 'select',
         bubble: {
             color: 'ww-color-yellow-500',
             icon: 'exclamation',
