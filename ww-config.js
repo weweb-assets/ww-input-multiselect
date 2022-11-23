@@ -4,7 +4,7 @@ export default {
             en: 'Input multiselect',
             fr: 'Champs sélection multiple',
         },
-        icon: 'chevron-down',
+        icon: 'select',
         customStylePropertiesOrder: [
             ['tagsDefaultBgColor', 'tagsDefaultTextColor'],
             [
