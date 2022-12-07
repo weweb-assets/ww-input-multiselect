@@ -5,11 +5,7 @@ export default {
             fr: 'Champs sélection multiple',
         },
         icon: 'select',
-        bubble: {
-            color: 'ww-color-yellow-500',
-            icon: 'exclamation',
-        },
-        deprecated: true,
+        deprecated: 'Use a multiselect input from the Elements panel instead of this one.',
     },
     options: {
         noBorderRadiusClipping: true,
