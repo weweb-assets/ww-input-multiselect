@@ -15,6 +15,7 @@
         :create-option="content.allowCreation"
         :canClear="content.clearIcon && !isReadOnly"
         :caret="content.caretIcon && !isReadOnly"
+        :attrs="wwElementState.props.attributes"
     >
         <!-- Placeholder -->
         <template v-slot:placeholder v-if="placeholder.length">
