@@ -2,19 +2,11 @@
     <Multiselect
         ref="multiselect"
         v-model="internalValue"
+        :key="componentKey"
         class="input-multiselect"
         :style="cssVariables"
         :class="{ editing: isEditing }"
-        :options="options"
-        :close-on-select="content.closeOnSelect"
-        :searchable="content.searchable"
-        :mode="content.mode"
-        :disabled="isReadOnly || content.disabled"
-        :hideSelected="content.hideSelected"
-        :placeholder="placeholder"
-        :create-option="content.allowCreation"
-        :canClear="content.clearIcon && !isReadOnly"
-        :caret="content.caretIcon && !isReadOnly"
+        v-bind="multiselectProps"
     >
         <!-- Placeholder -->
         <template v-slot:placeholder v-if="placeholder.length">
@@ -46,7 +38,7 @@
         <!-- Tag unselected in list -->
         <template v-if="content.mode === 'tags'" v-slot:option="{ option }">
             <wwLayoutItemContext :index="getOptionIndex(option)" :item="{}" is-repeat :data="option">
-                <wwElement class="multiselect-tag-el" v-bind="content.tagElement" :wwProps="{ text: option.label }" />
+                <OptionItem :option="option" :tagElement="content.tagElement" />
             </wwLayoutItemContext>
         </template>
 
@@ -64,6 +56,7 @@
 
 <script>
 import Multiselect from '@vueform/multiselect';
+import OptionItem from './OptionItem.vue';
 
 const DEFAULT_LABEL_FIELD = 'label';
 const DEFAULT_VALUE_FIELD = 'value';
@@ -71,7 +64,7 @@ const DEFAULT_TEXT_COLOR_FIELD = 'textColor';
 const DEFAULT_BG_COLOR_FIELD = 'bgColor';
 
 export default {
-    components: { Multiselect },
+    components: { Multiselect, OptionItem },
     emits: ['trigger-event', 'update:content:effect', 'add-state', 'remove-state'],
     props: {
         uid: { type: String, required: true },
@@ -92,6 +85,7 @@ export default {
     },
     data: () => ({
         options: [],
+        componentKey: 0,
     }),
     created() {
         this.init();
@@ -103,6 +97,25 @@ export default {
             /* wwEditor:end */
             // eslint-disable-next-line no-unreachable
             return false;
+        },
+        multiselectProps() {
+            return {
+                options: this.options,
+                closeOnSelect: this.content.closeOnSelect,
+                searchable: this.content.searchable,
+                mode: this.content.mode,
+                disabled: this.isReadOnly || this.content.disabled,
+                required: this.content.required,
+                hideSelected: this.content.hideSelected,
+                placeholder: 'placeholder',
+                createOption: this.content.allowCreation,
+                canClear: this.content.clearIcon && !this.isReadOnly,
+                caret: this.content.caretIcon && !this.isReadOnly,
+                name: this.wwElementState.name,
+                infinite: this.content.infiniteScroll,
+                limit: this.content.limitedOptions ? this.content.limit : -1,
+                resolveOnLoad: false,
+            };
         },
         internalValue: {
             get() {
@@ -141,6 +154,7 @@ export default {
                 '--ms-bg-disabled': this.isReadOnly ? 'transparent' : null,
                 '--ms-bg': 'transparent',
                 '--ms-radius': '0',
+                '--ms-spinner-color': this.content.loadingRingColor,
             };
         },
         isReadOnly() {
@@ -162,7 +176,11 @@ export default {
             this.refreshInitialValue();
         },
         'content.options'() {
-            this.refreshOptions();
+            this.componentKey += 1;
+            this.$nextTick(() => {
+                this.init();
+                this.refreshOptions();
+            });
         },
         isReadOnly: {
             immediate: true,
@@ -186,6 +204,26 @@ export default {
         },
         'content.isOpen'(value) {
             this.handleOpening(value);
+        },
+        'content.infiniteScroll'(value) {
+            if (value) {
+                this.$emit('update:content', { limitedOptions: true });
+            }
+
+            this.componentKey += 1;
+            this.$nextTick(() => {
+                this.init();
+            });
+        },
+        'content.limitedOptions'(value) {
+            if (!value) {
+                this.$emit('update:content', { infiniteScroll: false });
+            }
+
+            this.componentKey += 1;
+            this.$nextTick(() => {
+                this.init();
+            });
         },
         /* wwEditor:end */
     },
@@ -294,9 +332,6 @@ export default {
 .input-multiselect::v-deep .multiselect-caret {
     margin-top: 10px;
     margin-bottom: 10px;
-}
-.input-multiselect::v-deep .multiselect-dropdown {
-    max-height: unset;
 }
 .input-multiselect::v-deep .multiselect-placeholder-el {
     position: absolute !important;
