@@ -192,14 +192,17 @@ export default {
     methods: {
         init() {
             const initialOptions = Array.isArray(this.content.options) ? [...this.content.options] : [];
-            const initialValue = Array.isArray(this.content.initialValue) ? [...this.content.initialValue] : [];
             this.options.push(...initialOptions.map(option => this.formatOption(option)));
-            // add initial values as custom options if not already included
-            this.options.push(
-                ...initialValue.filter(selection => !this.options.map(option => option.value).includes(selection))
-            );
-            // We set internalValue after the options to avoid mismatch
-            this.internalValue = initialValue;
+
+            if (this.content.initialValue !== undefined) {
+                // add initial values as custom options if not already included
+                const initialValue = Array.isArray(this.content.initialValue) ? [...this.content.initialValue] : [];
+                this.options.push(
+                    ...initialValue.filter(selection => !this.options.map(option => option.value).includes(selection))
+                );
+                // We set internalValue after the options to avoid mismatch
+                this.internalValue = initialValue;
+            }
         },
         /**
          * We need to avoid to have a value not present in options
