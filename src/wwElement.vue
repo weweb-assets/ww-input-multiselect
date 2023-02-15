@@ -116,8 +116,8 @@ export default {
                 }
                 return Array.isArray(this.currentSelection) ? this.currentSelection : [];
             },
-            set(newValue, OldValue) {
-                if (newValue === OldValue) return;
+            set(newValue, oldValue) {
+                if (newValue === oldValue) return;
                 this.setCurrentSelection(newValue);
                 this.$emit('trigger-event', { name: 'change', event: { domEvent: {}, value: newValue } });
             },
