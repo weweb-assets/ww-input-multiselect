@@ -64,6 +64,7 @@
 
 <script>
 import Multiselect from '@vueform/multiselect';
+import { computed } from 'vue'
 
 const DEFAULT_LABEL_FIELD = 'label';
 const DEFAULT_VALUE_FIELD = 'value';
@@ -86,7 +87,7 @@ export default {
             uid: props.uid,
             name: 'currentSelection',
             type: 'array',
-            defaultValue: Array.isArray(props.content.initialValue) ? props.content.initialValue : [],
+            defaultValue: computed(() => Array.isArray(props.content.initialValue) ? props.content.initialValue : []),
         });
         return { currentSelection, setCurrentSelection };
     },
