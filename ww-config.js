@@ -39,7 +39,10 @@ export default {
     options: {
         noBorderRadiusClipping: true,
     },
-    triggerEvents: [{ name: 'change', label: { en: 'On change' }, event: { value: [] }, default: true }],
+    triggerEvents: [
+        { name: 'change', label: { en: 'On change' }, event: { value: [] }, default: true },
+        { name: 'initValueChange', label: { en: 'On init value change' }, event: { value: '' } },
+    ],
     properties: {
         isOpen: {
             type: 'OnOff',

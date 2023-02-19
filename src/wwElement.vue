@@ -129,9 +129,10 @@ export default {
                 }
                 return Array.isArray(this.currentSelection) ? this.currentSelection : [];
             },
-            set(value) {
-                this.setCurrentSelection(value);
-                this.$emit('trigger-event', { name: 'change', event: { domEvent: {}, value } });
+            set(newValue, OldValue) {
+                if (newValue === OldValue) return;
+                this.setCurrentSelection(newValue);
+                this.$emit('trigger-event', { name: 'change', event: { domEvent: {}, value: newValue } });
             },
         },
         placeholder() {
@@ -174,6 +175,7 @@ export default {
         },
         'content.initialValue'() {
             this.refreshInitialValue();
+            this.$emit('trigger-event', { name: 'initValueChange', event: { value: this.content.initialValue } });
         },
         'content.options'() {
             this.componentKey += 1;
