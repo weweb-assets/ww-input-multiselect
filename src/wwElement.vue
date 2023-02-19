@@ -207,7 +207,7 @@ export default {
         },
         'content.infiniteScroll'(value) {
             if (value) {
-                this.$emit('update:content', { limitedOptions: true });
+                this.$emit('update:content:effect', { limitedOptions: true });
             }
 
             this.componentKey += 1;
@@ -217,7 +217,7 @@ export default {
         },
         'content.limitedOptions'(value) {
             if (!value) {
-                this.$emit('update:content', { infiniteScroll: false });
+                this.$emit('update:content:effect', { infiniteScroll: false });
             }
 
             this.componentKey += 1;
