@@ -117,9 +117,10 @@ export default {
                 }
                 return Array.isArray(this.currentSelection) ? this.currentSelection : [];
             },
-            set(value) {
-                this.setCurrentSelection(value);
-                this.$emit('trigger-event', { name: 'change', event: { domEvent: {}, value } });
+            set(newValue, oldValue) {
+                if (newValue === oldValue) return;
+                this.setCurrentSelection(newValue);
+                this.$emit('trigger-event', { name: 'change', event: { domEvent: {}, value: newValue } });
             },
         },
         placeholder() {
@@ -161,6 +162,7 @@ export default {
         },
         'content.initialValue'() {
             this.refreshInitialValue();
+            this.$emit('trigger-event', { name: 'initValueChange', event: { value: this.content.initialValue } });
         },
         'content.options'() {
             this.refreshOptions();
@@ -228,7 +230,8 @@ export default {
             this.options.push(
                 ...initialValue.filter(selection => !this.options.map(option => option.value).includes(selection))
             );
-            this.internalValue = initialValue;
+
+            this.setCurrentSelection(initialValue);
         },
         formatOption(option) {
             const labelField = this.content.labelField || DEFAULT_LABEL_FIELD;
@@ -290,7 +293,6 @@ export default {
     }
     /* wwEditor:end */
 }
-
 .input-multiselect::v-deep .multiselect-tag {
     padding: 4px;
     border-radius: 4px;
