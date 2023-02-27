@@ -64,7 +64,7 @@
 
 <script>
 import Multiselect from '@vueform/multiselect';
-import { computed } from 'vue'
+import { computed } from 'vue';
 
 const DEFAULT_LABEL_FIELD = 'label';
 const DEFAULT_VALUE_FIELD = 'value';
@@ -87,7 +87,7 @@ export default {
             uid: props.uid,
             name: 'currentSelection',
             type: 'array',
-            defaultValue: computed(() => Array.isArray(props.content.initialValue) ? props.content.initialValue : []),
+            defaultValue: computed(() => (Array.isArray(props.content.initialValue) ? props.content.initialValue : [])),
         });
         return { currentSelection, setCurrentSelection };
     },
@@ -143,6 +143,9 @@ export default {
                 '--ms-bg-disabled': this.isReadOnly ? 'transparent' : null,
                 '--ms-bg': 'transparent',
                 '--ms-radius': '0',
+                '--search-font-size': this.content.searchFontSize || 'inherit',
+                '--search-font-family': this.content.searchFontFamily || 'inherit',
+                '--search-font-color': this.content.searchFontColor || 'inherit',
             };
         },
         isReadOnly() {
@@ -297,6 +300,13 @@ export default {
     padding: 4px;
     border-radius: 4px;
 }
+
+.input-multiselect::v-deep .multiselect-tags-search {
+    font-size: var(--search-font-size);
+    font-family: var(--search-font-family);
+    color: var(--search-font-color);
+}
+
 .input-multiselect::v-deep .multiselect-caret {
     margin-top: 10px;
     margin-bottom: 10px;
