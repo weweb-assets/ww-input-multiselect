@@ -167,6 +167,18 @@ export default {
         'content.options'() {
             this.refreshOptions();
         },
+        'content.labelField'() {
+            this.refreshOptions();
+        },
+        'content.valueField'() {
+            this.refreshOptions();
+        },
+        'content.bgColorField'() {
+            this.refreshOptions();
+        },
+        'content.textColorField'() {
+            this.refreshOptions();
+        },
         isReadOnly: {
             immediate: true,
             handler(value) {
