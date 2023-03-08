@@ -143,6 +143,9 @@ export default {
                 '--ms-bg-disabled': this.isReadOnly ? 'transparent' : null,
                 '--ms-bg': 'transparent',
                 '--ms-radius': '0',
+                '--search-font-size': this.content.searchFontSize || 'inherit',
+                '--search-font-family': this.content.searchFontFamily || 'inherit',
+                '--search-font-color': this.content.searchFontColor || 'inherit',
             };
         },
         isReadOnly() {
@@ -311,6 +314,9 @@ export default {
 }
 .input-multiselect::v-deep .multiselect-tags-search {
     background-color: transparent;
+    font-size: var(--search-font-size);
+    font-family: var(--search-font-family);
+    color: var(--search-font-color);
 }
 .input-multiselect::v-deep .multiselect-caret {
     margin-top: 10px;
