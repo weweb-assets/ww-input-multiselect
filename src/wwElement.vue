@@ -170,6 +170,18 @@ export default {
         'content.options'() {
             this.refreshOptions();
         },
+        'content.labelField'() {
+            this.refreshOptions();
+        },
+        'content.valueField'() {
+            this.refreshOptions();
+        },
+        'content.bgColorField'() {
+            this.refreshOptions();
+        },
+        'content.textColorField'() {
+            this.refreshOptions();
+        },
         isReadOnly: {
             immediate: true,
             handler(value) {
@@ -300,13 +312,12 @@ export default {
     padding: 4px;
     border-radius: 4px;
 }
-
 .input-multiselect::v-deep .multiselect-tags-search {
+    background-color: transparent;
     font-size: var(--search-font-size);
     font-family: var(--search-font-family);
     color: var(--search-font-color);
 }
-
 .input-multiselect::v-deep .multiselect-caret {
     margin-top: 10px;
     margin-bottom: 10px;
