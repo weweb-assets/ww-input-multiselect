@@ -29,7 +29,7 @@ export default {
             for (const m of mutations) {
                 const classes = m.target.getAttribute(m.attributeName);
                 this.$nextTick(() => {
-                    this.handleOntionState(classes);
+                    this.handleOptionState(classes);
                 });
             }
         });
@@ -41,7 +41,7 @@ export default {
         });
     },
     methods: {
-        handleOntionState(classes) {
+        handleOptionState(classes) {
             if (!classes || typeof classes !== 'string') return;
 
             if (classes.includes('is-pointed') && !classes.includes('is-selected')) {
