@@ -346,6 +346,10 @@ export default {
     }
     /* wwEditor:end */
 }
+.input-multiselect::v-deep .multiselect-wrapper {
+    height: inherit;
+    min-height: unset;
+}
 .input-multiselect::v-deep .multiselect-tag {
     padding: 4px;
     border-radius: 4px;
