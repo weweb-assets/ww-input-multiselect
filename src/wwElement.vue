@@ -56,6 +56,7 @@
 
 <script>
 import Multiselect from '@vueform/multiselect';
+import { computed } from 'vue';
 import OptionItem from './OptionItem.vue';
 
 const DEFAULT_LABEL_FIELD = 'label';
@@ -79,7 +80,7 @@ export default {
             uid: props.uid,
             name: 'currentSelection',
             type: 'array',
-            defaultValue: Array.isArray(props.content.initialValue) ? props.content.initialValue : [],
+            defaultValue: computed(() => (Array.isArray(props.content.initialValue) ? props.content.initialValue : [])),
         });
         return { currentSelection, setCurrentSelection };
     },
@@ -129,8 +130,8 @@ export default {
                 }
                 return Array.isArray(this.currentSelection) ? this.currentSelection : [];
             },
-            set(newValue, OldValue) {
-                if (newValue === OldValue) return;
+            set(newValue, oldValue) {
+                if (newValue === oldValue) return;
                 this.setCurrentSelection(newValue);
                 this.$emit('trigger-event', { name: 'change', event: { domEvent: {}, value: newValue } });
             },
@@ -156,6 +157,9 @@ export default {
                 '--ms-bg': 'transparent',
                 '--ms-radius': '0',
                 '--ms-spinner-color': this.content.loadingRingColor,
+                '--search-font-size': this.content.searchFontSize || 'inherit',
+                '--search-font-family': this.content.searchFontFamily || 'inherit',
+                '--search-font-color': this.content.searchFontColor || 'inherit',
             };
         },
         isReadOnly() {
@@ -183,6 +187,18 @@ export default {
                 this.init();
                 this.refreshOptions();
             });
+        },
+        'content.labelField'() {
+            this.refreshOptions();
+        },
+        'content.valueField'() {
+            this.refreshOptions();
+        },
+        'content.bgColorField'() {
+            this.refreshOptions();
+        },
+        'content.textColorField'() {
+            this.refreshOptions();
         },
         isReadOnly: {
             immediate: true,
@@ -232,14 +248,17 @@ export default {
     methods: {
         init() {
             const initialOptions = Array.isArray(this.content.options) ? [...this.content.options] : [];
-            const initialValue = Array.isArray(this.content.initialValue) ? [...this.content.initialValue] : [];
             this.options.push(...initialOptions.map(option => this.formatOption(option)));
-            // add initial values as custom options if not already included
-            this.options.push(
-                ...initialValue.filter(selection => !this.options.map(option => option.value).includes(selection))
-            );
-            // We set internalValue after the options to avoid mismatch
-            this.internalValue = initialValue;
+
+            if (this.content.initialValue !== undefined) {
+                // add initial values as custom options if not already included
+                const initialValue = Array.isArray(this.content.initialValue) ? [...this.content.initialValue] : [];
+                this.options.push(
+                    ...initialValue.filter(selection => !this.options.map(option => option.value).includes(selection))
+                );
+                // We set internalValue after the options to avoid mismatch
+                this.internalValue = initialValue;
+            }
         },
         /**
          * We need to avoid to have a value not present in options
@@ -264,7 +283,8 @@ export default {
             this.options.push(
                 ...initialValue.filter(selection => !this.options.map(option => option.value).includes(selection))
             );
-            this.internalValue = initialValue;
+
+            this.setCurrentSelection(initialValue);
         },
         formatOption(option) {
             const labelField = this.content.labelField || DEFAULT_LABEL_FIELD;
@@ -326,10 +346,15 @@ export default {
     }
     /* wwEditor:end */
 }
-
 .input-multiselect::v-deep .multiselect-tag {
     padding: 4px;
     border-radius: 4px;
+}
+.input-multiselect::v-deep .multiselect-tags-search {
+    background-color: transparent;
+    font-size: var(--search-font-size);
+    font-family: var(--search-font-family);
+    color: var(--search-font-color);
 }
 .input-multiselect::v-deep .multiselect-caret {
     margin-top: 10px;
