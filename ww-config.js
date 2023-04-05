@@ -19,9 +19,21 @@ export default {
         ],
         customSettingsPropertiesOrder: [
             'isOpen',
-            ['initialValue', 'options', 'hintFields', 'labelField', 'valueField', 'textColorField', 'bgColorField'],
-            ['placeholder'],
-            ['disabled', 'readonly', 'mode', 'allowCreation', 'hideSelected', 'searchable', 'closeOnSelect'],
+            'initialValue',
+            ['options', 'hintFields', 'labelField', 'valueField'],
+            ['textColorField', 'bgColorField'],
+            ['disabled', 'readonly', 'mode', 'placeholder'],
+            [
+                'advanced',
+                'allowCreation',
+                'hideSelected',
+                'searchable',
+                'closeOnSelect',
+                'infiniteScroll',
+                'loadingRingColor',
+                'limitedOptions',
+                'limit',
+            ],
             ['clearIcon', 'caretIcon'],
         ],
     },
@@ -115,7 +127,16 @@ export default {
             },
             /* wwEditor:end */
         },
+        advanced: {
+            type: 'OnOff',
+            label: {
+                en: 'Advanced options',
+            },
+            defaultValue: false,
+            section: 'settings',
+        },
         allowCreation: {
+            hidden: content => !content.advanced,
             label: {
                 en: 'Allow to create option',
                 fr: "Permettre la création d'option",
@@ -132,6 +153,7 @@ export default {
             /* wwEditor:end */
         },
         hideSelected: {
+            hidden: content => !content.advanced,
             label: {
                 en: 'Hide selected elements',
                 fr: 'Cacher les éléments sélectionnés',
@@ -141,6 +163,7 @@ export default {
             section: 'settings',
         },
         searchable: {
+            hidden: content => !content.advanced,
             label: {
                 en: 'Searchable',
                 fr: 'Recherche',
@@ -188,12 +211,57 @@ export default {
             hidden: content => !content.searchable,
         },
         closeOnSelect: {
+            hidden: content => !content.advanced,
             label: {
                 en: 'Close on select',
                 fr: 'Ferme à la sélection',
             },
             type: 'OnOff',
             defaultValue: false,
+            section: 'settings',
+        },
+        infiniteScroll: {
+            hidden: content => !content.advanced,
+            label: {
+                en: 'Infinite scroll',
+                fr: 'Scroll infini',
+            },
+            type: 'OnOff',
+            defaultValue: false,
+            section: 'settings',
+        },
+        loadingRingColor: {
+            hidden: content => !content.advanced || !content.infiniteScroll,
+            label: {
+                en: 'Loading ring color',
+            },
+            type: 'Color',
+            defaultValue: '#099af2',
+            section: 'settings',
+        },
+        limitedOptions: {
+            hidden: content => !content.advanced,
+            label: {
+                en: 'Limited options',
+                fr: 'Options limitées',
+            },
+            type: 'OnOff',
+            defaultValue: false,
+            section: 'settings',
+        },
+        limit: {
+            hidden: content => !content.advanced || !content.limitedOptions,
+            type: 'Number',
+            label: {
+                en: 'Limit',
+                fr: 'Limite',
+            },
+            options: {
+                min: 10,
+                max: 50,
+                step: 1,
+            },
+            defaultValue: 20,
             section: 'settings',
         },
         clearIcon: {
