@@ -370,4 +370,15 @@ export default {
     left: 0px !important;
     transform: translateY(-50%);
 }
+
+/* wwEditor:start */
+.input-multiselect:not(.editing)::v-deep .multiselect-placeholder-el {
+    pointer-events: none;
+}
+/* wwEditor:end */
+/* wwFront:start */
+.input-multiselect::v-deep .multiselect-placeholder-el {
+    pointer-events: none;
+}
+/* wwFront:end */
 </style>
