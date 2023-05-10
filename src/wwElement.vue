@@ -9,11 +9,11 @@
         v-bind="multiselectProps"
     >
         <!-- Placeholder -->
-        <template v-slot:placeholder v-if="placeholder.length">
+        <template v-slot:placeholder>
             <wwElement
                 class="multiselect-placeholder-el"
                 v-bind="content.placeholderElement"
-                :wwProps="{ text: placeholder }"
+                :wwProps="{ text: placeholder || '' }"
             />
         </template>
 
