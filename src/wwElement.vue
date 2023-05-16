@@ -303,6 +303,7 @@ export default {
                               wwLib.resolveObjectPropertyPath(option, textColorField) ||
                               this.content.tagsDefaultTextColor,
                       },
+                      data: option,
                   }
                 : {
                       // to allow flat array / option
