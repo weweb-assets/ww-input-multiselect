@@ -18,6 +18,7 @@ export default {
             ['searchFontFamily', 'searchFontSize', 'searchFontColor'],
         ],
         customSettingsPropertiesOrder: [
+            'isOpen',
             [
                 'openInEditor',
                 'layoutType',
@@ -332,21 +333,13 @@ export default {
                                 type: 'Text',
                                 options: { placeholder: 'Value' },
                             },
-                            textColor: {
-                                label: { en: 'Color' },
-                                type: 'Color',
-                            },
-                            bgColor: {
-                                label: { en: 'Background color' },
-                                type: 'Color',
-                            },
                         },
                     },
                 },
             },
             defaultValue: [
-                { value: 'option', label: { en: 'option - 1' }, bgColor: '#2196F3', textColor: '#FFFFFF' },
-                { value: 'option2', label: { en: 'option - 2' }, bgColor: '#2196F3', textColor: '#FFFFFF' },
+                { value: 'option', label: { en: 'option - 1' } },
+                { value: 'option2', label: { en: 'option - 2' } },
             ],
             bindable: true,
             /* wwEditor:start */
@@ -404,8 +397,11 @@ export default {
             defaultValue: null,
             section: 'settings',
         },
+        /**
+         * DEPRECATED FIELD
+         */
         bgColorField: {
-            hidden: (content, sidepanelContent, boundProps) => !boundProps.options || !content.options,
+            hidden: true,
             label: {
                 en: 'Background color field',
                 fr: 'Background color field',
@@ -421,8 +417,11 @@ export default {
             defaultValue: null,
             section: 'settings',
         },
+        /**
+         * DEPRECATED FIELD
+         */
         textColorField: {
-            hidden: (content, sidepanelContent, boundProps) => !boundProps.options || !content.options,
+            hidden: true,
             label: {
                 en: 'Text color field',
                 fr: 'Text color field',
