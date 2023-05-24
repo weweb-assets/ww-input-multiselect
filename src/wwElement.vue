@@ -120,14 +120,6 @@ export default {
         },
         internalValue: {
             get() {
-                if (this.content.allowCreation) {
-                    // we need to make available custom options before using them
-                    for (const selection of this.currentSelection) {
-                        if (!this.options.some(option => option.value === selection)) {
-                            this.options.push(this.formatOption(selection));
-                        }
-                    }
-                }
                 return Array.isArray(this.currentSelection) ? this.currentSelection : [];
             },
             set(newValue, oldValue) {
