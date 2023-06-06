@@ -24,7 +24,7 @@
                 <wwLayoutItemContext :index="getOptionIndex(option)" :item="{}" is-repeat :data="option">
                     <OptionItemSelected
                         :option="option"
-                        :layoutType="content.layoutType"
+                        :layoutType="layoutType"
                         :selectedFlexboxElement="content.selectedFlexboxElement"
                         :tagElement="content.tagElement"
                         :removeTagIconElement="content.removeTagIconElement"
@@ -41,7 +41,7 @@
             <wwLayoutItemContext :index="getOptionIndex(option)" :item="{}" is-repeat :data="option">
                 <OptionItem
                     :option="option"
-                    :layoutType="content.layoutType"
+                    :layoutType="layoutType"
                     :flexboxElement="content.flexboxElement"
                     :tagElement="content.tagElement"
                     :isReadOnly="isReadOnly"
@@ -108,6 +108,9 @@ export default {
             // eslint-disable-next-line no-unreachable
             return false;
         },
+        layoutType() {
+            return this.content.layoutType ? this.content.layoutType : 'text';
+        },
         multiselectProps() {
             return {
                 options: this.options,
@@ -149,7 +152,7 @@ export default {
             return wwLib.wwLang.getText(this.content.placeholder);
         },
         defaultTagStyle() {
-            return this.content.layoutType === 'text'
+            return this.layoutType === 'text'
                 ? {
                       backgroundColor: this.content.tagsDefaultBgColor,
                       color: this.content.tagsDefaultTextColor,
@@ -315,7 +318,7 @@ export default {
             const bgColorField = this.content.bgColorField || DEFAULT_BG_COLOR_FIELD;
             const textColorField = this.content.textColorField || DEFAULT_TEXT_COLOR_FIELD;
 
-            if (this.content.layoutType === 'free')
+            if (this.layoutType === 'free')
                 return {
                     label: wwLib.wwLang.getText(wwLib.resolveObjectPropertyPath(option, labelField)),
                     value: wwLib.resolveObjectPropertyPath(option, valueField),
@@ -342,7 +345,7 @@ export default {
                   };
         },
         getOptionStyle(option) {
-            return this.content.layoutType === 'text' ? option.style || this.defaultTagStyle : null;
+            return this.layoutType === 'text' ? option.style || this.defaultTagStyle : null;
         },
         handleOpening(value) {
             if (!this.$refs.multiselect) return;
