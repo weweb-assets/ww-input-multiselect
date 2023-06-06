@@ -7,6 +7,7 @@
         :style="cssVariables"
         :class="{ editing: isEditing }"
         v-bind="multiselectProps"
+        @close="verifyClose"
     >
         <!-- Placeholder -->
         <template v-slot:placeholder>
@@ -19,17 +20,17 @@
 
         <!-- Tag selected with remove icon -->
         <template v-slot:tag="{ option, handleTagRemove }">
-            <div class="multiselect-tag" :style="option.style || defaultTagStyle">
+            <div class="multiselect-tag" :style="getOptionStyle(option)">
                 <wwLayoutItemContext :index="getOptionIndex(option)" :item="{}" is-repeat :data="option">
-                    <wwElement
-                        class="multiselect-tag-el"
-                        v-bind="content.tagElementSelected"
-                        :wwProps="{ text: option.label }"
-                    />
-                    <wwElement
-                        v-if="!isReadOnly"
-                        @mousedown.prevent="isEditing ? null : handleTagRemove(option, $event)"
-                        v-bind="content.removeTagIconElement"
+                    <OptionItemSelected
+                        :option="option"
+                        :layoutType="layoutType"
+                        :selectedFlexboxElement="content.selectedFlexboxElement"
+                        :tagElement="content.tagElement"
+                        :removeTagIconElement="content.removeTagIconElement"
+                        :isReadOnly="isReadOnly"
+                        :isEditing="isEditing"
+                        :handleTagRemove="handleTagRemove"
                     />
                 </wwLayoutItemContext>
             </div>
@@ -38,7 +39,14 @@
         <!-- Tag unselected in list -->
         <template v-if="content.mode === 'tags'" v-slot:option="{ option }">
             <wwLayoutItemContext :index="getOptionIndex(option)" :item="{}" is-repeat :data="option">
-                <OptionItem :option="option" :tagElement="content.tagElement" />
+                <OptionItem
+                    :option="option"
+                    :layoutType="layoutType"
+                    :flexboxElement="content.flexboxElement"
+                    :tagElement="content.tagElement"
+                    :isReadOnly="isReadOnly"
+                    :isEditing="isEditing"
+                />
             </wwLayoutItemContext>
         </template>
 
@@ -58,6 +66,7 @@
 import Multiselect from '@vueform/multiselect';
 import { computed } from 'vue';
 import OptionItem from './OptionItem.vue';
+import OptionItemSelected from './OptionItemSelected.vue';
 
 const DEFAULT_LABEL_FIELD = 'label';
 const DEFAULT_VALUE_FIELD = 'value';
@@ -65,7 +74,7 @@ const DEFAULT_TEXT_COLOR_FIELD = 'textColor';
 const DEFAULT_BG_COLOR_FIELD = 'bgColor';
 
 export default {
-    components: { Multiselect, OptionItem },
+    components: { Multiselect, OptionItem, OptionItemSelected },
     emits: ['trigger-event', 'update:content:effect', 'add-state', 'remove-state'],
     props: {
         uid: { type: String, required: true },
@@ -98,6 +107,9 @@ export default {
             /* wwEditor:end */
             // eslint-disable-next-line no-unreachable
             return false;
+        },
+        layoutType() {
+            return this.content.layoutType ? this.content.layoutType : 'text';
         },
         multiselectProps() {
             return {
@@ -132,10 +144,14 @@ export default {
             return wwLib.wwLang.getText(this.content.placeholder);
         },
         defaultTagStyle() {
-            return {
-                backgroundColor: this.content.tagsDefaultBgColor,
-                color: this.content.tagsDefaultTextColor,
-            };
+            return this.layoutType === 'text'
+                ? {
+                      backgroundColor: this.content.tagsDefaultBgColor,
+                      color: this.content.tagsDefaultTextColor,
+                  }
+                : {
+                      backgroundColor: 'transparent',
+                  };
         },
         cssVariables() {
             return {
@@ -167,29 +183,39 @@ export default {
     },
     watch: {
         isEditing() {
-            this.handleOpening(this.content.isOpen);
+            this.handleOpening(this.wwEditorState.sidepanelContent.openInEditor);
         },
+        /* wwEditor:start */
+        isEditing() {
+            this.handleOpening(!this.isEditing ? false : this.wwEditorState.sidepanelContent.openInEditor);
+        },
+        /* wwEditor:end */
         'content.initialValue'() {
             this.refreshInitialValue();
             this.$emit('trigger-event', { name: 'initValueChange', event: { value: this.content.initialValue } });
         },
         'content.options'() {
-            this.componentKey += 1;
-            this.$nextTick(() => {
-                this.init();
-                this.refreshOptions();
-            });
+            this.componentKey++;
+            this.refreshOptions();
         },
         'content.labelField'() {
+            this.componentKey++;
             this.refreshOptions();
         },
         'content.valueField'() {
+            this.componentKey++;
             this.refreshOptions();
         },
         'content.bgColorField'() {
+            this.componentKey++;
             this.refreshOptions();
         },
         'content.textColorField'() {
+            this.componentKey++;
+            this.refreshOptions();
+        },
+        'content.layoutType'() {
+            this.componentKey++;
             this.refreshOptions();
         },
         isReadOnly: {
@@ -212,7 +238,7 @@ export default {
                     textColorField: null,
                 });
         },
-        'content.isOpen'(value) {
+        'wwEditorState.sidepanelContent.openInEditor'(value) {
             this.handleOpening(value);
         },
         'content.infiniteScroll'(value) {
@@ -284,6 +310,13 @@ export default {
             const bgColorField = this.content.bgColorField || DEFAULT_BG_COLOR_FIELD;
             const textColorField = this.content.textColorField || DEFAULT_TEXT_COLOR_FIELD;
 
+            if (this.layoutType === 'free')
+                return {
+                    label: wwLib.wwLang.getText(wwLib.resolveObjectPropertyPath(option, labelField)),
+                    value: wwLib.resolveObjectPropertyPath(option, valueField),
+                    data: option,
+                };
+
             return typeof option === 'object'
                 ? {
                       label: wwLib.wwLang.getText(wwLib.resolveObjectPropertyPath(option, labelField)),
@@ -303,7 +336,12 @@ export default {
                       value: option,
                   };
         },
+        getOptionStyle(option) {
+            return this.layoutType === 'text' ? option.style || this.defaultTagStyle : null;
+        },
         handleOpening(value) {
+            if (!this.$refs.multiselect) return;
+
             if (value) this.$refs.multiselect.open();
             else this.$refs.multiselect.close();
         },
@@ -313,9 +351,17 @@ export default {
         getOptionIndex(option) {
             return this.options.indexOf(option);
         },
-    },
-    mounted() {
-        this.handleOpening(this.content.isOpen);
+        checkIsOpen() {
+            /* wwEditor:start */
+            if (!this.isEditing) return;
+            this.handleOpening(this.wwEditorState.sidepanelContent.openInEditor);
+            /* wwEditor:end */
+        },
+        verifyClose() {
+            /* wwEditor:start */
+            if (this.wwEditorState.sidepanelContent.openInEditor) this.$refs.multiselect.open();
+            /* wwEditor:end */
+        },
     },
 };
 </script>
@@ -344,6 +390,7 @@ export default {
     min-height: unset;
 }
 .input-multiselect::v-deep .multiselect-tag {
+    background: transparent;
     padding: 4px;
     border-radius: 4px;
 }
@@ -356,6 +403,13 @@ export default {
 .input-multiselect::v-deep .multiselect-caret {
     margin-top: 10px;
     margin-bottom: 10px;
+}
+.ww-input-select::v-deep .multiselect-tag-el {
+    width: inherit;
+}
+.ww-input-select::v-deep .multiselect-option {
+    padding: 0px !important;
+    width: 100%;
 }
 .input-multiselect::v-deep .multiselect-placeholder-el {
     position: absolute !important;

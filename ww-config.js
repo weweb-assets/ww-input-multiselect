@@ -19,20 +19,19 @@ export default {
         ],
         customSettingsPropertiesOrder: [
             'isOpen',
-            'initialValue',
-            ['options', 'hintFields', 'labelField', 'valueField'],
-            ['disabled', 'readonly', 'mode', 'placeholder'],
             [
-                'advanced',
-                'allowCreation',
-                'hideSelected',
-                'searchable',
-                'closeOnSelect',
-                'infiniteScroll',
-                'loadingRingColor',
-                'limitedOptions',
-                'limit',
+                'openInEditor',
+                'layoutType',
+                'initialValue',
+                'options',
+                'hintFields',
+                'labelField',
+                'valueField',
+                'textColorField',
+                'bgColorField',
             ],
+            ['placeholder'],
+            ['disabled', 'readonly', 'mode', 'allowCreation', 'hideSelected', 'searchable', 'closeOnSelect'],
             ['clearIcon', 'caretIcon'],
         ],
     },
@@ -44,14 +43,28 @@ export default {
         { name: 'initValueChange', label: { en: 'On init value change' }, event: { value: '' } },
     ],
     properties: {
-        isOpen: {
+        openInEditor: {
             type: 'OnOff',
             label: {
-                en: 'Is open?',
-                fr: 'Is open?',
+                en: 'Force open in editor',
             },
+            editorOnly: true,
             defaultValue: false,
-            bindable: true,
+            section: 'settings',
+            hidden: content => content.readonly || content.disabled,
+        },
+        layoutType: {
+            label: {
+                en: 'Layout type',
+            },
+            type: 'TextSelect',
+            options: {
+                options: [
+                    { value: 'text', label: { en: 'Text' }, default: true },
+                    { value: 'free', label: { en: 'Free layout' } },
+                ],
+            },
+            defaultValue: 'text',
             section: 'settings',
         },
         placeholder: {
@@ -460,6 +473,7 @@ export default {
             },
             navigator: {
                 group: 'Option',
+                hidden: content => content.layoutType === 'free',
             },
         },
         tagElement: {
@@ -467,6 +481,45 @@ export default {
             defaultValue: { isWwObject: true, type: 'ww-text', state: { name: 'Text' } },
             navigator: {
                 group: 'Option',
+                hidden: content => content.layoutType === 'free',
+            },
+        },
+        flexboxElement: {
+            hidden: true,
+            defaultValue: {
+                isWwObject: true,
+                type: 'ww-flexbox',
+                state: {
+                    name: 'Option container',
+                    style: {
+                        default: {
+                            width: '100%',
+                        },
+                    },
+                },
+            },
+            navigator: {
+                group: 'Option',
+                hidden: content => content.layoutType !== 'free',
+            },
+        },
+        selectedFlexboxElement: {
+            hidden: true,
+            defaultValue: {
+                isWwObject: true,
+                type: 'ww-flexbox',
+                state: {
+                    name: 'Option container',
+                    style: {
+                        default: {
+                            width: '100%',
+                        },
+                    },
+                },
+            },
+            navigator: {
+                group: 'Option - Selected',
+                hidden: content => content.layoutType !== 'free',
             },
         },
         removeTagIconElement: {
@@ -486,7 +539,7 @@ export default {
                 content: { default: { icon: 'wwi wwi-cross', color: '#FFFFFF', fontSize: '16' } },
             },
             navigator: {
-                group: 'Option',
+                group: 'Option - Selected',
             },
         },
         caretIconElement: {
