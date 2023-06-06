@@ -60,7 +60,7 @@ export default {
             type: 'TextSelect',
             options: {
                 options: [
-                    { value: 'text', label: { en: 'Text' } },
+                    { value: 'text', label: { en: 'Text' }, default: true },
                     { value: 'free', label: { en: 'Free layout' } },
                 ],
             },
