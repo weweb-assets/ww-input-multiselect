@@ -428,4 +428,7 @@ export default {
     pointer-events: none;
 }
 /* wwFront:end */
+.input-multiselect::v-deep .multiselect-dropdown {
+    border-radius: var(--ms-dropdown-radius) !important;
+}
 </style>
