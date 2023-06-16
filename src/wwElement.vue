@@ -298,8 +298,13 @@ export default {
         },
         refreshInitialValue() {
             const initialValue = Array.isArray(this.content.initialValue) ? [...this.content.initialValue] : [];
+
             this.options.push(
-                ...initialValue.filter(selection => !this.options.map(option => option.value).includes(selection))
+                ...initialValue.filter(
+                    selection =>
+                        !this.options.map(option => option.value).includes(selection) &&
+                        !this.currentSelection.includes(selection)
+                )
             );
 
             this.setCurrentSelection(initialValue);
