@@ -26,7 +26,7 @@
                         :option="option"
                         :layoutType="layoutType"
                         :selectedFlexboxElement="content.selectedFlexboxElement"
-                        :tagElement="content.tagElement"
+                        :tagElement="content.tagElementSelected"
                         :removeTagIconElement="content.removeTagIconElement"
                         :isReadOnly="isReadOnly"
                         :isEditing="isEditing"
