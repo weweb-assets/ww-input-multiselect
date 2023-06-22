@@ -390,33 +390,33 @@ export default {
     }
     /* wwEditor:end */
 }
-.input-multiselect::v-deep .multiselect-wrapper {
+.input-multiselect:deep(.multiselect-wrapper) {
     height: inherit;
     min-height: unset;
 }
-.input-multiselect::v-deep .multiselect-tag {
+.input-multiselect:deep(.multiselect-tag) {
     background: transparent;
     padding: 4px;
     border-radius: 4px;
 }
-.input-multiselect::v-deep .multiselect-tags-search {
+.input-multiselect:deep(.multiselect-tags-search) {
     background-color: transparent;
     font-size: var(--search-font-size);
     font-family: var(--search-font-family);
     color: var(--search-font-color);
 }
-.input-multiselect::v-deep .multiselect-caret {
+.input-multiselect:deep(.multiselect-caret) {
     margin-top: 10px;
     margin-bottom: 10px;
 }
-.ww-input-select::v-deep .multiselect-tag-el {
+.ww-input-select:deep(.multiselect-tag-el) {
     width: inherit;
 }
-.ww-input-select::v-deep .multiselect-option {
+.ww-input-select:deep(.multiselect-option) {
     padding: 0px !important;
     width: 100%;
 }
-.input-multiselect::v-deep .multiselect-placeholder-el {
+.input-multiselect:deep(.multiselect-placeholder-el) {
     position: absolute !important;
     top: 50% !important;
     left: 0px !important;
@@ -424,12 +424,12 @@ export default {
 }
 
 /* wwEditor:start */
-.input-multiselect:not(.editing)::v-deep .multiselect-placeholder-el {
+.input-multiselect:not(.editing):deep(.multiselect-placeholder-el) {
     pointer-events: none;
 }
 /* wwEditor:end */
 /* wwFront:start */
-.input-multiselect::v-deep .multiselect-placeholder-el {
+.input-multiselect:deep(.multiselect-placeholder-el) {
     pointer-events: none;
 }
 /* wwFront:end */
