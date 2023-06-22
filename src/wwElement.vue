@@ -26,7 +26,7 @@
                         :option="option"
                         :layoutType="layoutType"
                         :selectedFlexboxElement="content.selectedFlexboxElement"
-                        :tagElement="content.tagElementSelected"
+                        :tagElement="content.tagElement"
                         :removeTagIconElement="content.removeTagIconElement"
                         :isReadOnly="isReadOnly"
                         :isEditing="isEditing"
@@ -312,6 +312,8 @@ export default {
         formatOption(option) {
             const labelField = this.content.labelField || DEFAULT_LABEL_FIELD;
             const valueField = this.content.valueField || DEFAULT_VALUE_FIELD;
+            const bgColorField = this.content.bgColorField || DEFAULT_BG_COLOR_FIELD;
+            const textColorField = this.content.textColorField || DEFAULT_TEXT_COLOR_FIELD;
 
             if (this.layoutType === 'free')
                 return {
@@ -324,6 +326,13 @@ export default {
                 ? {
                       label: wwLib.wwLang.getText(wwLib.resolveObjectPropertyPath(option, labelField)),
                       value: wwLib.resolveObjectPropertyPath(option, valueField),
+                      style: {
+                          backgroundColor:
+                              wwLib.resolveObjectPropertyPath(option, bgColorField) || this.content.tagsDefaultBgColor,
+                          color:
+                              wwLib.resolveObjectPropertyPath(option, textColorField) ||
+                              this.content.tagsDefaultTextColor,
+                      },
                       data: option,
                   }
                 : {
@@ -333,7 +342,7 @@ export default {
                   };
         },
         getOptionStyle(option) {
-            return this.layoutType === 'text' ? this.defaultTagStyle : null;
+            return this.layoutType === 'text' ? option.style || this.defaultTagStyle : null;
         },
         handleOpening(value) {
             if (!this.$refs.multiselect) return;
