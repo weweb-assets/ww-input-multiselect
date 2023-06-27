@@ -85,6 +85,7 @@ export default {
         wwElementState: { type: Object, required: true },
     },
     setup(props, { emit }) {
+        console.log('SETUP !:!!!!');
         const { value: currentSelection, setValue: setCurrentSelection } = wwLib.wwVariable.useComponentVariable({
             uid: props.uid,
             name: 'currentSelection',
@@ -182,17 +183,16 @@ export default {
         },
     },
     watch: {
-        isEditing() {
-            this.handleOpening(this.wwEditorState.sidepanelContent.openInEditor);
-        },
         /* wwEditor:start */
         isEditing() {
             this.handleOpening(!this.isEditing ? false : this.wwEditorState.sidepanelContent.openInEditor);
         },
         /* wwEditor:end */
         'content.initialValue'() {
-            this.refreshInitialValue();
-            this.$emit('trigger-event', { name: 'initValueChange', event: { value: this.content.initialValue } });
+            if (JSON.stringify(this.content.initialValue) !== JSON.stringify(this.internalValue)) {
+                this.refreshInitialValue();
+                this.$emit('trigger-event', { name: 'initValueChange', event: { value: this.content.initialValue } });
+            }
         },
         'content.options'() {
             this.componentKey++;
