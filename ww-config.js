@@ -191,6 +191,7 @@ export default {
             type: 'FontFamily',
             responsive: true,
             states: true,
+            classes: true,
             hidden: content => !content.searchable,
         },
         searchFontSize: {
@@ -207,6 +208,7 @@ export default {
             },
             responsive: true,
             states: true,
+            classes: true,
             hidden: content => !content.searchable,
         },
         searchFontColor: {
@@ -220,6 +222,7 @@ export default {
             bindable: true,
             responsive: true,
             states: true,
+            classes: true,
             hidden: content => !content.searchable,
         },
         closeOnSelect: {
@@ -250,6 +253,7 @@ export default {
             type: 'Color',
             defaultValue: '#099af2',
             section: 'settings',
+            classes: true,
         },
         limitedOptions: {
             hidden: content => !content.advanced,
@@ -385,46 +389,6 @@ export default {
             label: {
                 en: 'Value field',
                 fr: 'Value field',
-            },
-            type: 'ObjectPropertyPath',
-            options: content => {
-                if (!content.options.length || typeof content.options[0] !== 'object') {
-                    return null;
-                }
-
-                return { object: content.options[0] };
-            },
-            defaultValue: null,
-            section: 'settings',
-        },
-        /**
-         * DEPRECATED FIELD
-         */
-        bgColorField: {
-            hidden: true,
-            label: {
-                en: 'Background color field',
-                fr: 'Background color field',
-            },
-            type: 'ObjectPropertyPath',
-            options: content => {
-                if (!content.options.length || typeof content.options[0] !== 'object') {
-                    return null;
-                }
-
-                return { object: content.options[0] };
-            },
-            defaultValue: null,
-            section: 'settings',
-        },
-        /**
-         * DEPRECATED FIELD
-         */
-        textColorField: {
-            hidden: true,
-            label: {
-                en: 'Text color field',
-                fr: 'Text color field',
             },
             type: 'ObjectPropertyPath',
             options: content => {
@@ -586,6 +550,10 @@ export default {
             },
             type: 'Color',
             defaultValue: '#099AF2',
+            classes: true,
+            states: true,
+            responsive: true,
+            bindable: true,
         },
         tagsDefaultTextColor: {
             label: {
@@ -593,6 +561,10 @@ export default {
             },
             type: 'Color',
             defaultValue: '#FFFFFF',
+            classes: true,
+            states: true,
+            responsive: true,
+            bindable: true,
         },
         optionBackgroundPointed: {
             label: {
@@ -600,6 +572,10 @@ export default {
             },
             type: 'Color',
             defaultValue: '#d1d5db',
+            classes: true,
+            states: true,
+            responsive: true,
+            bindable: true,
         },
         dropdownBackgroundColor: {
             label: {
@@ -607,6 +583,10 @@ export default {
             },
             type: 'Color',
             defaultValue: '#ffffff',
+            classes: true,
+            states: true,
+            responsive: true,
+            bindable: true,
         },
         dropdownBorderWidth: {
             type: 'Length',
@@ -617,6 +597,10 @@ export default {
                 unitChoices: [{ value: 'px', label: 'px', min: 1, max: 100 }],
             },
             defaultValue: '1px',
+            classes: true,
+            states: true,
+            responsive: true,
+            bindable: true,
         },
         dropdownBorderColor: {
             label: {
@@ -624,6 +608,10 @@ export default {
             },
             type: 'Color',
             defaultValue: '#d1d5db',
+            classes: true,
+            states: true,
+            responsive: true,
+            bindable: true,
         },
         dropdownBorderRadius: {
             type: 'Length',
@@ -634,6 +622,10 @@ export default {
                 unitChoices: [{ value: 'px', label: 'px', min: 1, max: 100 }],
             },
             defaultValue: '4px',
+            classes: true,
+            states: true,
+            responsive: true,
+            bindable: true,
         },
         dropdownMaxHeight: {
             label: {
@@ -643,8 +635,10 @@ export default {
             options: {
                 unitChoices: [{ value: 'px', label: 'px', min: 1, max: 500 }],
             },
-            responsive: true,
+            classes: true,
             states: true,
+            responsive: true,
+            bindable: true,
             defaultValue: '150px',
         },
     },
