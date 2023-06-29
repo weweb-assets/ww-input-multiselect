@@ -366,6 +366,7 @@ export default {
 
 <style type="scss" scoped>
 .input-multiselect {
+    cursor: unset;
     --ms-border-width: 0px;
 
     position: relative;
