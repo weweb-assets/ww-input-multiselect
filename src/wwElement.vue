@@ -375,6 +375,10 @@ export default {
         box-shadow: unset;
     }
 
+    &.is-disabled {
+        cursor: unset;
+    }
+
     /* wwEditor:start */
     &.editing {
         pointer-events: none;
@@ -384,6 +388,7 @@ export default {
 .input-multiselect:deep(.multiselect-wrapper) {
     height: inherit;
     min-height: unset;
+    cursor: unset;
 }
 .input-multiselect:deep(.multiselect-tag) {
     background: transparent;
