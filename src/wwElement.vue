@@ -85,7 +85,6 @@ export default {
         wwElementState: { type: Object, required: true },
     },
     setup(props, { emit }) {
-        console.log('SETUP !:!!!!');
         const { value: currentSelection, setValue: setCurrentSelection } = wwLib.wwVariable.useComponentVariable({
             uid: props.uid,
             name: 'currentSelection',
