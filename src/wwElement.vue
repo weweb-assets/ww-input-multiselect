@@ -156,9 +156,9 @@ export default {
         cssVariables() {
             return {
                 '--ms-dropdown-bg': this.content.dropdownBackgroundColor,
-                '--ms-dropdown-border-width': this.content.dropdownBorderWidth,
+                '--ms-dropdown-border-width': this.content.dropdownBorderWidth || '0px',
                 '--ms-dropdown-border-color': this.content.dropdownBorderColor,
-                '--ms-dropdown-radius': this.content.dropdownBorderRadius,
+                '--ms-dropdown-radius': this.content.dropdownBorderRadius || '0px',
                 '--ms-max-height': this.content.dropdownMaxHeight || '10rem',
                 '--ms-option-bg-pointed': this.content.optionBackgroundPointed,
                 '--ms-bg-disabled': this.isReadOnly ? 'transparent' : null,
@@ -206,14 +206,6 @@ export default {
             this.componentKey++;
             this.refreshOptions();
         },
-        'content.bgColorField'() {
-            this.componentKey++;
-            this.refreshOptions();
-        },
-        'content.textColorField'() {
-            this.componentKey++;
-            this.refreshOptions();
-        },
         'content.layoutType'() {
             this.componentKey++;
             this.refreshOptions();
@@ -234,8 +226,6 @@ export default {
                 this.$emit('update:content:effect', {
                     labelField: null,
                     valueField: null,
-                    bgColorField: null,
-                    textColorField: null,
                 });
         },
         'wwEditorState.sidepanelContent.openInEditor'(value) {
