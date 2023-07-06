@@ -182,17 +182,16 @@ export default {
         },
     },
     watch: {
-        isEditing() {
-            this.handleOpening(this.wwEditorState.sidepanelContent.openInEditor);
-        },
         /* wwEditor:start */
         isEditing() {
             this.handleOpening(!this.isEditing ? false : this.wwEditorState.sidepanelContent.openInEditor);
         },
         /* wwEditor:end */
         'content.initialValue'() {
-            this.refreshInitialValue();
-            this.$emit('trigger-event', { name: 'initValueChange', event: { value: this.content.initialValue } });
+            if (JSON.stringify(this.content.initialValue) !== JSON.stringify(this.internalValue)) {
+                this.refreshInitialValue();
+                this.$emit('trigger-event', { name: 'initValueChange', event: { value: this.content.initialValue } });
+            }
         },
         'content.options'() {
             this.componentKey++;
