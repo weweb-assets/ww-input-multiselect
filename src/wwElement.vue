@@ -374,7 +374,6 @@ export default {
 
 <style type="scss" scoped>
 .input-multiselect {
-    cursor: unset;
     --ms-border-width: 0px;
 
     position: relative;
@@ -397,7 +396,6 @@ export default {
 .input-multiselect:deep(.multiselect-wrapper) {
     height: inherit;
     min-height: unset;
-    cursor: unset;
 }
 .input-multiselect:deep(.multiselect-tag) {
     background: transparent;
