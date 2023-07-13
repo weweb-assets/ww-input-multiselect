@@ -374,6 +374,7 @@ export default {
                 fr: 'Label field',
             },
             type: 'ObjectPropertyPath',
+            multiLang: true,
             options: content => {
                 if (!content.options.length || typeof content.options[0] !== 'object') {
                     return null;
