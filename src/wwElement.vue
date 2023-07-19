@@ -364,6 +364,10 @@ export default {
         box-shadow: unset;
     }
 
+    &.is-disabled {
+        cursor: unset;
+    }
+
     /* wwEditor:start */
     &.editing {
         pointer-events: none;
