@@ -214,7 +214,9 @@ export default {
         },
         currentLang() {
             this.componentKey++;
-            this.refreshOptions();
+            this.$nextTick(() => {
+                this.refreshOptions();
+            });
         },
         isReadOnly: {
             immediate: true,
