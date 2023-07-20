@@ -225,10 +225,8 @@ export default {
             this.refreshOptions();
         },
         currentLang() {
+            this.refreshOptions();
             this.componentKey++;
-            this.$nextTick(() => {
-                this.refreshOptions();
-            });
         },
         isReadOnly: {
             immediate: true,
