@@ -2,7 +2,7 @@
     <Multiselect
         ref="multiselect"
         v-model="internalValue"
-        :key="componentKey"
+        :key="componentKey + currentLang"
         class="input-multiselect"
         :style="cssVariables"
         :class="{ editing: isEditing }"
@@ -101,6 +101,9 @@ export default {
         this.init();
     },
     computed: {
+        currentLang() {
+            return wwLib.wwLang.lang;
+        },
         isEditing() {
             /* wwEditor:start */
             return this.wwEditorState.editMode === wwLib.wwEditorHelper.EDIT_MODES.EDITION;
