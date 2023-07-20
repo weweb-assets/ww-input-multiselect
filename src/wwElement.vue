@@ -2,7 +2,7 @@
     <Multiselect
         ref="multiselect"
         v-model="internalValue"
-        :key="componentKey"
+        :key="componentKey + currentLang"
         class="input-multiselect"
         :style="cssVariables"
         :class="{ editing: isEditing }"
