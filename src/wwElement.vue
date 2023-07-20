@@ -2,7 +2,7 @@
     <Multiselect
         ref="multiselect"
         v-model="internalValue"
-        :key="componentKey + currentLang"
+        :key="componentKey"
         class="input-multiselect"
         :style="cssVariables"
         :class="{ editing: isEditing }"
@@ -209,6 +209,10 @@ export default {
             this.refreshOptions();
         },
         'content.layoutType'() {
+            this.componentKey++;
+            this.refreshOptions();
+        },
+        currentLang() {
             this.componentKey++;
             this.refreshOptions();
         },
