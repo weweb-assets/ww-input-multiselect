@@ -382,6 +382,7 @@ export default {
     /* wwEditor:end */
 }
 .input-multiselect:deep(.multiselect-wrapper) {
+    cursor: unset;
     height: inherit;
     min-height: unset;
 }
