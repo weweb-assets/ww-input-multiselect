@@ -21,10 +21,15 @@
         <!-- Tag selected with remove icon -->
         <template v-slot:tag="{ option, handleTagRemove }">
             <div class="multiselect-tag" :style="getOptionStyle(option)">
-                <wwLayoutItemContext :index="getOptionIndex(option)" :item="{}" is-repeat :data="option">
+                <wwLayoutItemContext
+                    :index="getOptionIndex(option)"
+                    :item="{}"
+                    is-repeat
+                    :data="{ ...option, label: getLabel(option) }"
+                >
                     <OptionItemSelected
                         :key="getOptionIndex(option)"
-                        :option="option"
+                        :option="{ ...option, label: getLabel(option) }"
                         :layoutType="layoutType"
                         :selectedFlexboxElement="content.selectedFlexboxElement"
                         :tagElement="content.tagElementSelected"
@@ -39,9 +44,14 @@
 
         <!-- Tag unselected in list -->
         <template v-if="content.mode === 'tags'" v-slot:option="{ option }">
-            <wwLayoutItemContext :index="getOptionIndex(option)" :item="{}" is-repeat :data="option">
+            <wwLayoutItemContext
+                :index="getOptionIndex(option)"
+                :item="{}"
+                is-repeat
+                :data="{ ...option, label: getLabel(option) }"
+            >
                 <OptionItem
-                    :option="option"
+                    :option="{ ...option, label: getLabel(option) }"
                     :layoutType="layoutType"
                     :flexboxElement="content.flexboxElement"
                     :tagElement="content.tagElement"
@@ -352,6 +362,10 @@ export default {
             if (this.wwEditorState.sidepanelContent.openInEditor) this.$refs.multiselect.open();
             /* wwEditor:end */
         },
+        getLabel(option) {
+            if (!option || option.label === undefined || option.label === null) return '';
+            return `${wwLib.wwLang.getText(option.label)}`;
+        },
     },
 };
 </script>
@@ -369,10 +383,6 @@ export default {
         box-shadow: unset;
     }
 
-    &.is-disabled {
-        cursor: unset;
-    }
-
     /* wwEditor:start */
     &.editing {
         pointer-events: none;
@@ -380,7 +390,6 @@ export default {
     /* wwEditor:end */
 }
 .input-multiselect:deep(.multiselect-wrapper) {
-    cursor: unset;
     height: inherit;
     min-height: unset;
 }
