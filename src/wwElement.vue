@@ -23,7 +23,7 @@
             <div class="multiselect-tag" :style="getOptionStyle(option)">
                 <wwLayoutItemContext :index="getOptionIndex(option)" :item="{}" is-repeat :data="option">
                     <OptionItemSelected
-                        :key="getOptionIndex(option) + '_' + componentKey"
+                        :key="getOptionIndex(option)"
                         :option="option"
                         :layoutType="layoutType"
                         :selectedFlexboxElement="content.selectedFlexboxElement"
@@ -132,6 +132,7 @@ export default {
                 infinite: this.content.infiniteScroll,
                 limit: this.content.limitedOptions ? this.content.limit : -1,
                 resolveOnLoad: false,
+                locale: this.currentLang,
             };
         },
         internalValue: {
@@ -210,10 +211,6 @@ export default {
             this.refreshOptions();
         },
         'content.layoutType'() {
-            this.componentKey++;
-            this.refreshOptions();
-        },
-        currentLang() {
             this.componentKey++;
             this.refreshOptions();
         },
@@ -312,14 +309,14 @@ export default {
 
             if (this.layoutType === 'free')
                 return {
-                    label: wwLib.wwLang.getText(wwLib.resolveObjectPropertyPath(option, labelField)),
+                    label: wwLib.resolveObjectPropertyPath(option, labelField),
                     value: wwLib.resolveObjectPropertyPath(option, valueField),
                     data: option,
                 };
 
             return typeof option === 'object'
                 ? {
-                      label: wwLib.wwLang.getText(wwLib.resolveObjectPropertyPath(option, labelField)),
+                      label: wwLib.resolveObjectPropertyPath(option, labelField),
                       value: wwLib.resolveObjectPropertyPath(option, valueField),
                       data: option,
                   }
