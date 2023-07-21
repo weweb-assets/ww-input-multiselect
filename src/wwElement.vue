@@ -224,10 +224,6 @@ export default {
             this.componentKey++;
             this.refreshOptions();
         },
-        currentLang() {
-            this.componentKey++;
-            this.refreshOptions();
-        },
         isReadOnly: {
             immediate: true,
             handler(value) {
