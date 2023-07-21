@@ -23,6 +23,7 @@
             <div class="multiselect-tag" :style="getOptionStyle(option)">
                 <wwLayoutItemContext :index="getOptionIndex(option)" :item="{}" is-repeat :data="option">
                     <OptionItemSelected
+                        :key="getOptionIndex(option) + '_' + componentKey"
                         :option="option"
                         :layoutType="layoutType"
                         :selectedFlexboxElement="content.selectedFlexboxElement"
@@ -213,8 +214,8 @@ export default {
             this.refreshOptions();
         },
         currentLang() {
-            this.refreshOptions();
             this.componentKey++;
+            this.refreshOptions();
         },
         isReadOnly: {
             immediate: true,
