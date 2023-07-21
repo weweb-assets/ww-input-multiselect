@@ -225,8 +225,8 @@ export default {
             this.refreshOptions();
         },
         currentLang() {
-            this.refreshOptions();
             this.componentKey++;
+            this.refreshOptions();
         },
         isReadOnly: {
             immediate: true,
