@@ -75,7 +75,7 @@
 
 <script>
 import Multiselect from '@vueform/multiselect';
-import { computed } from 'vue';
+import { computed, inject } from 'vue';
 import OptionItem from './OptionItem.vue';
 import OptionItemSelected from './OptionItemSelected.vue';
 
@@ -102,7 +102,12 @@ export default {
             type: 'array',
             defaultValue: computed(() => (Array.isArray(props.content.initialValue) ? props.content.initialValue : [])),
         });
-        return { currentSelection, setCurrentSelection };
+
+        const styles = inject('componentStyle');
+
+        const cursor = computed(() => styles.cursor);
+
+        return { currentSelection, setCurrentSelection, cursor };
     },
     data: () => ({
         options: [],
@@ -183,6 +188,7 @@ export default {
                 '--search-font-size': this.content.searchFontSize || 'inherit',
                 '--search-font-family': this.content.searchFontFamily || 'inherit',
                 '--search-font-color': this.content.searchFontColor || 'inherit',
+                '--component-cursor': this.cursor || 'pointer',
             };
         },
         isReadOnly() {
@@ -374,6 +380,7 @@ export default {
 
 <style type="scss" scoped>
 .input-multiselect {
+    cursor: var(--component-cursor);
     --ms-border-width: 0px;
 
     position: relative;
@@ -390,6 +397,7 @@ export default {
     /* wwEditor:end */
 }
 .input-multiselect:deep(.multiselect-wrapper) {
+    cursor: var(--component-cursor);
     height: inherit;
     min-height: unset;
 }
