@@ -21,9 +21,15 @@
         <!-- Tag selected with remove icon -->
         <template v-slot:tag="{ option, handleTagRemove }">
             <div class="multiselect-tag" :style="getOptionStyle(option)">
-                <wwLayoutItemContext :index="getOptionIndex(option)" :item="{}" is-repeat :data="option">
+                <wwLayoutItemContext
+                    :index="getOptionIndex(option)"
+                    :item="{}"
+                    is-repeat
+                    :data="{ ...option, label: getLabel(option) }"
+                >
                     <OptionItemSelected
-                        :option="option"
+                        :key="getOptionIndex(option)"
+                        :option="{ ...option, label: getLabel(option) }"
                         :layoutType="layoutType"
                         :selectedFlexboxElement="content.selectedFlexboxElement"
                         :tagElement="content.tagElementSelected"
@@ -38,9 +44,14 @@
 
         <!-- Tag unselected in list -->
         <template v-if="content.mode === 'tags'" v-slot:option="{ option }">
-            <wwLayoutItemContext :index="getOptionIndex(option)" :item="{}" is-repeat :data="option">
+            <wwLayoutItemContext
+                :index="getOptionIndex(option)"
+                :item="{}"
+                is-repeat
+                :data="{ ...option, label: getLabel(option) }"
+            >
                 <OptionItem
-                    :option="option"
+                    :option="{ ...option, label: getLabel(option) }"
                     :layoutType="layoutType"
                     :flexboxElement="content.flexboxElement"
                     :tagElement="content.tagElement"
@@ -101,6 +112,9 @@ export default {
         this.init();
     },
     computed: {
+        currentLang() {
+            return wwLib.wwLang.lang;
+        },
         isEditing() {
             /* wwEditor:start */
             return this.wwEditorState.editMode === wwLib.wwEditorHelper.EDIT_MODES.EDITION;
@@ -128,6 +142,7 @@ export default {
                 infinite: this.content.infiniteScroll,
                 limit: this.content.limitedOptions ? this.content.limit : -1,
                 resolveOnLoad: false,
+                locale: this.currentLang,
             };
         },
         internalValue: {
@@ -304,14 +319,14 @@ export default {
 
             if (this.layoutType === 'free')
                 return {
-                    label: wwLib.wwLang.getText(wwLib.resolveObjectPropertyPath(option, labelField)),
+                    label: wwLib.resolveObjectPropertyPath(option, labelField),
                     value: wwLib.resolveObjectPropertyPath(option, valueField),
                     data: option,
                 };
 
             return typeof option === 'object'
                 ? {
-                      label: wwLib.wwLang.getText(wwLib.resolveObjectPropertyPath(option, labelField)),
+                      label: wwLib.resolveObjectPropertyPath(option, labelField),
                       value: wwLib.resolveObjectPropertyPath(option, valueField),
                       data: option,
                   }
@@ -346,6 +361,10 @@ export default {
             /* wwEditor:start */
             if (this.wwEditorState.sidepanelContent.openInEditor) this.$refs.multiselect.open();
             /* wwEditor:end */
+        },
+        getLabel(option) {
+            if (!option || option.label === undefined || option.label === null) return '';
+            return `${wwLib.wwLang.getText(option.label)}`;
         },
     },
 };
