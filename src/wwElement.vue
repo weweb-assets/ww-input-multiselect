@@ -201,8 +201,14 @@ export default {
                 ? this.content.readonly
                 : this.wwElementState.props.readonly;
         },
+        lang() {
+            return wwLib.wwLang.lang;
+        },
     },
     watch: {
+        lang() {
+            this.options = [];
+        },
         /* wwEditor:start */
         isEditing() {
             this.handleOpening(!this.isEditing ? false : this.wwEditorState.sidepanelContent.openInEditor);
@@ -320,27 +326,24 @@ export default {
             this.setCurrentSelection(initialValue);
         },
         formatOption(option) {
-            const labelField = this.content.labelField || DEFAULT_LABEL_FIELD;
+            let labelField = this.content.labelField || DEFAULT_LABEL_FIELD;
             const valueField = this.content.valueField || DEFAULT_VALUE_FIELD;
 
-            let label = wwLib.resolveObjectPropertyPath(option, labelField);
-            const value = wwLib.resolveObjectPropertyPath(option, valueField);
-
             if (typeof label !== 'object') {
-                label = wwLib.resolveObjectPropertyPath(option, wwLib.wwLang.getText(labelField));
+                labelField = wwLib.wwLang.getText(labelField);
             }
 
             if (this.layoutType === 'free')
                 return {
-                    label,
-                    value,
+                    label: wwLib.resolveObjectPropertyPath(option, labelField),
+                    value: wwLib.resolveObjectPropertyPath(option, valueField),
                     data: option,
                 };
 
             return typeof option === 'object'
                 ? {
-                      label,
-                      value,
+                      label: wwLib.resolveObjectPropertyPath(option, labelField),
+                      value: wwLib.resolveObjectPropertyPath(option, valueField),
                       data: option,
                   }
                 : {
