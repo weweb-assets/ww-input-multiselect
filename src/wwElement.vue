@@ -21,15 +21,10 @@
         <!-- Tag selected with remove icon -->
         <template v-slot:tag="{ option, handleTagRemove }">
             <div class="multiselect-tag" :style="getOptionStyle(option)">
-                <wwLayoutItemContext
-                    :index="getOptionIndex(option)"
-                    :item="{}"
-                    is-repeat
-                    :data="{ ...option, label: getLabel(option) }"
-                >
+                <wwLayoutItemContext :index="getOptionIndex(option)" :item="{}" is-repeat :data="option">
                     <OptionItemSelected
                         :key="getOptionIndex(option)"
-                        :option="{ ...option, label: getLabel(option) }"
+                        :option="option"
                         :layoutType="layoutType"
                         :selectedFlexboxElement="content.selectedFlexboxElement"
                         :tagElement="content.tagElementSelected"
@@ -44,14 +39,9 @@
 
         <!-- Tag unselected in list -->
         <template v-if="content.mode === 'tags'" v-slot:option="{ option }">
-            <wwLayoutItemContext
-                :index="getOptionIndex(option)"
-                :item="{}"
-                is-repeat
-                :data="{ ...option, label: getLabel(option) }"
-            >
+            <wwLayoutItemContext :index="getOptionIndex(option)" :item="{}" is-repeat :data="option">
                 <OptionItem
-                    :option="{ ...option, label: getLabel(option) }"
+                    :option="option"
                     :layoutType="layoutType"
                     :flexboxElement="content.flexboxElement"
                     :tagElement="content.tagElement"
@@ -81,8 +71,6 @@ import OptionItemSelected from './OptionItemSelected.vue';
 
 const DEFAULT_LABEL_FIELD = 'label';
 const DEFAULT_VALUE_FIELD = 'value';
-const DEFAULT_TEXT_COLOR_FIELD = 'textColor';
-const DEFAULT_BG_COLOR_FIELD = 'bgColor';
 
 export default {
     components: { Multiselect, OptionItem, OptionItemSelected },
@@ -218,6 +206,9 @@ export default {
             this.componentKey++;
             this.refreshOptions();
         },
+        internalValue() {
+            this.refreshOptions();
+        },
         'content.labelField'() {
             this.componentKey++;
             this.refreshOptions();
@@ -272,6 +263,11 @@ export default {
             });
         },
         /* wwEditor:end */
+        currentLang() {
+            this.options = this.options.map(option => this.formatOption(option.data));
+            this.componentKey++;
+            this.refreshOptions();
+        },
     },
     methods: {
         init() {
@@ -320,26 +316,32 @@ export default {
             this.setCurrentSelection(initialValue);
         },
         formatOption(option) {
-            const labelField = this.content.labelField || DEFAULT_LABEL_FIELD;
+            let labelField = this.content.labelField || DEFAULT_LABEL_FIELD;
             const valueField = this.content.valueField || DEFAULT_VALUE_FIELD;
+
+            const label = `${wwLib.wwLang.getText(
+                wwLib.resolveObjectPropertyPath(option, wwLib.wwLang.getText(labelField))
+            )}`;
+            const value = wwLib.resolveObjectPropertyPath(option, valueField);
 
             if (this.layoutType === 'free')
                 return {
-                    label: wwLib.resolveObjectPropertyPath(option, labelField),
-                    value: wwLib.resolveObjectPropertyPath(option, valueField),
+                    label,
+                    value,
                     data: option,
                 };
 
             return typeof option === 'object'
                 ? {
-                      label: wwLib.resolveObjectPropertyPath(option, labelField),
-                      value: wwLib.resolveObjectPropertyPath(option, valueField),
+                      label,
+                      value,
                       data: option,
                   }
                 : {
                       // to allow flat array / option
                       label: option,
                       value: option,
+                      data: option,
                   };
         },
         getOptionStyle(option) {
@@ -368,9 +370,8 @@ export default {
             if (this.wwEditorState.sidepanelContent.openInEditor) this.$refs.multiselect.open();
             /* wwEditor:end */
         },
-        getLabel(option) {
-            if (!option || option.label === undefined || option.label === null) return '';
-            return `${wwLib.wwLang.getText(option.label)}`;
+        getLabel(option, label) {
+            return `${wwLib.wwLang.getText(wwLib.resolveObjectPropertyPath(option, wwLib.wwLang.getText(label)))}`;
         },
     },
 };

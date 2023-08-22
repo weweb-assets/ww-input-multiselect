@@ -383,6 +383,7 @@ export default {
             },
             defaultValue: null,
             section: 'settings',
+            multiLang: true,
         },
         valueField: {
             hidden: (content, sidepanelContent, boundProps) => !boundProps.options || !content.options,
