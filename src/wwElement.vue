@@ -21,10 +21,10 @@
         <!-- Tag selected with remove icon -->
         <template v-slot:tag="{ option, handleTagRemove }">
             <div class="multiselect-tag" :style="getOptionStyle(option)">
-                <wwLayoutItemContext :index="getOptionIndex(option)" :item="{}" is-repeat :data="{ ...option }">
+                <wwLayoutItemContext :index="getOptionIndex(option)" :item="{}" is-repeat :data="option">
                     <OptionItemSelected
                         :key="getOptionIndex(option)"
-                        :option="{ ...option }"
+                        :option="option"
                         :layoutType="layoutType"
                         :selectedFlexboxElement="content.selectedFlexboxElement"
                         :tagElement="content.tagElementSelected"
@@ -39,9 +39,9 @@
 
         <!-- Tag unselected in list -->
         <template v-if="content.mode === 'tags'" v-slot:option="{ option }">
-            <wwLayoutItemContext :index="getOptionIndex(option)" :item="{}" is-repeat :data="{ ...option }">
+            <wwLayoutItemContext :index="getOptionIndex(option)" :item="{}" is-repeat :data="option">
                 <OptionItem
-                    :option="{ ...option }"
+                    :option="option"
                     :layoutType="layoutType"
                     :flexboxElement="content.flexboxElement"
                     :tagElement="content.tagElement"
@@ -71,8 +71,6 @@ import OptionItemSelected from './OptionItemSelected.vue';
 
 const DEFAULT_LABEL_FIELD = 'label';
 const DEFAULT_VALUE_FIELD = 'value';
-const DEFAULT_TEXT_COLOR_FIELD = 'textColor';
-const DEFAULT_BG_COLOR_FIELD = 'bgColor';
 
 export default {
     components: { Multiselect, OptionItem, OptionItemSelected },
