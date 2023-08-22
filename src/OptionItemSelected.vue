@@ -3,7 +3,7 @@
         <wwElement
             class="multiselect-tag-el"
             v-bind="tagElement"
-            :ww-props="{ text: getLabel(option.label) || '' }"
+            :ww-props="{ text: option.label || '' }"
             :states="optionStates"
         />
         <wwElement
@@ -70,11 +70,6 @@ export default {
             } else {
                 this.optionStates = [];
             }
-        },
-        getLabel(label) {
-            return `${wwLib.wwLang.getText(
-                wwLib.resolveObjectPropertyPath(this.option.data, wwLib.wwLang.getText(label))
-            )}`;
         },
     },
     beforeUnmount() {

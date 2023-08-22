@@ -206,6 +206,9 @@ export default {
             this.componentKey++;
             this.refreshOptions();
         },
+        internalValue() {
+            this.refreshOptions();
+        },
         'content.labelField'() {
             this.componentKey++;
             this.refreshOptions();
@@ -261,6 +264,7 @@ export default {
         },
         /* wwEditor:end */
         currentLang() {
+            this.options = this.options.map(option => this.formatOption(option.data));
             this.componentKey++;
             this.refreshOptions();
         },
@@ -315,17 +319,22 @@ export default {
             let labelField = this.content.labelField || DEFAULT_LABEL_FIELD;
             const valueField = this.content.valueField || DEFAULT_VALUE_FIELD;
 
+            const label = `${wwLib.wwLang.getText(
+                wwLib.resolveObjectPropertyPath(option, wwLib.wwLang.getText(labelField))
+            )}`;
+            const value = wwLib.resolveObjectPropertyPath(option, valueField);
+
             if (this.layoutType === 'free')
                 return {
-                    label: labelField,
-                    value: wwLib.resolveObjectPropertyPath(option, valueField),
+                    label,
+                    value,
                     data: option,
                 };
 
             return typeof option === 'object'
                 ? {
-                      label: labelField,
-                      value: wwLib.resolveObjectPropertyPath(option, valueField),
+                      label,
+                      value,
                       data: option,
                   }
                 : {
@@ -360,6 +369,9 @@ export default {
             /* wwEditor:start */
             if (this.wwEditorState.sidepanelContent.openInEditor) this.$refs.multiselect.open();
             /* wwEditor:end */
+        },
+        getLabel(option, label) {
+            return `${wwLib.wwLang.getText(wwLib.resolveObjectPropertyPath(option, wwLib.wwLang.getText(label)))}`;
         },
     },
 };
