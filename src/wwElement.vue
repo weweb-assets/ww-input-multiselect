@@ -21,15 +21,10 @@
         <!-- Tag selected with remove icon -->
         <template v-slot:tag="{ option, handleTagRemove }">
             <div class="multiselect-tag" :style="getOptionStyle(option)">
-                <wwLayoutItemContext
-                    :index="getOptionIndex(option)"
-                    :item="{}"
-                    is-repeat
-                    :data="{ ...option, label: getLabel(option) }"
-                >
+                <wwLayoutItemContext :index="getOptionIndex(option)" :item="{}" is-repeat :data="{ ...option }">
                     <OptionItemSelected
                         :key="getOptionIndex(option)"
-                        :option="{ ...option, label: getLabel(option) }"
+                        :option="{ ...option }"
                         :layoutType="layoutType"
                         :selectedFlexboxElement="content.selectedFlexboxElement"
                         :tagElement="content.tagElementSelected"
@@ -44,14 +39,9 @@
 
         <!-- Tag unselected in list -->
         <template v-if="content.mode === 'tags'" v-slot:option="{ option }">
-            <wwLayoutItemContext
-                :index="getOptionIndex(option)"
-                :item="{}"
-                is-repeat
-                :data="{ ...option, label: getLabel(option) }"
-            >
+            <wwLayoutItemContext :index="getOptionIndex(option)" :item="{}" is-repeat :data="{ ...option }">
                 <OptionItem
-                    :option="{ ...option, label: getLabel(option) }"
+                    :option="{ ...option }"
                     :layoutType="layoutType"
                     :flexboxElement="content.flexboxElement"
                     :tagElement="content.tagElement"
@@ -201,14 +191,8 @@ export default {
                 ? this.content.readonly
                 : this.wwElementState.props.readonly;
         },
-        lang() {
-            return wwLib.wwLang.lang;
-        },
     },
     watch: {
-        lang() {
-            this.options = [];
-        },
         /* wwEditor:start */
         isEditing() {
             this.handleOpening(!this.isEditing ? false : this.wwEditorState.sidepanelContent.openInEditor);
@@ -278,6 +262,10 @@ export default {
             });
         },
         /* wwEditor:end */
+        currentLang() {
+            this.componentKey++;
+            this.refreshOptions();
+        },
     },
     methods: {
         init() {
@@ -329,20 +317,16 @@ export default {
             let labelField = this.content.labelField || DEFAULT_LABEL_FIELD;
             const valueField = this.content.valueField || DEFAULT_VALUE_FIELD;
 
-            if (typeof label !== 'object') {
-                labelField = wwLib.wwLang.getText(labelField);
-            }
-
             if (this.layoutType === 'free')
                 return {
-                    label: wwLib.resolveObjectPropertyPath(option, labelField),
+                    label: labelField,
                     value: wwLib.resolveObjectPropertyPath(option, valueField),
                     data: option,
                 };
 
             return typeof option === 'object'
                 ? {
-                      label: wwLib.resolveObjectPropertyPath(option, labelField),
+                      label: labelField,
                       value: wwLib.resolveObjectPropertyPath(option, valueField),
                       data: option,
                   }
@@ -350,6 +334,7 @@ export default {
                       // to allow flat array / option
                       label: option,
                       value: option,
+                      data: option,
                   };
         },
         getOptionStyle(option) {
@@ -377,10 +362,6 @@ export default {
             /* wwEditor:start */
             if (this.wwEditorState.sidepanelContent.openInEditor) this.$refs.multiselect.open();
             /* wwEditor:end */
-        },
-        getLabel(option) {
-            if (!option || option.label === undefined || option.label === null) return '';
-            return `${wwLib.wwLang.getText(option.label)}`;
         },
     },
 };

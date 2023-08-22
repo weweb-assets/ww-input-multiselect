@@ -3,7 +3,7 @@
         v-if="layoutType === 'text'"
         class="multiselect-tag-el"
         v-bind="tagElement"
-        :ww-props="{ text: option.label || '' }"
+        :ww-props="{ text: getLabel(option.label) || '' }"
         :states="optionStates"
     />
     <wwElement v-else class="multiselect-tag-el free-layout" v-bind="flexboxElement" :states="optionStates" />
@@ -56,6 +56,11 @@ export default {
             } else {
                 this.optionStates = [];
             }
+        },
+        getLabel(label) {
+            return `${wwLib.wwLang.getText(
+                wwLib.resolveObjectPropertyPath(this.option.data, wwLib.wwLang.getText(label))
+            )}`;
         },
     },
     beforeUnmount() {
