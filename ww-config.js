@@ -505,6 +505,7 @@ export default {
             },
             navigator: {
                 group: 'Option - Selected',
+                hidden: content => content.layoutType === 'free',
             },
         },
         caretIconElement: {
