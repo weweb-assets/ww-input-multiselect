@@ -134,6 +134,7 @@ export default {
                 name: this.wwElementState.name,
                 infinite: this.content.infiniteScroll,
                 limit: this.content.limitedOptions ? this.content.limit : -1,
+                max: this.content.maxSelection ? this.content.max : -1,
                 resolveOnLoad: false,
                 locale: this.currentLang,
             };
