@@ -280,6 +280,32 @@ export default {
             defaultValue: 20,
             section: 'settings',
         },
+        maxSelection: {
+            hidden: content => !content.advanced,
+            label: {
+                en: 'Max selection',
+                fr: 'Max selection',
+            },
+            type: 'OnOff',
+            defaultValue: false,
+            section: 'settings',
+        },
+        max: {
+            hidden: content => !content.advanced || !content.maxSelection,
+            type: 'Number',
+            label: {
+                en: 'Max',
+                fr: 'Max',
+            },
+            options: {
+                min: 0,
+                max: 50,
+                step: 1,
+            },
+            defaultValue: 1,
+            section: 'settings',
+            bindable: true,
+        },
         clearIcon: {
             label: {
                 en: 'Clear icon',
@@ -505,6 +531,7 @@ export default {
             },
             navigator: {
                 group: 'Option - Selected',
+                hidden: content => content.layoutType === 'free',
             },
         },
         caretIconElement: {
