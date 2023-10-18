@@ -58,7 +58,9 @@
 
         <!-- Clear icon shown when the input has at least one selected options -->
         <template v-slot:clear="{ clear }">
-            <wwElement v-bind="content.clearIconElement" @mousedown.prevent="isEditing ? null : clear($event)" />
+            <div @mousedown.stop>
+                <wwElement v-bind="content.clearIconElement" @click="isEditing ? null : clear($event)" />
+            </div>
         </template>
     </Multiselect>
 </template>
