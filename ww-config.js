@@ -337,8 +337,8 @@ export default {
             section: 'settings',
             /* wwEditor:start */
             bindingValidation: {
-                type: 'string',
-                tooltip: 'A string that defines if the input initial value: `my option`',
+                type: 'array',
+                tooltip: 'An array of strings that defines the input initial value: `["my option"]`',
             },
             /* wwEditor:end */
         },
