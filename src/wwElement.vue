@@ -407,6 +407,9 @@ export default {
     height: inherit;
     min-height: unset;
 }
+.input-multiselect:deep(.multiselect-dropdown) {
+    overflow-y:auto;
+}
 .input-multiselect:deep(.multiselect-tag) {
     background: transparent;
     padding: 4px;
