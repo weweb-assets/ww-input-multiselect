@@ -52,8 +52,9 @@
         </template>
 
         <!-- Small triangle displayed on the right of the input -->
-        <template v-slot:caret v-if="!isReadOnly">
-            <wwElement v-bind="content.caretIconElement" />
+        <template v-slot:caret>
+            <wwElement v-if="multiselectProps.disabled && internalValue.length && content.clearIcon" class="hidden" v-bind="content.clearIconElement" />
+            <wwElement v-bind="content.caretIconElement" class="caret" :class="{'hidden': isReadOnly}"/>
         </template>
 
         <!-- Clear icon shown when the input has at least one selected options -->
@@ -131,8 +132,8 @@ export default {
                 hideSelected: this.content.hideSelected,
                 placeholder: 'placeholder',
                 createOption: this.content.allowCreation,
-                canClear: this.content.clearIcon && !this.isReadOnly,
-                caret: this.content.caretIcon && !this.isReadOnly,
+                canClear: this.content.clearIcon,
+                caret: this.content.caretIcon,
                 name: this.wwElementState.name,
                 infinite: this.content.infiniteScroll,
                 limit: this.content.limitedOptions ? this.content.limit : -1,
@@ -389,6 +390,7 @@ export default {
 
     position: relative;
     min-height: calc(var(--font-size) + 20px);
+    border-radius: inherit;
 
     &.is-active {
         box-shadow: unset;
@@ -419,6 +421,15 @@ export default {
 .input-multiselect:deep(.multiselect-caret) {
     margin-top: 10px;
     margin-bottom: 10px;
+}
+.input-multiselect:deep(.caret) {
+    transition: none;
+}
+
+.input-multiselect:deep(.hidden) {
+    opacity: 0;
+    pointer-events: none;
+    transition: none;
 }
 .ww-input-select:deep(.multiselect-tag-el) {
     width: inherit;
