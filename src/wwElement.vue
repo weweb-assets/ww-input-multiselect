@@ -126,14 +126,13 @@ export default {
             return this.content.layoutType ? this.content.layoutType : 'text';
         },
         multiselectProps() {
+            const multipleLabel = wwLib.wwLang.getText(this.content.multipleLabel);
             return {
                 options: this.options,
                 closeOnSelect: this.content.closeOnSelect,
                 searchable: this.content.searchable,
                 mode: this.content.mode,
-                multipleLabel: this.content.multipleLabel
-                    ? () => wwLib.wwLang.getText(this.content.multipleLabel)
-                    : null,
+                multipleLabel: multipleLabel ? () => multipleLabel : null,
                 noOptionsText: this.content.noOptionsText,
                 noResultsText: this.content.noResultsText,
                 disabled: this.isReadOnly || this.content.disabled,
