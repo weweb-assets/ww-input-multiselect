@@ -131,7 +131,9 @@ export default {
                 closeOnSelect: this.content.closeOnSelect,
                 searchable: this.content.searchable,
                 mode: this.content.mode,
-                multipleLabel: this.content.multipleLabel,
+                multipleLabel: this.content.multipleLabel
+                    ? () => wwLib.wwLang.getText(this.content.multipleLabel)
+                    : null,
                 noOptionsText: this.content.noOptionsText,
                 noResultsText: this.content.noResultsText,
                 disabled: this.isReadOnly || this.content.disabled,
