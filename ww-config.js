@@ -10,6 +10,7 @@ export default {
             [
                 'dropdownBackgroundColor',
                 'optionBackgroundPointed',
+                'optionBackgroundSelected',
                 'dropdownBorderWidth',
                 'dropdownBorderColor',
                 'dropdownBorderRadius',
@@ -656,7 +657,7 @@ export default {
                 en: 'Dropdown option selected color',
             },
             type: 'Color',
-            defaultValue: '#d1d5db',
+            defaultValue: '#10B981',
             classes: true,
             states: true,
             responsive: true,
