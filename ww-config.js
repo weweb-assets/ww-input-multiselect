@@ -30,8 +30,8 @@ export default {
                 'textColorField',
                 'bgColorField',
             ],
-            ['placeholder'],
-            ['disabled', 'readonly', 'mode', 'allowCreation', 'hideSelected', 'searchable', 'closeOnSelect'],
+            ['placeholder', 'noResultsText', 'noOptionsText'],
+            ['disabled', 'readonly', 'mode', 'multipleLabel', 'allowCreation', 'hideSelected', 'searchable', 'closeOnSelect'],
             ['clearIcon', 'caretIcon'],
         ],
     },
@@ -83,6 +83,24 @@ export default {
                 tooltip: 'A string that defines the placeholder: `"My option"`',
             },
             /* wwEditor:end */
+        },
+        noOptionsText: {
+            label: {
+                en: 'No options text',
+                fr: 'Texte si aucune option',
+            },
+            type: 'Text',,
+            section: 'settings',
+            multiLang: true,
+        },
+        noResultsText: {
+            label: {
+                en: 'No options text',
+                fr: 'Texte si aucune option',
+            },
+            type: 'Text',
+            section: 'settings',
+            multiLang: true,
         },
         disabled: {
             label: {
@@ -138,6 +156,17 @@ export default {
                 tooltip: 'A string that defines mode: `"tags" | "multiple"`',
             },
             /* wwEditor:end */
+        },
+        multipleLabel: {
+            label: {
+                en: 'Selected options text',
+                fr: 'Selected options text',
+            },
+            type: 'Text',
+            section: 'settings',
+            bindable: true,
+            multiLang: true,
+            hidden: content => content.mode !== 'multiple',
         },
         advanced: {
             type: 'OnOff',
@@ -597,6 +626,17 @@ export default {
         optionBackgroundPointed: {
             label: {
                 en: 'Dropdown option hover color',
+            },
+            type: 'Color',
+            defaultValue: '#d1d5db',
+            classes: true,
+            states: true,
+            responsive: true,
+            bindable: true,
+        },
+        optionBackgroundSelected: {
+            label: {
+                en: 'Dropdown option selected color',
             },
             type: 'Color',
             defaultValue: '#d1d5db',

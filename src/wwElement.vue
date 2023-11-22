@@ -53,8 +53,12 @@
 
         <!-- Small triangle displayed on the right of the input -->
         <template v-slot:caret>
-            <wwElement v-if="multiselectProps.disabled && internalValue.length && content.clearIcon" class="hidden" v-bind="content.clearIconElement" />
-            <wwElement v-bind="content.caretIconElement" class="caret" :class="{'hidden': isReadOnly}"/>
+            <wwElement
+                v-if="multiselectProps.disabled && internalValue.length && content.clearIcon"
+                class="hidden"
+                v-bind="content.clearIconElement"
+            />
+            <wwElement v-bind="content.caretIconElement" class="caret" :class="{ hidden: isReadOnly }" />
         </template>
 
         <!-- Clear icon shown when the input has at least one selected options -->
@@ -127,6 +131,9 @@ export default {
                 closeOnSelect: this.content.closeOnSelect,
                 searchable: this.content.searchable,
                 mode: this.content.mode,
+                multipleLabel: this.content.multipleLabel,
+                noOptionsText: this.content.noOptionsText,
+                noResultsText: this.content.noResultsText,
                 disabled: this.isReadOnly || this.content.disabled,
                 required: this.content.required,
                 hideSelected: this.content.hideSelected,
@@ -173,6 +180,7 @@ export default {
                 '--ms-dropdown-radius': this.content.dropdownBorderRadius || '0px',
                 '--ms-max-height': this.content.dropdownMaxHeight || '10rem',
                 '--ms-option-bg-pointed': this.content.optionBackgroundPointed,
+                '--ms-option-bg-selected': this.content.optionBackgroundSelected,
                 '--ms-bg-disabled': this.isReadOnly ? 'transparent' : null,
                 '--ms-bg': 'transparent',
                 '--ms-radius': '0',
@@ -408,7 +416,7 @@ export default {
     min-height: unset;
 }
 .input-multiselect:deep(.multiselect-dropdown) {
-    overflow-y:auto;
+    overflow-y: auto;
 }
 .input-multiselect:deep(.multiselect-tag) {
     background: transparent;
