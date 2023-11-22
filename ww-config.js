@@ -175,6 +175,12 @@ export default {
             },
             type: 'Text',
             section: 'settings',
+            options: {
+                placeholder: '{count} selected',
+            },
+            propertyHelp: {
+                tooltip: 'Use `{count}` in your text to display the number of selected options.',
+            },
             bindable: true,
             multiLang: true,
             hidden: content => content.mode !== 'multiple',
