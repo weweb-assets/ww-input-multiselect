@@ -11,6 +11,7 @@ export default {
                 'dropdownBackgroundColor',
                 'optionBackgroundPointed',
                 'optionBackgroundSelected',
+                'optionBackgroundSelectedPointed',
                 'dropdownBorderWidth',
                 'dropdownBorderColor',
                 'dropdownBorderRadius',
@@ -643,7 +644,7 @@ export default {
         },
         optionBackgroundPointed: {
             label: {
-                en: 'Dropdown option hover color',
+                en: 'Option hover color',
             },
             type: 'Color',
             defaultValue: '#d1d5db',
@@ -654,7 +655,18 @@ export default {
         },
         optionBackgroundSelected: {
             label: {
-                en: 'Dropdown option selected color',
+                en: 'Option selected color',
+            },
+            type: 'Color',
+            defaultValue: '#10B981',
+            classes: true,
+            states: true,
+            responsive: true,
+            bindable: true,
+        },
+        optionBackgroundSelectedPointed: {
+            label: {
+                en: 'Option hover selected color',
             },
             type: 'Color',
             defaultValue: '#10B981',

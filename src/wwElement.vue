@@ -185,6 +185,7 @@ export default {
                 '--ms-max-height': this.content.dropdownMaxHeight || '10rem',
                 '--ms-option-bg-pointed': this.content.optionBackgroundPointed,
                 '--ms-option-bg-selected': this.content.optionBackgroundSelected,
+                '--ms-option-bg-selected-pointed': this.content.optionBackgroundSelectedPointed,
                 '--ms-bg-disabled': this.isReadOnly ? 'transparent' : null,
                 '--ms-bg': 'transparent',
                 '--ms-radius': '0',
