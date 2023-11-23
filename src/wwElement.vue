@@ -194,6 +194,7 @@ export default {
                 '--search-font-family': this.content.searchFontFamily || 'inherit',
                 '--search-font-color': this.content.searchFontColor || 'inherit',
                 '--component-cursor': this.cursor || 'pointer',
+                '--padding-tag': this.content.layoutType === 'text' ? '4px' : '0',
             };
         },
         isReadOnly() {
@@ -425,7 +426,7 @@ export default {
 }
 .input-multiselect:deep(.multiselect-tag) {
     background: transparent;
-    padding: 4px;
+    padding: var(--padding-tag);
     border-radius: 4px;
 }
 .input-multiselect:deep(.multiselect-tags-search) {
