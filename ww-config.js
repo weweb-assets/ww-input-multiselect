@@ -10,6 +10,8 @@ export default {
             [
                 'dropdownBackgroundColor',
                 'optionBackgroundPointed',
+                'optionBackgroundSelected',
+                'optionBackgroundSelectedPointed',
                 'dropdownBorderWidth',
                 'dropdownBorderColor',
                 'dropdownBorderRadius',
@@ -30,8 +32,17 @@ export default {
                 'textColorField',
                 'bgColorField',
             ],
-            ['placeholder'],
-            ['disabled', 'readonly', 'mode', 'allowCreation', 'hideSelected', 'searchable', 'closeOnSelect'],
+            ['placeholder', 'noResultsText', 'noOptionsText'],
+            [
+                'disabled',
+                'readonly',
+                'mode',
+                'multipleLabel',
+                'allowCreation',
+                'hideSelected',
+                'searchable',
+                'closeOnSelect',
+            ],
             ['clearIcon', 'caretIcon'],
         ],
     },
@@ -83,6 +94,26 @@ export default {
                 tooltip: 'A string that defines the placeholder: `"My option"`',
             },
             /* wwEditor:end */
+        },
+        noOptionsText: {
+            label: {
+                en: 'No options text',
+                fr: 'No options text',
+            },
+            type: 'Text',
+            section: 'settings',
+            multiLang: true,
+            bindable: true,
+        },
+        noResultsText: {
+            label: {
+                en: 'No results text',
+                fr: 'No results text',
+            },
+            type: 'Text',
+            section: 'settings',
+            multiLang: true,
+            bindable: true,
         },
         disabled: {
             label: {
@@ -138,6 +169,23 @@ export default {
                 tooltip: 'A string that defines mode: `"tags" | "multiple"`',
             },
             /* wwEditor:end */
+        },
+        multipleLabel: {
+            label: {
+                en: 'Selected options text',
+                fr: 'Selected options text',
+            },
+            type: 'Text',
+            section: 'settings',
+            options: {
+                placeholder: '{count} selected',
+            },
+            propertyHelp: {
+                tooltip: 'Use `{count}` in your text to display the number of selected options.',
+            },
+            bindable: true,
+            multiLang: true,
+            hidden: content => content.mode !== 'multiple',
         },
         advanced: {
             type: 'OnOff',
@@ -596,10 +644,32 @@ export default {
         },
         optionBackgroundPointed: {
             label: {
-                en: 'Dropdown option hover color',
+                en: 'Option hover color',
             },
             type: 'Color',
             defaultValue: '#d1d5db',
+            classes: true,
+            states: true,
+            responsive: true,
+            bindable: true,
+        },
+        optionBackgroundSelected: {
+            label: {
+                en: 'Option selected color',
+            },
+            type: 'Color',
+            defaultValue: '#10B981',
+            classes: true,
+            states: true,
+            responsive: true,
+            bindable: true,
+        },
+        optionBackgroundSelectedPointed: {
+            label: {
+                en: 'Option hover selected color',
+            },
+            type: 'Color',
+            defaultValue: '#10B981',
             classes: true,
             states: true,
             responsive: true,
