@@ -307,17 +307,36 @@ export default {
          * So here we take care of not removing an used option
          */
         refreshOptions() {
-            // we removed unused options
-            this.options = this.options.filter(option => this.internalValue.includes(option.value));
-            // Then we add the new initial options and avoid duplicate
-            const initialOptions = Array.isArray(this.content.options) ? [...this.content.options] : [];
+            // Check if this.options and this.internalValue are defined and are arrays
+            if (
+                !this.options ||
+                !Array.isArray(this.options) ||
+                !this.internalValue ||
+                !Array.isArray(this.internalValue)
+            ) {
+                throw new Error('options or internalValue is not an array');
+            }
+
+            // Filter options that are in internalValue
+            this.options = this.options.filter(option => option && this.internalValue.includes(option.value));
+
+            // Check if this.content and this.content.options are defined and is an array
+            let initialOptions = [];
+            if (this.content && Array.isArray(this.content.options)) {
+                initialOptions = [...this.content.options];
+            }
+
+            // Add initial options avoiding duplicates
             const newOptions = initialOptions.filter(
-                option => !this.options.some(currentOpt => currentOpt.value === option.value)
+                option => option && !this.options.some(currentOpt => currentOpt.value === option.value)
             );
             this.options.push(...newOptions.map(option => this.formatOption(option)));
-            // Then we add current selection as custom options if not already included
+
+            // Add current selection as custom options if not already included
             this.options.push(
-                ...this.internalValue.filter(selection => !this.options.map(option => option.value).includes(selection))
+                ...this.internalValue.filter(
+                    selection => selection && !this.options.some(option => option.value === selection)
+                )
             );
         },
         refreshInitialValue() {
