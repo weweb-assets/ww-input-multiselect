@@ -35,6 +35,7 @@ export default {
             ['placeholder', 'noResultsText', 'noOptionsText'],
             [
                 'disabled',
+                'required',
                 'readonly',
                 'mode',
                 'multipleLabel',
@@ -128,6 +129,22 @@ export default {
             bindingValidation: {
                 type: 'boolean',
                 tooltip: 'A boolean that defines if the input is disabled: `true | false`',
+            },
+            /* wwEditor:end */
+        },
+        required: {
+            type: 'OnOff',
+            label: {
+                en: 'Required',
+                fr: 'Required',
+            },
+            defaultValue: false,
+            bindable: true,
+            section: 'settings',
+            /* wwEditor:start */
+            bindingValidation: {
+                type: 'boolean',
+                tooltip: 'A boolean that defines if the input is required: `true | false`',
             },
             /* wwEditor:end */
         },
