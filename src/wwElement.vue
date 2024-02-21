@@ -158,7 +158,7 @@ export default {
                 return Array.isArray(this.currentSelection) ? this.currentSelection : [];
             },
             set(newValue, oldValue) {
-                if (newValue === oldValue) return;
+                if (JSON.stringify(newValue || []) === JSON.stringify(oldValue || [])) return;
                 this.setCurrentSelection(newValue);
                 this.$emit('trigger-event', { name: 'change', event: { domEvent: {}, value: newValue } });
             },
@@ -299,7 +299,7 @@ export default {
                     ...initialValue.filter(selection => !this.options.map(option => option.value).includes(selection))
                 );
                 // We set internalValue after the options to avoid mismatch
-                this.internalValue = initialValue;
+                this.setCurrentSelection(initialValue);
             }
         },
         /**
