@@ -220,9 +220,12 @@ export default {
                 this.$emit('trigger-event', { name: 'initValueChange', event: { value: this.content.initialValue } });
             }
         },
-        'content.options'() {
-            this.componentKey++;
-            this.refreshOptions();
+        'content.options': {
+            deep: true,
+            handler() {
+                this.componentKey++;
+                this.refreshOptions();
+            },
         },
         internalValue() {
             this.refreshOptions();
