@@ -157,8 +157,7 @@ export default {
             get() {
                 return Array.isArray(this.currentSelection) ? this.currentSelection : [];
             },
-            set(newValue, oldValue) {
-                if (JSON.stringify(newValue || []) === JSON.stringify(oldValue || [])) return;
+            set(newValue) {
                 this.setCurrentSelection(newValue);
                 this.$emit('trigger-event', { name: 'change', event: { domEvent: {}, value: newValue } });
             },
