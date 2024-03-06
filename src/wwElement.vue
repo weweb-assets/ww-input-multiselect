@@ -38,7 +38,7 @@
         </template>
 
         <!-- Tag unselected in list -->
-        <template v-if="content.mode === 'tags'" v-slot:option="{ option }">
+        <template v-slot:option="{ option }">
             <wwLayoutItemContext :index="getOptionIndex(option)" :item="{}" is-repeat :data="option">
                 <OptionItem
                     :option="option"
