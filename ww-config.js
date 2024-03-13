@@ -529,7 +529,7 @@ export default {
             },
             navigator: {
                 group: 'Option',
-                hidden: content => content.layoutType === 'free',
+                hidden: content => content.layoutType === 'free' || content.mode !== 'tags',
             },
         },
         tagElement: {
@@ -537,7 +537,7 @@ export default {
             defaultValue: { isWwObject: true, type: 'ww-text', state: { name: 'Text' } },
             navigator: {
                 group: 'Option',
-                hidden: content => content.layoutType === 'free',
+                hidden: content => content.layoutType === 'free' || content.mode !== 'tags',
             },
         },
         flexboxElement: {
@@ -556,7 +556,7 @@ export default {
             },
             navigator: {
                 group: 'Option',
-                hidden: content => content.layoutType !== 'free',
+                hidden: content => content.layoutType !== 'free' || content.mode !== 'tags',
             },
         },
         selectedFlexboxElement: {
@@ -575,7 +575,7 @@ export default {
             },
             navigator: {
                 group: 'Option - Selected',
-                hidden: content => content.layoutType !== 'free',
+                hidden: content => content.layoutType !== 'free' || content.mode !== 'tags',
             },
         },
         removeTagIconElement: {
@@ -596,7 +596,7 @@ export default {
             },
             navigator: {
                 group: 'Option - Selected',
-                hidden: content => content.layoutType === 'free',
+                hidden: content => content.layoutType === 'free' || content.mode !== 'tags',
             },
         },
         caretIconElement: {
