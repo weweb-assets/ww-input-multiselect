@@ -21,28 +21,28 @@ export default {
         ],
         customSettingsPropertiesOrder: [
             'isOpen',
-            [
-                'openInEditor',
-                'layoutType',
-                'initialValue',
-                'options',
-                'hintFields',
-                'labelField',
-                'valueField',
-                'textColorField',
-                'bgColorField',
-            ],
+            'openInEditor',
+            'layoutType',
+            'required',
+            'readonly',
+            'disabled',
+            'initialValue',
+            'mode',
+            'multipleLabel',
+            ['options', 'hintFields', 'labelField', 'valueField', 'textColorField', 'bgColorField'],
             ['placeholder', 'noResultsText', 'noOptionsText'],
             [
-                'disabled',
-                'required',
-                'readonly',
-                'mode',
-                'multipleLabel',
+                'advanced',
+                'searchable',
                 'allowCreation',
                 'hideSelected',
-                'searchable',
                 'closeOnSelect',
+                'maxSelection',
+                'max',
+                'infiniteScroll',
+                'loadingRingColor',
+                'limitedOptions',
+                'limit',
             ],
             ['clearIcon', 'caretIcon'],
         ],
@@ -203,6 +203,12 @@ export default {
             bindable: true,
             multiLang: true,
             hidden: content => content.mode !== 'multiple',
+            /* wwEditor:start */
+            bindingValidation: {
+                type: 'string',
+                tooltip: 'A string that defines the selected options text: `"Selected options"`',
+            },
+            /* wwEditor:end */
         },
         advanced: {
             type: 'OnOff',
@@ -210,6 +216,7 @@ export default {
                 en: 'Advanced options',
             },
             defaultValue: false,
+            bindable: true,
             section: 'settings',
         },
         allowCreation: {
@@ -237,7 +244,14 @@ export default {
             },
             type: 'OnOff',
             defaultValue: true,
+            bindable: true,
             section: 'settings',
+            /* wwEditor:start */
+            bindingValidation: {
+                type: 'boolean',
+                tooltip: 'A boolean that defines if the selected elements are hidden: `true | false`',
+            },
+            /* wwEditor:end */
         },
         searchable: {
             hidden: content => !content.advanced,
@@ -247,7 +261,14 @@ export default {
             },
             type: 'OnOff',
             defaultValue: true,
+            bindable: true,
             section: 'settings',
+            /* wwEditor:start */
+            bindingValidation: {
+                type: 'boolean',
+                tooltip: 'A boolean that defines if the input is searchable: `true | false`',
+            },
+            /* wwEditor:end */
         },
         searchFontFamily: {
             label: {
@@ -298,7 +319,14 @@ export default {
             },
             type: 'OnOff',
             defaultValue: false,
+            bindable: true,
             section: 'settings',
+            /* wwEditor:start */
+            bindingValidation: {
+                type: 'boolean',
+                tooltip: 'A boolean that defines if the dropdown closes on select: `true | false`',
+            },
+            /* wwEditor:end */
         },
         infiniteScroll: {
             hidden: content => !content.advanced,
@@ -308,7 +336,14 @@ export default {
             },
             type: 'OnOff',
             defaultValue: false,
+            bindable: true,
             section: 'settings',
+            /* wwEditor:start */
+            bindingValidation: {
+                type: 'boolean',
+                tooltip: 'A boolean that defines if the dropdown uses infinite scroll: `true | false`',
+            },
+            /* wwEditor:end */
         },
         loadingRingColor: {
             hidden: content => !content.advanced || !content.infiniteScroll,
@@ -317,8 +352,17 @@ export default {
             },
             type: 'Color',
             defaultValue: '#099af2',
+            bindable: true,
             section: 'settings',
             classes: true,
+            states: true,
+            responsive: true,
+            /* wwEditor:start */
+            bindingValidation: {
+                type: 'string',
+                tooltip: 'A string that defines the loading ring color: `#000000`',
+            },
+            /* wwEditor:end */
         },
         limitedOptions: {
             hidden: content => !content.advanced,
@@ -328,7 +372,14 @@ export default {
             },
             type: 'OnOff',
             defaultValue: false,
+            bindable: true,
             section: 'settings',
+            /* wwEditor:start */
+            bindingValidation: {
+                type: 'boolean',
+                tooltip: 'A boolean that defines if the options are limited: `true | false`',
+            },
+            /* wwEditor:end */
         },
         limit: {
             hidden: content => !content.advanced || !content.limitedOptions,
@@ -343,7 +394,14 @@ export default {
                 step: 1,
             },
             defaultValue: 20,
+            bindable: true,
             section: 'settings',
+            /* wwEditor:start */
+            bindingValidation: {
+                type: 'number',
+                tooltip: 'A number that defines the options limit: `10`',
+            },
+            /* wwEditor:end */
         },
         maxSelection: {
             hidden: content => !content.advanced,
@@ -353,7 +411,14 @@ export default {
             },
             type: 'OnOff',
             defaultValue: false,
+            bindable: true,
             section: 'settings',
+            /* wwEditor:start */
+            bindingValidation: {
+                type: 'boolean',
+                tooltip: 'A boolean that defines if the max selection is enabled: `true | false`',
+            },
+            /* wwEditor:end */
         },
         max: {
             hidden: content => !content.advanced || !content.maxSelection,
@@ -370,6 +435,13 @@ export default {
             defaultValue: 1,
             section: 'settings',
             bindable: true,
+            bindable: true,
+            /* wwEditor:start */
+            bindingValidation: {
+                type: 'number',
+                tooltip: 'A number that defines the max selection: `10`',
+            },
+            /* wwEditor:end */
         },
         clearIcon: {
             label: {
@@ -377,7 +449,14 @@ export default {
             },
             type: 'OnOff',
             defaultValue: false,
+            bindable: true,
             section: 'settings',
+            /* wwEditor:start */
+            bindingValidation: {
+                type: 'boolean',
+                tooltip: 'A boolean that defines if the clear icon is enabled: `true | false`',
+            },
+            /* wwEditor:end */
         },
         caretIcon: {
             label: {
@@ -385,7 +464,14 @@ export default {
             },
             type: 'OnOff',
             defaultValue: true,
+            bindable: true,
             section: 'settings',
+            /* wwEditor:start */
+            bindingValidation: {
+                type: 'boolean',
+                tooltip: 'A boolean that defines if the caret icon is enabled: `true | false`',
+            },
+            /* wwEditor:end */
         },
         initialValue: {
             label: {
