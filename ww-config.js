@@ -372,7 +372,6 @@ export default {
             },
             type: 'OnOff',
             defaultValue: false,
-            bindable: true,
             section: 'settings',
             /* wwEditor:start */
             bindingValidation: {
