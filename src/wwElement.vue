@@ -283,6 +283,12 @@ export default {
             });
         },
         /* wwEditor:end */
+        'content.limit'() {
+            this.componentKey += 1;
+            this.$nextTick(() => {
+                this.init();
+            });
+        },
         currentLang() {
             this.options = this.options.map(option => this.formatOption(option.data));
             this.componentKey++;
