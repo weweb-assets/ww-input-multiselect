@@ -218,6 +218,12 @@ export default {
             defaultValue: false,
             bindable: true,
             section: 'settings',
+            /* wwEditor:start */
+            bindingValidation: {
+                type: 'boolean',
+                tooltip: 'A boolean that defines if the advanced options are activated : `true | false`',
+            },
+            /* wwEditor:end */
         },
         allowCreation: {
             hidden: content => !content.advanced,
