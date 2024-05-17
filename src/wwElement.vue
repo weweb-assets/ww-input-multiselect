@@ -229,19 +229,6 @@ export default {
         internalValue() {
             this.refreshOptions();
         },
-        'content.advanced'(advanced) {
-            if (!advanced) {
-                this.$emit('update:content:effect', {
-                    searchable: false,
-                    allowCreation: false,
-                    hideSelected: false,
-                    closeOnSelect: false,
-                    maxSelection: false,
-                    infiniteScroll: false,
-                    limitedOptions: false,
-                });
-            }
-        },
         'content.labelField'() {
             this.componentKey++;
             this.refreshOptions();
