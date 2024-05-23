@@ -128,8 +128,8 @@ export default {
         multiselectProps() {
             return {
                 options: this.options,
-                closeOnSelect: this.content.closeOnSelect,
-                searchable: this.content.searchable,
+                closeOnSelect: this.content.advanced ? this.content.closeOnSelect : false,
+                searchable: this.content.advanced ? this.content.searchable : false,
                 mode: this.content.mode,
                 multipleLabel: values =>
                     (
@@ -140,15 +140,15 @@ export default {
                 noResultsText: this.content.noResultsText,
                 disabled: this.isReadOnly || this.content.disabled,
                 required: this.content.required,
-                hideSelected: this.content.hideSelected,
+                hideSelected: this.content.advanced ? this.content.hideSelected : false,
                 placeholder: 'placeholder',
-                createOption: this.content.allowCreation,
+                createOption: this.content.advanced ? this.content.allowCreation : false,
                 canClear: this.content.clearIcon,
                 caret: this.content.caretIcon,
                 name: this.wwElementState.name,
-                infinite: this.content.infiniteScroll,
-                limit: this.content.limitedOptions ? this.content.limit : -1,
-                max: this.content.maxSelection ? this.content.max : -1,
+                infinite: this.content.advanced ? this.content.infiniteScroll : false,
+                limit: this.content.limitedOptions && this.content.advanced ? this.content.limit : -1,
+                max: this.content.maxSelection && this.content.advanced ? this.content.max : -1,
                 resolveOnLoad: false,
                 locale: this.currentLang,
             };
