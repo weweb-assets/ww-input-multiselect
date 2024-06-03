@@ -127,7 +127,7 @@ export default {
         },
         multiselectProps() {
             return {
-                options: this.options,
+                options: [...new Map(this.options.map(item => [item.value, item])).values()], // Remove duplicate options (by values)
                 closeOnSelect: this.content.advanced ? this.content.closeOnSelect : false,
                 searchable: this.content.advanced ? this.content.searchable : false,
                 mode: this.content.mode,
