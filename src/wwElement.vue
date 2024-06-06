@@ -127,9 +127,9 @@ export default {
         },
         multiselectProps() {
             return {
-                options: this.options,
-                closeOnSelect: this.content.advanced ? this.content.closeOnSelect : false,
-                searchable: this.content.advanced ? this.content.searchable : false,
+                options: [...new Map(this.options.map(item => [item.value, item])).values()], // Remove duplicate options (by values)
+                closeOnSelect: this.content.closeOnSelect,
+                searchable: this.content.searchable,
                 mode: this.content.mode,
                 multipleLabel: values =>
                     (
@@ -140,15 +140,15 @@ export default {
                 noResultsText: this.content.noResultsText,
                 disabled: this.isReadOnly || this.content.disabled,
                 required: this.content.required,
-                hideSelected: this.content.advanced ? this.content.hideSelected : false,
+                hideSelected: this.content.hideSelected,
                 placeholder: 'placeholder',
-                createOption: this.content.advanced ? this.content.allowCreation : false,
+                createOption: this.content.allowCreation,
                 canClear: this.content.clearIcon,
                 caret: this.content.caretIcon,
                 name: this.wwElementState.name,
-                infinite: this.content.advanced ? this.content.infiniteScroll : false,
-                limit: this.content.limitedOptions && this.content.advanced ? this.content.limit : -1,
-                max: this.content.maxSelection && this.content.advanced ? this.content.max : -1,
+                infinite: this.content.infiniteScroll,
+                limit: this.content.limitedOptions ? this.content.limit : -1,
+                max: this.content.maxSelection ? this.content.max : -1,
                 resolveOnLoad: false,
                 locale: this.currentLang,
             };
