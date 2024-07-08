@@ -126,8 +126,24 @@ export default {
             return this.content.layoutType ? this.content.layoutType : 'text';
         },
         multiselectProps() {
+            const mergedOptions = this.content.allowCreation
+                ? [...this.options, ...this.currentSelection]
+                : this.options;
+
+            const uniqueOptionsMap = new Map(
+                mergedOptions.map(item => {
+                    if (typeof item === 'object' && item !== null && 'value' in item) {
+                        return [item.value, item];
+                    } else {
+                        return [item, item];
+                    }
+                })
+            );
+
+            const uniqueOptions = [...uniqueOptionsMap.values()];
+
             return {
-                options: [...new Map(this.options.map(item => [item.value, item])).values()], // Remove duplicate options (by values)
+                options: uniqueOptions,
                 closeOnSelect: this.content.closeOnSelect,
                 searchable: this.content.searchable,
                 mode: this.content.mode,
