@@ -125,7 +125,7 @@ export default {
         layoutType() {
             return this.content.layoutType ? this.content.layoutType : 'text';
         },
-        multiselectProps() {
+        uniqueOptions() {
             const mergedOptions = this.content.allowCreation
                 ? [...this.options, ...this.currentSelection]
                 : this.options;
@@ -140,10 +140,11 @@ export default {
                 })
             );
 
-            const uniqueOptions = [...uniqueOptionsMap.values()];
-
+            return [...uniqueOptionsMap.values()];
+        },
+        multiselectProps() {
             return {
-                options: uniqueOptions,
+                options: this.uniqueOptions,
                 closeOnSelect: this.content.closeOnSelect,
                 searchable: this.content.searchable,
                 mode: this.content.mode,
@@ -234,6 +235,12 @@ export default {
                 this.refreshInitialValue();
                 this.$emit('trigger-event', { name: 'initValueChange', event: { value: this.content.initialValue } });
             }
+        },
+        uniqueOptions: {
+            deep: true,
+            handler() {
+                this.componentKey++;
+            },
         },
         'content.options': {
             deep: true,
