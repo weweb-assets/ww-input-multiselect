@@ -239,7 +239,7 @@ export default {
         uniqueOptions: {
             deep: true,
             handler() {
-                this.componentKey++;
+                if (!this.$refs.multiselect?.isOpen) this.componentKey++;
             },
         },
         'content.options': {
