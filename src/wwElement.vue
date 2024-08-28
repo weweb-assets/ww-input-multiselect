@@ -130,15 +130,20 @@ export default {
                 ? [...this.options, ...this.currentSelection]
                 : this.options;
 
-            const uniqueOptionsMap = new Map(
-                mergedOptions.map(item => {
-                    if (typeof item === 'object' && item !== null && 'value' in item) {
-                        return [item.value, item];
+            const uniqueOptionsMap = new Map();
+
+            mergedOptions.forEach(item => {
+                if (typeof item === 'object' && item !== null && 'value' in item) {
+                    uniqueOptionsMap.set(item.value, item);
+                } else {
+                    const fullOption = this.options.find(opt => opt.value === item);
+                    if (fullOption) {
+                        uniqueOptionsMap.set(item, fullOption);
                     } else {
-                        return [item, item];
+                        uniqueOptionsMap.set(item, item);
                     }
-                })
-            );
+                }
+            });
 
             return [...uniqueOptionsMap.values()];
         },
