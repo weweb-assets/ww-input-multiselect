@@ -126,19 +126,15 @@ export default {
             return this.content.layoutType ? this.content.layoutType : 'text';
         },
         uniqueOptions() {
-            const mergedOptions = this.content.allowCreation
-                ? [...this.options, ...this.currentSelection]
-                : this.options;
-
             const uniqueOptionsMap = new Map();
 
-            mergedOptions.forEach(item => {
-                if (typeof item === 'object' && item !== null && 'value' in item) {
+            [...this.options, ...this.currentSelection].forEach(item => {
+                if (item && typeof item === 'object' && 'value' in item) {
                     uniqueOptionsMap.set(item.value, item);
-                } else {
-                    const fullOption = this.options.find(opt => opt.value === item);
+                } else if (item !== undefined && item !== null) {
+                    const fullOption = this.options.find(opt => opt && opt.value === item);
                     if (fullOption) {
-                        uniqueOptionsMap.set(item, fullOption);
+                        uniqueOptionsMap.set(fullOption.value, fullOption);
                     } else {
                         uniqueOptionsMap.set(item, item);
                     }
