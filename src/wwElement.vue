@@ -452,18 +452,18 @@ export default {
 .input-multiselect {
     cursor: var(--component-cursor);
     --ms-border-width: 0px;
-
     position: relative;
-    min-height: calc(var(--font-size) + 20px);
-    border-radius: inherit;
+    /* min-height: calc(var(--font-size) + 20px); */
 
     &.is-active {
         box-shadow: unset;
     }
 
     /* wwEditor:start */
-    &.editing {
-        pointer-events: none;
+    &.editing::before {
+        content: '';
+        position: absolute;
+        inset: 0;
     }
     /* wwEditor:end */
 }
