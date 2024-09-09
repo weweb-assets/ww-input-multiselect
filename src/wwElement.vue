@@ -454,6 +454,7 @@ export default {
     --ms-border-width: 0px;
     position: relative;
     /* min-height: calc(var(--font-size) + 20px); */
+    width: initial; /* to avoid the width 100% from the library */
 
     &.is-active {
         box-shadow: unset;
