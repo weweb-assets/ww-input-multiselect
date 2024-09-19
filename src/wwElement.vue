@@ -63,7 +63,7 @@
 
         <!-- Clear icon shown when the input has at least one selected options -->
         <template v-slot:clear="{ clear }">
-            <div @mousedown.stop>
+            <div @mousedown.stop :style="{ zIndex: 2 }">
                 <wwElement v-bind="content.clearIconElement" @click="isEditing ? null : clear($event)" />
             </div>
         </template>
