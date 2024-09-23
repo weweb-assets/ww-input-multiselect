@@ -156,7 +156,12 @@ export default {
                     ).replace('{count}', values.length),
                 noOptionsText: this.content.noOptionsText,
                 noResultsText: this.content.noResultsText,
+                /* wwEditor:start */
+                disabled: this.isReadOnly || this.content.disabled || this.isEditing,
+                /* wwEditor:end */
+                /* wwFront:start */
                 disabled: this.isReadOnly || this.content.disabled,
+                /* wwFront:end */
                 required: this.content.required,
                 hideSelected: this.content.hideSelected,
                 placeholder: 'placeholder',
@@ -459,14 +464,6 @@ export default {
     &.is-active {
         box-shadow: unset;
     }
-
-    /* wwEditor:start */
-    &.editing::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-    }
-    /* wwEditor:end */
 }
 .input-multiselect:deep(.multiselect-wrapper) {
     cursor: var(--component-cursor);
