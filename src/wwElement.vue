@@ -63,7 +63,7 @@
 
         <!-- Clear icon shown when the input has at least one selected options -->
         <template v-slot:clear="{ clear }">
-            <div @mousedown.stop>
+            <div @mousedown.stop :style="{ zIndex: 2 }">
                 <wwElement v-bind="content.clearIconElement" @click="isEditing ? null : clear($event)" />
             </div>
         </template>
@@ -156,7 +156,12 @@ export default {
                     ).replace('{count}', values.length),
                 noOptionsText: this.content.noOptionsText,
                 noResultsText: this.content.noResultsText,
+                /* wwEditor:start */
+                disabled: this.isReadOnly || this.content.disabled || this.isEditing,
+                /* wwEditor:end */
+                /* wwFront:start */
                 disabled: this.isReadOnly || this.content.disabled,
+                /* wwFront:end */
                 required: this.content.required,
                 hideSelected: this.content.hideSelected,
                 placeholder: 'placeholder',
@@ -452,20 +457,13 @@ export default {
 .input-multiselect {
     cursor: var(--component-cursor);
     --ms-border-width: 0px;
-
     position: relative;
-    min-height: calc(var(--font-size) + 20px);
-    border-radius: inherit;
+    /* min-height: calc(var(--font-size) + 20px); */
+    width: initial; /* to avoid the width 100% from the library */
 
     &.is-active {
         box-shadow: unset;
     }
-
-    /* wwEditor:start */
-    &.editing {
-        pointer-events: none;
-    }
-    /* wwEditor:end */
 }
 .input-multiselect:deep(.multiselect-wrapper) {
     cursor: var(--component-cursor);
