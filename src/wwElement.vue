@@ -7,7 +7,11 @@
         :style="cssVariables"
         :class="{ editing: isEditing }"
         v-bind="multiselectProps"
-        @close="verifyClose"
+        @close="checkIsOpen"
+        @focus.capture="interceptFocus"
+        @focusin.capture="interceptFocus"
+        @click.capture="interceptClick"
+        @mousedown.capture="interceptClick"
     >
         <!-- Placeholder -->
         <template v-slot:placeholder>
@@ -15,6 +19,8 @@
                 class="multiselect-placeholder-el"
                 v-bind="content.placeholderElement"
                 :wwProps="{ text: placeholder || '' }"
+                @mousedown="isEditing && $event.stopPropagation()"
+                @click="isEditing && $event.stopPropagation()"
             />
         </template>
 
@@ -47,6 +53,8 @@
                     :tagElement="content.tagElement"
                     :isReadOnly="isReadOnly"
                     :isEditing="isEditing"
+                    @mousedown="isEditing && $event.stopPropagation()"
+                    @click="isEditing && $event.stopPropagation()"
                 />
             </wwLayoutItemContext>
         </template>
@@ -57,6 +65,7 @@
                 v-if="multiselectProps.disabled && internalValue.length && content.clearIcon"
                 class="hidden"
                 v-bind="content.clearIconElement"
+                @mousedown="isEditing && $event.stopPropagation()"
             />
             <wwElement v-bind="content.caretIconElement" class="caret" :class="{ hidden: isReadOnly }" />
         </template>
@@ -156,12 +165,7 @@ export default {
                     ).replace('{count}', values.length),
                 noOptionsText: this.content.noOptionsText,
                 noResultsText: this.content.noResultsText,
-                /* wwEditor:start */
-                disabled: this.isReadOnly || this.content.disabled || this.isEditing,
-                /* wwEditor:end */
-                /* wwFront:start */
                 disabled: this.isReadOnly || this.content.disabled,
-                /* wwFront:end */
                 required: this.content.required,
                 hideSelected: this.content.hideSelected,
                 placeholder: 'placeholder',
@@ -423,7 +427,6 @@ export default {
         },
         handleOpening(value) {
             if (!this.$refs.multiselect) return;
-
             if (value) this.$refs.multiselect.open();
             else this.$refs.multiselect.close();
         },
@@ -439,13 +442,29 @@ export default {
             this.handleOpening(this.wwEditorState.sidepanelContent.openInEditor);
             /* wwEditor:end */
         },
-        verifyClose() {
-            /* wwEditor:start */
-            if (this.wwEditorState.sidepanelContent.openInEditor) this.$refs.multiselect.open();
-            /* wwEditor:end */
-        },
         getLabel(option, label) {
             return `${wwLib.wwLang.getText(wwLib.resolveObjectPropertyPath(option, wwLib.wwLang.getText(label)))}`;
+        },
+        interceptFocus(event) {
+            if (!this.isEditing) return;
+            if (
+                event.target.classList.contains('multiselect-wrapper') ||
+                event.target.classList.contains('multiselect-tags-search')
+            ) {
+                event.stopPropagation();
+                event.preventDefault();
+            }
+        },
+        interceptClick(event) {
+            if (!this.isEditing) return;
+            if (
+                event.target.classList.contains('multiselect-option') ||
+                event.target.classList.contains('multiselect-wrapper') ||
+                event.target.classList.contains('multiselect-tags-search')
+            ) {
+                event.stopPropagation();
+                event.preventDefault();
+            }
         },
     },
 };
@@ -513,6 +532,9 @@ export default {
 
 /* wwEditor:start */
 .input-multiselect:not(.editing):deep(.multiselect-placeholder-el) {
+    pointer-events: none;
+}
+.ww-input-multiselect.editing:deep(.multiselect-wrapper) {
     pointer-events: none;
 }
 /* wwEditor:end */
