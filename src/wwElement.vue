@@ -398,9 +398,9 @@ export default {
             const valueField = this.content.valueField || DEFAULT_VALUE_FIELD;
 
             const label = `${wwLib.wwLang.getText(
-                wwLib.resolveObjectPropertyPath(option, wwLib.wwLang.getText(labelField))
+                wwLib.wwUtils.resolveObjectPropertyPath(option, wwLib.wwLang.getText(labelField))
             )}`;
-            const value = wwLib.resolveObjectPropertyPath(option, valueField);
+            const value = wwLib.wwUtils.resolveObjectPropertyPath(option, valueField);
 
             if (this.layoutType === 'free')
                 return {
@@ -443,7 +443,9 @@ export default {
             /* wwEditor:end */
         },
         getLabel(option, label) {
-            return `${wwLib.wwLang.getText(wwLib.resolveObjectPropertyPath(option, wwLib.wwLang.getText(label)))}`;
+            return `${wwLib.wwLang.getText(
+                wwLib.wwUtils.resolveObjectPropertyPath(option, wwLib.wwLang.getText(label))
+            )}`;
         },
         interceptFocus(event) {
             if (!this.isEditing) return;
