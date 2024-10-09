@@ -810,7 +810,7 @@ export default {
         },
         dropdownBorderColor: {
             label: {
-                en: 'Dropdown background color',
+                en: 'Dropdown border color',
             },
             type: 'Color',
             defaultValue: '#d1d5db',
