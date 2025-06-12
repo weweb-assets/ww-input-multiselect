@@ -214,23 +214,22 @@ export default {
     }
     /* wwEditor:end */
 }
-
-.input-multiselect::v-deep .multiselect-tag {
+:deep(.input-multiselect) .multiselect-tag {
     padding: 4px;
     border-radius: 4px;
 }
 
-.input-multiselect::v-deep .multiselect-caret,
-.input-multiselect::v-deep .multiselect-clear-icon,
-.input-multiselect::v-deep .multiselect-tag-remove-icon {
+:deep(.input-multiselect) .multiselect-caret,
+:deep(.input-multiselect) .multiselect-clear-icon,
+:deep(.input-multiselect) .multiselect-tag-remove-icon {
     width: var(--font-size);
     height: var(--font-size);
 }
-.input-multiselect::v-deep .multiselect-caret {
+:deep(.input-multiselect) .multiselect-caret {
     margin-top: 10px;
     margin-bottom: 10px;
 }
-.input-multiselect::v-deep .multiselect-dropdown {
+:deep(.input-multiselect) .multiselect-dropdown {
     max-height: unset;
 }
 </style>
