@@ -81,7 +81,7 @@
 
 <script>
 import Multiselect from '@vueform/multiselect';
-import { computed, inject } from 'vue';
+import { computed } from 'vue';
 import OptionItem from './OptionItem.vue';
 import OptionItemSelected from './OptionItemSelected.vue';
 
@@ -107,11 +107,7 @@ export default {
             defaultValue: computed(() => (Array.isArray(props.content.initialValue) ? props.content.initialValue : [])),
         });
 
-        const styles = inject('componentStyle');
-
-        const cursor = computed(() => styles.cursor);
-
-        return { currentSelection, setCurrentSelection, cursor };
+        return { currentSelection, setCurrentSelection };
     },
     data: () => ({
         options: [],
@@ -219,7 +215,6 @@ export default {
                 '--search-font-size': this.content.searchFontSize || 'inherit',
                 '--search-font-family': this.content.searchFontFamily || 'inherit',
                 '--search-font-color': this.content.searchFontColor || 'inherit',
-                '--component-cursor': this.cursor || 'pointer',
                 '--padding-tag': this.content.layoutType === 'text' ? '4px' : '0',
             };
         },
@@ -474,7 +469,7 @@ export default {
 
 <style type="scss" scoped>
 .input-multiselect {
-    cursor: var(--component-cursor);
+    cursor: var(--component-cursor, pointer);
     --ms-border-width: 0px;
     position: relative;
     /* min-height: calc(var(--font-size) + 20px); */
@@ -485,7 +480,7 @@ export default {
     }
 }
 .input-multiselect:deep(.multiselect-wrapper) {
-    cursor: var(--component-cursor);
+    cursor: var(--component-cursor, pointer);
     height: inherit;
     min-height: unset;
 }
